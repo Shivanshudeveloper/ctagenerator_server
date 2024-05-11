@@ -26,6 +26,18 @@ const ctaSchema = new mongoose.Schema({
         required: false,
         unique: true
     },
+    calendarUrl: {
+        type: String,
+        required: false,
+    },
+    pacakages: {
+        type: Array,
+        required: false,
+    },
+    features: {
+        type: Array,
+        required: false,
+    },
     status: {
         type: Number,
         required: false,

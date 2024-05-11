@@ -1,7 +1,7 @@
 runtime: nodejs20
 
 env_variables:
-  MONGODB_URI: mongodb+srv://admin:c9CREVyQ2d5SD9je@cluster0.3cihjsb.mongodb.net/backendcs?retryWrites=true&w=majority
+  MONGODB_URI: mongodb+srv://shivanshu:kMP0ddoqziQOtqub@cluster0.8bpub.mongodb.net/ctagenerator?retryWrites=true&w=majority&appName=Cluster0
   RAZORPAY_SECRET: L4pxU0BavQANsgwp0BOzIJsr
   RAZORPAY_KEY_ID: rzp_test_Ubp2fuGxi5BeaU
   RESEND_API_KEY: re_j4hk87J8_3jK5r8qwtrZNsgs5Gn9stmZZ
