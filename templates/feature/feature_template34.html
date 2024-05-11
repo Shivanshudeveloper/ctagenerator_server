@@ -1,0 +1,505 @@
+
+                    <div style="border:1px solid gray;margin-bottom:5px;padding:5px">
+                        <h2>Run multiple conversions at once</h2>
+                        <div style="display:flex;width:100%;">
+                            <span style="font-weight:600;">From:&nbsp;<span class="mp_address_group"><span class="mp_address_name">{{agentname}} at {{appname}}</span> &lt;<a href={{email_from}} class="mp_address_email">{{email_from}}</a>&gt;</span></span>
+                            <span style="flex: 1 1 auto;"></span>
+                            <span style="color:silver;font-weight:600">9/17/2021, 10:26:12 PM</span>
+                        </div>
+                        <div style="font-size:12px;">
+                            To:&nbsp;<span class="mp_address_group"><a href={{email_to}} class="mp_address_email">{{email_to}}</a></span>
+                        </div>
+                    </div><p><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title></title>
+  <style type="text/css" rel="stylesheet" media="all">
+    /* Base ------------------------------ */
+
+    @import url("https://fonts.googleapis.com/css?family=Rubik:400,500&display=swap");
+
+    body {
+      width: 100% !important;
+      height: 100%;
+      margin: 0;
+      -webkit-text-size-adjust: none;
+    }
+
+    u+#body a {
+      color: inherit;
+      text-decoration: none;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    a {
+      color: #9164b3;
+      text-decoration: none;
+    }
+
+    a.unsub {
+      color: #a9b1b9;
+      border-bottom: 1px dotted #a9b1b9;
+    }
+
+    a img {
+      border: none;
+    }
+
+    td {
+      word-break: break-word;
+    }
+
+    .preheader {
+      display: none !important;
+      visibility: hidden;
+      mso-hide: all;
+      font-size: 1px;
+      line-height: 1px;
+      max-height: 0;
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    /* Type ------------------------------ */
+
+    body,
+    td,
+    th {
+      font-family: "Rubik", Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #212529;
+      font-size: 30px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333333;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #868e96;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    td,
+    th {
+      font-size: 16px;
+    }
+
+    p,
+    ul,
+    ol,
+    blockquote {
+      margin: .4em 0 1.8em;
+      font-size: 16px;
+      line-height: 1.625;
+    }
+
+    p.sub {
+      font-size: 13px;
+    }
+
+    /* Utilities ------------------------------ */
+
+    .align-right {
+      text-align: right;
+    }
+
+    .align-left {
+      text-align: left;
+    }
+
+    .align-center {
+      text-align: center;
+    }
+
+    /* Buttons ------------------------------ */
+
+    .button {
+      background-color: #9164b3;
+      border-top: 15px solid #9164b3;
+      border-right: 30px solid #9164b3;
+      border-bottom: 15px solid #9164b3;
+      border-left: 30px solid #9164b3;
+      display: inline-block;
+      color: #FFFFFF !important;
+      text-decoration: none;
+      border-radius: 5px;
+      -webkit-text-size-adjust: none;
+      box-sizing: border-box;
+    }
+
+    .button--premium {
+      font-size: 14px;
+      color: #FFFFFF !important;
+      background-color: #f29d04;
+      border-top: 13px solid #f29d04;
+      border-right: 25px solid #f29d04;
+      border-bottom: 13px solid #f29d04;
+      border-left: 25px solid #f29d04;
+    }
+
+    .button--green {
+      color: #FFFFFF !important;
+      background-color: #51df3e;
+      border-top: 15px solid #51df3e;
+      border-right: 30px solid #51df3e;
+      border-bottom: 15px solid #51df3e;
+      border-left: 30px solid #51df3e;
+    }
+
+    @media only screen and (max-width: 500px) {
+      .button {
+        width: 100% !important;
+        text-align: center !important;
+      }
+    }
+
+    /* Attribute list ------------------------------ */
+
+    .attributes {
+      margin: 0 0 21px;
+    }
+
+    .attributes_content {
+      background-color: #F4F4F7;
+      padding: 16px;
+    }
+
+    .attributes_item {
+      padding: 0;
+    }
+
+    /* Upgrade ------------------------------ */
+
+    .upgrade {
+      width: 100%;
+      margin: 0;
+      padding: 45px 20px 40px 20px;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+      background: #FFF8EF;
+      color: #F09C26;
+      border-top: 1px solid #f5e8d2;
+      border-radius: 0 0 5px 5px;
+    }
+
+    .upgrade_heading {
+      text-align: center;
+      color: #F09C26;
+      margin: 0 0 10px 0;
+    }
+
+    .upgrade_body {
+      text-align: center;
+      font-size: 14px;
+      color: #F09C26;
+    }
+
+    /* Social Icons ------------------------------ */
+
+    .social {
+      width: auto;
+    }
+
+    .social td {
+      padding: 0;
+      width: auto;
+    }
+
+    .social_icon {
+      height: 20px;
+      margin: 0 8px 10px 8px;
+      padding: 0;
+    }
+
+    /* Data table ------------------------------ */
+
+    .purchase {
+      width: 100%;
+      text-align: left;
+      margin: 0;
+      color: #868e96;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+    }
+
+    .purchase_content {
+      width: 100%;
+      margin: 0;
+      padding: 25px 0 0 0;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+    }
+
+    .purchase_item {
+      padding: 10px 0;
+      color: #868e96;
+      font-size: 15px;
+      line-height: 18px;
+    }
+
+    .purchase_heading {
+      padding-bottom: 8px;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #dde0e4;
+    }
+
+    .purchase_heading p {
+      margin: 0;
+      color: #85878E;
+      font-size: 12px;
+    }
+
+    .purchase_footer {
+      padding-top: 15px;
+      border-top: 1px solid #EAEAEC;
+    }
+
+    .purchase_total {
+      margin: 0;
+      text-align: right;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .purchase_total--label {
+      padding: 0 15px 0 0;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: #868e96;
+    }
+
+    p {
+      color: #868e96;
+    }
+
+    .email-wrapper {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+      background-color: #f8f9fa;
+    }
+
+    .email-content {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+    }
+
+    /* Masthead ----------------------- */
+
+    .email-masthead {
+      padding: 25px 0;
+      text-align: center;
+      color: #868e96 !important;
+    }
+
+    .email-masthead_logo {
+      width: 94px;
+    }
+
+    a.email-masthead_name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #868e96 !important;
+      text-decoration: none;
+    }
+
+    /* Body ------------------------------ */
+
+    .email-body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+    }
+
+    .email-body_inner {
+      width: 570px;
+      margin: 0 auto;
+      padding: 0;
+      -premailer-width: 570px;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+      border-radius: 5px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 18px 0 rgba(185, 199, 210, 0.3);
+    }
+
+    .email-footer {
+      width: 570px;
+      margin: 0 auto;
+      padding: 0;
+      -premailer-width: 570px;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+      text-align: center;
+    }
+
+    .email-footer p {
+      color: #a9b1b9;
+    }
+
+    .body-action {
+      width: 100%;
+      margin: 30px auto;
+      padding: 0;
+      -premailer-width: 100%;
+      -premailer-cellpadding: 0;
+      -premailer-cellspacing: 0;
+      text-align: center;
+    }
+
+    .body-sub {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid #EAEAEC;
+    }
+
+    .content-cell {
+      padding: 25px 45px;
+    }
+
+    .content-cell-footer {
+      padding: 45px;
+    }
+
+    .alert {
+      background: #ffe9e8;
+      color: #FF7878;
+      border-radius: 50px;
+      padding: 10px 20px;
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    .success {
+      background: #e2f9df;
+      color: #3cbb2b;
+      border-radius: 50px;
+      padding: 10px 20px;
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    /*Media Queries ------------------------------ */
+
+    @media only screen and (max-width: 600px) {
+
+      .email-body_inner,
+      .email-footer {
+        width: 100% !important;
+      }
+
+      .content-cell {
+        padding: 20px;
+      }
+
+      .content-cell-footer {
+        padding: 20px;
+      }
+    }
+  </style>
+  <!--[if mso]>
+    <style type="text/css">
+      .f-fallback  {
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  <![endif]-->
+</head>
+
+<body id="body" style="width: 100% !important; height: 100%; -webkit-text-size-adjust: none; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; background-color: #f8f9fa; color: #868e96; margin: 0;" bgcolor="#f8f9fa">
+  <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; background-color: #f8f9fa; margin: 0; padding: 0;" bgcolor="#f8f9fa">
+    <tbody><tr>
+      <td align="center" style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px;">
+        <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; margin: 0; padding: 0;">
+          <tbody><tr>
+            <td class="email-masthead" style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px; text-align: center; color: #868e96 !important; padding: 25px 0;" align="center">
+              <a href="#" target="_blank" class="f-fallback email-masthead_name" style="color: #868e96 !important; text-decoration: none; font-size: 16px; font-weight: bold;">
+                <!-- <img src="#static/images/logo/logo-violet.png" height="64" alt="PDFShift" style="border: none;"/> -->
+                <!-- <img src="#static/images/logo/logo-violet.png" height="64" alt={{appname}} style="border: none;"/> -->
+              </a>
+            </td>
+          </tr>
+          <!-- Email Body -->
+          <tr>
+            <td class="email-body" width="570" cellpadding="0" cellspacing="0" style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px; width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; margin: 0; padding: 0;">
+              <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="width: 570px; -premailer-width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; border-radius: 5px; background-color: #FFFFFF; box-shadow: 0 4px 18px 0 rgba(185, 199, 210, 0.3); margin: 0 auto; padding: 0;" bgcolor="#FFFFFF">
+                <tbody><tr>
+                  <td class="content-cell align-center" style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px; text-align: center; padding: 25px 45px;" align="center">
+                    <div class="f-fallback">
+                      <div style="text-align: left;" align="left">
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">Hi {{username}}, hope you are well!</p>
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">Did you know that you can send a document to be processed and not wait for it, allowing your code to continue and get the result later?</p>
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">You can use the &#34;<code style="font-weight: normal; background-color: #ddd; color: #721c24; padding: 5px 10px;">webhook</code>&#34; parameter for that. {{appname}} will run the conversion and post the results to your URL provided in the webhook.</p>
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">Moreover, you can also pass an array instead of just one source, and {{appname}} will convert all the items in the array, reducing the number of requests you can make.</p>
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">This gives you the possibility to convert <strong>up to 50 documents per requests</strong> and handle them later once they are converted.</p>
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">Hope this helps 🙂</p>
+
+    <p style="font-size: 16px; line-height: 1.625; color: #868e96; margin: .4em 0 1.8em;">
+        Best regards,
+        {{agentname}} - Founder of <a href="#" target="_blank" style="color: #9164b3; text-decoration: none;">{{appname}}</a>.
+    </p>
+</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px;">
+              <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="width: 570px; -premailer-width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; text-align: center; margin: 0 auto; padding: 0;">
+                <tbody><tr>
+                  <td class="content-cell-footer" align="center" style="word-break: break-word; font-family: &#39;Rubik&#39;, Helvetica, Arial, sans-serif; font-size: 16px; padding: 45px;">
+                    <p class="f-fallback sub align-center" style="font-size: 13px; line-height: 1.625; text-align: center; color: #a9b1b9; margin: .4em 0 1.8em;" align="center">
+                      S.A.S.U. {{appname}}<br/>
+                      128 rue la Boetie, 75008 PARIS, France<br/>
+                      <a href="#" class="untracked unsub" style="color: #a9b1b9; text-decoration: none; border-bottom-color: #a9b1b9; border-bottom-width: 1px; border-bottom-style: dotted;">Unsubscribe</a>
+                    </p>
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+
+</body></html></p>

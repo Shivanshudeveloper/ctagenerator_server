@@ -1,0 +1,591 @@
+<div style="border: 1px solid gray; margin-bottom: 5px; padding: 5px">
+  <h2>Welcome to {{appname}}</h2>
+  <div style="display: flex; width: 100%">
+    <span style="font-weight: 600"
+      >From:&nbsp;<span class="mp_address_group"
+        ><span class="mp_address_name">{{appname}}</span> &lt;<a
+          href="{{{{email_from}}}}"
+          class="mp_address_email"
+          >{{email_from}}</a
+        >&gt;</span
+      ></span
+    >
+    <span style="flex: 1 1 auto"></span>
+    <span style="color: silver; font-weight: 600">9/15/2021, 12:11:03 PM</span>
+  </div>
+  <div style="font-size: 12px">
+    To:&nbsp;<span class="mp_address_group"
+      ><a href="{{email_to}}" class="mp_address_email">{{email_to}}</a></span
+    >
+  </div>
+</div>
+<p>
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>welcome to {{appname}}</title>
+      <style>
+        /* ----- Global Stuff ----- */
+
+        * {
+          font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial,
+            sans-serif;
+          font-size: 100%;
+          line-height: 1.6;
+        }
+
+        img {
+          max-width: 100%;
+        }
+
+        body {
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-size-adjust: none;
+          width: 100% !important;
+          height: 100%;
+        }
+
+        a {
+          color: #007eba;
+        }
+
+        a[href] {
+          color: #007eba;
+        }
+
+        .btn-primary[href] {
+          color: #ffffff !important;
+        }
+
+        .btn-primary {
+          text-decoration: none;
+          color: #ffffff !important;
+          background-color: #007eba;
+          border: solid #007eba;
+          border-width: 10px 20px;
+          line-height: 2;
+          font-weight: bold;
+          margin-right: 10px;
+          text-align: center;
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 3px;
+        }
+
+        .btn-secondary {
+          text-decoration: none;
+          color: #fff !important;
+          background-color: #aaa;
+          border: solid #aaa;
+          border-width: 10px 20px;
+          line-height: 2;
+          font-weight: bold;
+          margin-right: 10px;
+          text-align: center;
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 3px;
+        }
+
+        .last {
+          margin-bottom: 0;
+        }
+
+        .first {
+          margin-top: 0;
+        }
+
+        .padding {
+          padding: 10px 0;
+        }
+
+        /* ----- Body ----- */
+
+        table.body-wrap {
+          width: 100%;
+          padding: 20px;
+        }
+
+        table.body-wrap .container {
+          border: 1px solid #f5f5f6;
+        }
+
+        /* ----- Footer ----- */
+
+        table.footer-wrap {
+          width: 100%;
+          clear: both !important;
+        }
+
+        .footer-wrap .container p {
+          font-size: 12px;
+          color: #1e283a;
+        }
+
+        table.footer-wrap a {
+          color: #999;
+        }
+
+        /* ----- Typography ----- */
+
+        h1,
+        h2,
+        h3 {
+          font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande",
+            sans-serif;
+          color: #4a4a4a;
+          margin: 20px 0 10px;
+          line-height: 1.2;
+          font-weight: 400;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 16px;
+        }
+
+        p,
+        ul,
+        ol {
+          margin-bottom: 10px;
+          font-weight: normal;
+          font-size: 16px;
+          color: #4a4a4a;
+        }
+
+        ul li,
+        ol li {
+          margin-left: 5px;
+          list-style-position: inside;
+        }
+
+        /* ----- Responsive Stuff ----- */
+
+        .container {
+          display: table !important;
+          max-width: 600px !important;
+          margin: 0 auto !important; /* centers it */
+          clear: both !important;
+        }
+
+        .body-wrap .container {
+          padding: 20px;
+        }
+
+        .content {
+          max-width: 600px;
+          margin: 0 auto;
+          display: block;
+        }
+
+        .content table {
+          width: 100%;
+        }
+
+        @media only screen and (max-width: 640px) {
+          .main-header {
+            font-size: 20px !important;
+          }
+
+          .show {
+            display: block !important;
+          }
+
+          .hide {
+            display: none !important;
+          }
+
+          .align-center {
+            text-align: center !important;
+          }
+        }
+
+        h2 {
+          color: #23496d;
+          font-weight: bold;
+        }
+
+        .list-header {
+          margin-bottom: 0;
+        }
+
+        .list-content {
+          margin-top: 0;
+        }
+
+        ul li,
+        ol li {
+          list-style-position: outside;
+        }
+      </style>
+    </head>
+
+    <body
+      class="respond"
+      leftmargin="0"
+      topmargin="0"
+      marginwidth="0"
+      marginheight="0"
+      bgcolor="#F4F7F9"
+    >
+      <!-- header -->
+      <table
+        border="0"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        bgcolor="#F4F7F9"
+        class="bg_color"
+      >
+        <tr>
+          <td align="center" valign="middle">
+            <a
+              href="#"
+              style="
+                display: block;
+                margin: 40px 0 30px;
+                border-style: none !important;
+                border: 0 !important;
+                width: 92px;
+              "
+              ><img
+                width="92"
+                border="0"
+                src="https://i.ibb.co/5rDfxxZ/logo.png"
+                alt="IPinfo"
+            /></a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- body -->
+
+      <table
+        border="0"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        bgcolor="#F4F7F9"
+        class="bg_color"
+      >
+        <tr>
+          <td align="center" style="padding: 0 10px">
+            <table
+              border="0"
+              align="center"
+              width="100%"
+              cellpadding="0"
+              cellspacing="0"
+              class="container"
+              style="
+                background: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                width: 100%;
+                color: #000000;
+              "
+            >
+              <tr>
+                <td
+                  align="left"
+                  style="padding: 15px 20px 25px"
+                  class="main-header"
+                >
+                  <h2>Welcome to {{appname}}!</h2>
+                  <p>
+                    Thanks for signing up for {{appname}}! It's great to have
+                    you on board! If you don't already know, we pride ourselves
+                    on being the most reliable, accurate, and in-depth source of
+                    IP address and geolocation data available anywhere. We love
+                    that you've chosen us for your solution, and we're ready to
+                    provide you with the best geolocation API service!
+                  </p>
+
+                  <h2>Resources - Getting Started</h2>
+                  <p>
+                    Need help or at lost on where to start? Here are some
+                    suggestions:
+                  </p>
+                  <ul>
+                    <li>
+                      <h4 class="list-header">
+                        Looking for your account related details?
+                      </h4>
+                      <p class="list-content">
+                        Log into your
+                        <a href="#">account</a>
+                        to view the number of requests you have done, token
+                        info, manage your subscription, etc.
+                      </p>
+                    </li>
+                    <li>
+                      <h4 class="list-header">
+                        Are you a developer and need help integrating into our
+                        API?
+                      </h4>
+                      <p class="list-content">
+                        Check out our
+                        <a
+                          href="http://email.mg.ipinfo.io/c/eJxNj0luhDAQRU8DS-QBiL3woqHV14gKu6CdeEC2SZTbt1Fnkmrx9V9N36ihH6mQrVWMMEokHehIKeEd7Xo-T_N0pXx6kZeZiaYnfuvsbsMaOxvbu5KsX-RCFy31MFImDIBYCRv6hQ-CSGidupey54ZfGnar9TtctcEPdHHHVPHtKP7Vo7GHb_gVPVjXsPE0czySxmrmr1zQ_0ca_A52CxV-otPR4w-IoWAo1f-70Sb1Bu-1Y3r-sCbEkiy4MxXmDBuaM1RR37uqKglCBl1sDOAeceZiPA"
+                          >documentation</a
+                        >, or our <a href="#">official client libraries</a> to
+                        get started!
+                      </p>
+                    </li>
+                    <li>
+                      <h4 class="list-header">Just want to browse our data?</h4>
+                      <p class="list-content">
+                        Try the
+                        <a
+                          href="http://email.mg.ipinfo.io/c/eJxNj0tuxCAQRE-DlxY_M2bBYuzRXCNqQdsmMWABVpTbB-enSL0o1VOVupwZpGKj7rzhlDOq2cAUY1T0rJdinubpwcR00_eZj0TSsPb-8HFJvU_dZrimzI6Du3ErrdagNI5aLosSTjuB0O1mq_UoRNwJf7b7CzcN1qYz1qYKQrYbEc-zhpeAzp-BiAcG8Dvh6jJLOrPFZpaPUjH8RxbCAX6NDb7jblPAX5BixdbfQl_9XTav8Nbo9P3FkhFr9rBfu7AUWNFds6r56WmqZogFbPUpwv4JFdpijw"
+                          >search</a
+                        >
+                        functionality on the account dashboard.
+                      </p>
+                    </li>
+                    <li>
+                      <h4 class="list-header">
+                        Need a custom solution or other data types?
+                      </h4>
+                      <p class="list-content">
+                        Reach out to our very own in-house expert,
+                        <a href="mailto:ken@ipinfo.io">Ken</a>, with your needs,
+                        and he'll be very happy to find a solution for you!
+                        Check out a list of our happy
+                        <a href="#">enterprise customers</a>.
+                      </p>
+                    </li>
+                  </ul>
+
+                  <h2>We are here to help!</h2>
+                  <p>
+                    Have a specific question that you can't find any information
+                    on?
+                    <br />
+                    Need someone to talk to or to help you out?
+                    <br />
+                    Just want to say hi and tell us how much you love
+                    {{appname}}?
+                  </p>
+                  <p>
+                    Simply hit reply to this email or give us a shout at
+                    <a href="{{appurl}}">{{appurl}}</a>! We'll be happy to talk
+                    to you!
+                  </p>
+
+                  <p>- {{agentname}} Support Team</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Footer -->
+      <table
+        border="0"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        bgcolor="#F4F7F9"
+        align="center"
+        class="bg_color"
+      >
+        <tr>
+          <td align="center">
+            <table
+              border="0"
+              align="center"
+              cellpadding="0"
+              cellspacing="0"
+              style="
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <tr>
+                <td
+                  class=""
+                  height="38"
+                  style="font-size: 38px; line-height: 38px"
+                >
+                  &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table
+                    border="0"
+                    align="center"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="
+                      color: #415c71;
+                      font-size: 12px;
+                      line-height: 12px;
+                      font-weight: 400;
+                    "
+                  >
+                    <tr>
+                      <td>
+                        <span style="color: #415c71; padding: 0 10px"
+                          >&copy; {{appname}}</span
+                        >
+                      </td>
+
+                      <td>
+                        <a
+                          href="#"
+                          style="
+                            display: inline-block;
+                            font-size: 12px;
+                            color: #415c71;
+                            line-height: 12px;
+                            border-left: 1px solid #415c71;
+                            padding: 0 10px;
+                          "
+                          >About {{appname}}</a
+                        >
+                      </td>
+
+                      <td>
+                        <a
+                          href="http://email.mg.ipinfo.io/c/eJxVj81ugzAQhJ_G3Ir8B4GDDwGU14g2ZkPc-gfhRVXevqZRI1W7h9XMfNLObBrdiq6vnJFcCt6LRrRCcFWLWqtxGIdJqOHUn0fZMc3DUrvVxXuqXaoeplG2h1tzkry7Wa5kJzSUsUXQOGtbefMgWjNTZyYvZd9wucHatEcqFwZw_iMjkYtLCV92CteAs9sDU9Ovy2R7iDZFwsKo6Z1-GTntm8VDf2bC8I-BsIJbYjG_0dsUsNrMJ3whk8Prn_uGSJsDfzTEnGHB-ShI5g8gQxvEDJZciuB_AO8IZlo"
+                          style="
+                            display: inline-block;
+                            font-size: 12px;
+                            color: #415c71;
+                            line-height: 12px;
+                            border-left: 1px solid #415c71;
+                            padding: 0 10px;
+                          "
+                          >Email settings</a
+                        >
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td width="100%" border="0">
+            <table
+              border="0"
+              align="center"
+              cellpadding="0"
+              cellspacing="0"
+              style="
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <tr class="">
+                <td height="15" style="font-size: 15px; line-height: 15px">
+                  &nbsp;
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <table
+                    border="0"
+                    align="center"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="
+                      color: #415c71;
+                      font-size: 12px;
+                      line-height: 17px;
+                      font-weight: 400;
+                    "
+                  >
+                    <tr>
+                      <td align="center" style="max-width: 322px; margin: auto">
+                        You received this email because you've signed up to
+                        <a href="#" style="text-align: center; color: #006aa5"
+                          >{{appname}}</a
+                        >, the trusted source for IP address data and APIs.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td width="100%" border="0">
+            <table
+              border="0"
+              align="center"
+              cellpadding="0"
+              cellspacing="0"
+              style="
+                border-collapse: collapse;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+              align="center"
+            >
+              <tr>
+                <td align="center" style="padding-top: 20px">
+                  <a href="#"
+                    ><img
+                      width="18"
+                      border="0"
+                      style="display: inline-block"
+                      src="https://ipinfo.io/static/images/icon-twitter.png"
+                      alt="icon-twitter"
+                  /></a>
+                  &nbsp;&nbsp;
+                  <a
+                    href="http://email.mg.ipinfo.io/c/eJw9jUsOhCAQRE8jS0KDii5YqJO5R4utMn4wSML1BzPJJLV4qaTqTaYqa2ha5owUEkQLFdQAQnHgpRr6oX-B6nXbDbIpSnEs3F3unD13nq1G1RatsJOWhHPT6LJuQY8KlK6ElHZku1ljvO5CdYV856SU-IyWRu83bv2Rq_9fZhbMBzcqZP9r50AUg8P9UdN940LTY44m0Z7nlCkGPG-00fkT9y95P0An"
+                    ><img
+                      width="18"
+                      border="0"
+                      style="display: inline-block"
+                      src="https://ipinfo.io/static/images/icon-facebook.png"
+                      alt="icon-facebook"
+                  /></a>
+                  &nbsp;&nbsp;
+                  <a href="#"
+                    ><img
+                      width="18"
+                      border="0"
+                      style="display: inline-block"
+                      src="https://ipinfo.io/static/images/icon-github.png"
+                      alt="icon-github"
+                  /></a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td height="40" style="font-size: 40px; line-height: 40px">&nbsp;</td>
+        </tr>
+      </table>
+
+      <img
+        width="1px"
+        height="1px"
+        alt=""
+        src="http://email.mg.ipinfo.io/o/eJwlzDESgyAQQNHTaMmwC6gUFMFcZJXFkChkkJlcP3HS_ea_4IweYLJ9cigRpAUDA4BUAoRWs5_9HZQf7W3GqdPy2ER6pxyLSKV_OEQ2xqp1AT3ZECmQGhcdRk1SRwbsq3vSizv0_ytW5lYT7RfF50kbh0tq7sP7Wg7-VauUT1pbKpn2L4QzMLM"
+      />
+    </body>
+  </html>
+</p>

@@ -1,0 +1,1492 @@
+<div style="border: 1px solid gray; margin-bottom: 5px; padding: 5px">
+  <h2>[Personal] Getting Started With {{appname}}</h2>
+  <div style="display: flex; width: 100%">
+    <span style="font-weight: 600"
+      >From:&nbsp;<span class="mp_address_group"
+        ><span class="mp_address_name"
+          >{{appname}} at {{agentname}}&#x2019;s Team</span
+        >
+        &lt;<a href={{email_from}} class="mp_address_email"
+          >{{email_from}}</a
+        >&gt;</span
+      ></span
+    >
+    <span style="flex: 1 1 auto"></span>
+    <span style="color: silver; font-weight: 600">9/13/2021, 9:38:00 PM</span>
+  </div>
+  <div style="font-size: 12px">
+    To:&nbsp;<span class="mp_address_group"
+      ><a href={{email_to}} class="mp_address_email"
+        >{{email_to}}</a
+      ></span
+    >
+  </div>
+</div>
+<p>
+  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+  <html>
+    <head>
+      <meta charset="utf8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta
+        name="wrike-metadata"
+        content='{"userId":11472014,"taskId":755959274,"accountId":4964694,"notificationType":"Regular","entityType":"Task","watchReason":"Mentioned","priority":"Normal","lastChangeTime":1631583480203}'
+      />
+      <style type="text/css">
+        @media (max-width: 600px) {
+          .head_main {
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+          .notification_footer_left {
+            padding-left: 16px;
+          }
+          .notification_footer_right {
+            padding-right: 16px;
+          }
+        }
+        @media (max-width: 450px) {
+          body {
+            background-color: #f5f5f5 !important;
+          }
+          .inner {
+            border-radius: 0 !important;
+            padding: 21px 8px 21px 16px !important;
+            border-left: none !important;
+            border-right: none !important;
+          }
+          .back {
+            position: absolute;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+          }
+          .btn-container {
+            padding: 20px 0 22px !important;
+          }
+          .login_btn {
+            font-size: 14px !important;
+            height: 28px;
+          }
+          .kv-table,
+          .kv-table tbody,
+          .kv-table tr,
+          .kv-table td {
+            display: block !important;
+          }
+          .kv-table td {
+            font-size: 12px !important;
+          }
+          .kv-table td:nth-child(1) {
+            border-bottom: none !important;
+          }
+          .kv-table td:nth-child(2) {
+            padding-top: 0 !important;
+          }
+          .indent_l,
+          .indent_r {
+            width: 16px !important;
+          }
+          .indent_t {
+            height: 22px !important;
+          }
+          .mobile-hide {
+            display: none !important;
+            line-height: 0 !important;
+            font-size: 0 !important;
+            width: 0 !important;
+            color: transparent !important;
+          }
+          .mobile-only {
+            display: inline !important;
+          }
+          .answerYes {
+            padding-left: 0 !important;
+          }
+        }
+        a.title_link:hover {
+          color: #5794ff !important;
+        }
+      </style>
+      <style>
+        /* cyrillic-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/K88pR3goAWT7BTt32Z01m4X0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+          mso-font-alt: "Segoe UI";
+        }
+        /* cyrillic */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/RjgO7rYTmqiVp7vzi-Q5UYX0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+          mso-font-alt: "Segoe UI";
+        }
+        /* greek-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/LWCjsQkB6EMdfHrEVqA1KYX0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+1F00-1FFF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* greek */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/xozscpT2726on7jbcb_pAoX0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+0370-03FF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* vietnamese */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/59ZRklaO5bWGqF5A9baEEYX0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+          mso-font-alt: "Segoe UI";
+        }
+        /* latin-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/u-WUoqrET9fUeobQW7jkRYX0hVgzZQUfRDuZrPvH3D8.woff2)
+              format("woff2");
+          unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF,
+            U+2C60-2C7F, U+A720-A7FF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* latin */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Open Sans Regular"), local("OpenSans-Regular"),
+            url(https://fonts.gstatic.com/s/opensans/v14/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2)
+              format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA,
+            U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+          mso-font-alt: "Segoe UI";
+        }
+        /* cyrillic-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNSg7aC6SjiAOpAWOKfJDfVRY.woff2)
+              format("woff2");
+          unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+          mso-font-alt: "Segoe UI";
+        }
+        /* cyrillic */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNShdwxCXfZpKo5kWAx_74bHs.woff2)
+              format("woff2");
+          unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+          mso-font-alt: "Segoe UI";
+        }
+        /* greek-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNSp6vnaPZw6nYDxM4SVEMFKg.woff2)
+              format("woff2");
+          unicode-range: U+1F00-1FFF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* greek */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNSvy1_HTwRwgtl1cPga3Fy3Y.woff2)
+              format("woff2");
+          unicode-range: U+0370-03FF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* vietnamese */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNSvgrLsWo7Jk1KvZser0olKY.woff2)
+              format("woff2");
+          unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+          mso-font-alt: "Segoe UI";
+        }
+        /* latin-ext */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNSojoYw3YTyktCCer_ilOlhE.woff2)
+              format("woff2");
+          unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF,
+            U+2C60-2C7F, U+A720-A7FF;
+          mso-font-alt: "Segoe UI";
+        }
+        /* latin */
+        @font-face {
+          font-family: "OpenSans";
+          font-style: normal;
+          font-weight: 600;
+          src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
+            url(https://fonts.gstatic.com/s/opensans/v14/MTP_ySUJH_bn48VBG8sNShampu5_7CjHW5spxoeN3Vs.woff2)
+              format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA,
+            U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+          mso-font-alt: "Segoe UI";
+        }
+      </style>
+      <title>{{appname}}</title>
+
+      <!-- OLD OUTLOOK ACTIONABLE MESSAGE CARD -->
+      <script type="application/ld+json">
+        $outlookCard.getPayload()
+      </script>
+    </head>
+    <body style="padding: 0; margin: 0; background-color: #f5f5f5">
+      <!--[if mso]>
+<table width="700" bgcolor="#F5F5F5" align="center">
+  <tr>
+  <td>
+<![endif]-->
+
+      <div
+        style="
+          background-color: #f5f5f5;
+          padding: 3px;
+          max-width: 700px;
+          margin: 0 auto;
+        "
+        width="700"
+        class="back"
+      >
+        <div
+          style="
+            margin: 0;
+            padding: 0;
+            margin-bottom: 0;
+            font-size: 1px;
+            color: #f5f5f5;
+          "
+        ></div>
+        <!--[if mso]>
+  <table width="580" bgcolor="#F5F5F5" align="center">
+  <tr>
+  <td>
+  <![endif]-->
+        <table
+          class="wrapper"
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          align="center"
+          style="width: 100%; max-width: 580px; margin: 0 auto"
+        >
+          <tbody>
+            <!--SNIPPET-->
+
+            <tr>
+              <td>
+                <div style="font-size: 0; line-height: 0; height: 0">
+                  {{appname}} @{{agentname}}, Need help getting started? Check out
+                  these helpful videos, guides, and interactive tutorials. »
+                  Reply to this email to add a comment. »
+                </div>  
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 16px 0 0 0"></td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  padding: 0 0 30px !important;
+                  padding-bottom: 30px;
+                  background-color: #ffffff;
+                  border: solid 1px #d6d6d6;
+                  border-radius: 4px;
+                "
+                class="inner"
+              >
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="min-width: 100%"
+                >
+                  <tbody>
+                    <!-- HEAD -->
+                    <tr>
+                      <td valign="top" class="indent_t" style="height: 40px">
+                        <i></i>
+                      </td>
+                    </tr>
+                    <!-- SUPERTASK -->
+
+                    <tr>
+                      <td width="100%">
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              valign="top"
+                              align="left"
+                              class="indent_l"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                            <td
+                              valign="top"
+                              style="
+                                font-family: -apple-system, 'OpenSans',
+                                  'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                  'Helvetica Neue', 'Arial', sans-serif;
+                              "
+                            >
+                              <table
+                                cellpadding="0"
+                                cellspacing="0"
+                                style="border-collapse: collapse"
+                              >
+                                <tr>
+                                  <td valign="top" style="padding: 10px 0 2px">
+                                    <table
+                                      cellpadding="0"
+                                      cellspacing="0"
+                                      style="
+                                        display: block;
+                                        border-collapse: collapse;
+                                      "
+                                    >
+                                      <tr style="display: block">
+                                        <td
+                                          style="
+                                            display: inline-block;
+                                            padding-right: 10px;
+                                            line-height: 28px;
+                                            height: 28px;
+                                            vertical-align: middle;
+                                          "
+                                        >
+                                          <table
+                                            cellspacing="0"
+                                            cellpadding="0"
+                                            style="
+                                              border-collapse: collapse;
+                                              vertical-align: top;
+                                            "
+                                            height="24"
+                                          >
+                                            <tr>
+                                              <td
+                                                width="24"
+                                                height="24"
+                                                style="vertical-align:top;line-height: 24px; border-radius:24px};"
+                                              >
+                                                <img
+                                                  src="https://www.wrike.com/i/mail/notification/nobody22.png"
+                                                  alt="nobody"
+                                                  style="
+                                                    width: 24px;
+                                                    height: 24px;
+                                                    border-radius: 24px;
+                                                  "
+                                                  width="24"
+                                                  height="24"
+                                                />
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                        <td
+                                          style="
+                                            display: inline;
+                                            line-height: 28px;
+                                            height: 28px;
+                                            vertical-align: baseline;
+                                            padding-right: 14px;
+                                          "
+                                        >
+                                          <a
+                                            href="#"
+                                            class="title_link"
+                                            style="
+                                              color: #191919;
+                                              font-size: 24px;
+                                              font-weight: 600;
+                                              line-height: 1.17;
+                                              text-align: left;
+                                              text-decoration: none;
+                                              font-family: -apple-system,
+                                                'OpenSans', 'Open Sans',
+                                                'Segoe UI', 'Lucida Grande',
+                                                'Helvetica Neue', 'Arial',
+                                                sans-serif;
+                                            "
+                                            >Getting Started With {{appname}}</a
+                                          >
+                                        </td>
+                                        <td
+                                          style="
+                                            display: inline;
+                                            line-height: 28px;
+                                            height: 28px;
+                                            vertical-align: baseline;
+                                          "
+                                        >
+                                          <span
+                                            style="
+                                              white-space: nowrap;
+                                              color: #2196f3;
+                                              font-size: 14px;
+                                              line-height: 1.17;
+                                              font-weight: 600;
+                                              font-family: -apple-system,
+                                                'OpenSans', 'Open Sans',
+                                                'Segoe UI', 'Lucida Grande',
+                                                'Helvetica Neue', 'Arial',
+                                                sans-serif;
+                                              text-transform: uppercase;
+                                            "
+                                            >New</span
+                                          >
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      font-family: -apple-system, 'OpenSans',
+                                        'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                        'Helvetica Neue', 'Arial', sans-serif;
+                                      line-height: 20px;
+                                      border-radius: 2px;
+                                    "
+                                    height="20px"
+                                  >
+                                    <table
+                                      cellpadding="0"
+                                      cellspacing="0"
+                                      style="
+                                        display: block;
+                                        border-collapse: collapse;
+                                      "
+                                    >
+                                      <tr>
+                                        <td style="padding: 8px 4px 8px 0">
+                                          <a
+                                            style="
+                                              vertical-align: bottom;
+                                              color: #707070;
+                                              white-space: nowrap;
+                                              font-size: 12px;
+                                              line-height: 1.67;
+                                              text-decoration: none;
+                                              font-family: -apple-system,
+                                                'OpenSans', 'Open Sans',
+                                                'Segoe UI', 'Lucida Grande',
+                                                'Helvetica Neue', 'Arial',
+                                                sans-serif;
+                                              border: solid 1px #d6d6d6;
+                                              border-radius: 2px;
+                                              padding: 1px 8px 1px 8px;
+                                            "
+                                            href="#"
+                                            title="Personal"
+                                          >
+                                            Personal
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    valign="top"
+                                    style="
+                                      padding-top: 3px;
+                                      font-family: -apple-system, 'OpenSans',
+                                        'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                        'Helvetica Neue', 'Arial', sans-serif;
+                                    "
+                                  >
+                                    <span
+                                      style="
+                                        color: #adadad;
+                                        font-size: 12px;
+                                        line-height: 1.57;
+                                      "
+                                    >
+                                    </span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td
+                              valign="top"
+                              align="right"
+                              class="indent_r"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <!-- SUBTASKS -->
+
+                    <!-- DESCRIPTION -->
+                    <tr>
+                      <td
+                        style="
+                          border-bottom: 1px solid #d6d6d6;
+                          padding: 7px 0;
+                          font-size: 12px;
+                          font-weight: 400;
+                        "
+                        notranslate
+                        valign="top"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-top: 17px"><i></i></td>
+                    </tr>
+                    <tr>
+                      <td width="100%">
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              valign="top"
+                              align="left"
+                              class="indent_l"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                            <td
+                              valign="top"
+                              style="
+                                font-family: -apple-system, 'OpenSans',
+                                  'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                  'Helvetica Neue', 'Arial', sans-serif;
+                              "
+                            >
+                              <div
+                                style="
+                                  position: relative;
+                                  margin: 0;
+                                  font-family: -apple-system, 'OpenSans',
+                                    'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                    'Helvetica Neue', 'Arial', sans-serif;
+                                  font-size: 14px;
+                                  line-height: 1.5;
+                                  text-align: left;
+                                "
+                              >
+                                <h3
+                                  style="
+                                    font-size: 1.17em;
+                                    padding-top: 1em;
+                                    margin: 0;
+                                  "
+                                >
+                                  <span style="color: #191919"
+                                    ><b
+                                      >Organize your team, streamline
+                                      communications, and save time</b
+                                    ></span
+                                  >
+                                </h3>
+                                <span style="color: #191919"
+                                  >Here are some short tutorials to help you get
+                                  up and running:</span
+                                ><br /><br />
+                                <ul
+                                  class="checklist"
+                                  style="list-style-type: none"
+                                >
+                                  <li style="padding: 0; margin: 0">
+                                    <label
+                                      ><input type="checkbox" /><b
+                                        >Navigation </b
+                                      >►
+                                      <span
+                                        >Watch Video
+                                        <a
+                                          style="
+                                            color: inherit !important;
+                                            text-decoration: inherit !important;
+                                            cursor: text !important;
+                                            pointer-events: none !important;
+                                            font-style: italic !important;
+                                          "
+                                          >{{appurl}}</a
+                                        ></span
+                                      ></label
+                                    >
+                                  </li>
+                                </ul>
+                                <p style="padding-left: 1.5em">
+                                  <span style="color: #191919"
+                                    >Get a quick overview of {{appname}}.</span
+                                  >
+                                </p>
+                                <br />
+                                <ul
+                                  class="checklist"
+                                  style="list-style-type: none"
+                                >
+                                  <li style="padding: 0; margin: 0">
+                                    <label
+                                      ><input type="checkbox" /><b
+                                        >Setting Up Your Workspace </b
+                                      >►
+                                      <span
+                                        >Watch Video
+                                        <a
+                                          style="
+                                            color: inherit !important;
+                                            text-decoration: inherit !important;
+                                            cursor: text !important;
+                                            pointer-events: none !important;
+                                            font-style: italic !important;
+                                          "
+                                          >{{appurl}}</a
+                                        ></span
+                                      ></label
+                                    >
+                                  </li>
+                                </ul>
+                                <p style="padding-left: 1.5em">
+                                  <span style="color: #191919"
+                                    >Organize your teamwork with spaces,
+                                    folders, projects, and tasks.</span
+                                  >
+                                </p>
+                                <br />
+                                <ul
+                                  class="checklist"
+                                  style="list-style-type: none"
+                                >
+                                  <li style="padding: 0; margin: 0">
+                                    <label
+                                      ><input type="checkbox" /><b
+                                        >Collaboration and Execution </b
+                                      >►
+                                      <span
+                                        >Watch Video
+                                        <a
+                                          style="
+                                            color: inherit !important;
+                                            text-decoration: inherit !important;
+                                            cursor: text !important;
+                                            pointer-events: none !important;
+                                            font-style: italic !important;
+                                          "
+                                          >{{appurl}}</a
+                                        ></span
+                                      ></label
+                                    >
+                                  </li>
+                                </ul>
+                                <p style="padding-left: 1.5em">
+                                  <span style="color: #191919"
+                                    >Learn best practices for team communication
+                                    and work management.</span
+                                  >
+                                </p>
+                                <br />
+                                <ul
+                                  class="checklist"
+                                  style="list-style-type: none"
+                                >
+                                  <li style="padding: 0; margin: 0">
+                                    <label
+                                      ><input type="checkbox" /><b
+                                        >Monitoring Work Progress </b
+                                      ><span style="color: #191919">► </span
+                                      ><span
+                                        >Watch Video
+                                        <a
+                                          style="
+                                            color: inherit !important;
+                                            text-decoration: inherit !important;
+                                            cursor: text !important;
+                                            pointer-events: none !important;
+                                            font-style: italic !important;
+                                          "
+                                          >{{appurl}}</a
+                                        ></span
+                                      ></label
+                                    >
+                                  </li>
+                                </ul>
+                                <p style="padding-left: 1.5em">
+                                  <span style="color: #191919"
+                                    >Get visibility into the current project
+                                    status.</span
+                                  >
+                                </p>
+                                <p style="padding-left: 1.5em"><br /></p>
+                                <ul
+                                  class="checklist"
+                                  style="list-style-type: none"
+                                >
+                                  <li style="padding: 0; margin: 0">
+                                    <label
+                                      ><input type="checkbox" /><span
+                                        style="color: #191919"
+                                        ><b
+                                          >Tailoring {{appname}} to Your Team's Needs
+                                        </b></span
+                                      >►
+                                      <span
+                                        >Watch Video
+                                        <a
+                                          style="
+                                            color: inherit !important;
+                                            text-decoration: inherit !important;
+                                            cursor: text !important;
+                                            pointer-events: none !important;
+                                            font-style: italic !important;
+                                          "
+                                          >{{appurl}}</a
+                                        ></span
+                                      ></label
+                                    >
+                                  </li>
+                                </ul>
+                                <p style="padding-left: 1.5em">
+                                  <span style="color: #191919"
+                                    >Automate your processes with request forms,
+                                    custom workflows, reports, and more.</span
+                                  >
+                                </p>
+                                <br /><span style="color: #191919"
+                                  >For an all-in-one walkthrough, watch our </span
+                                ><span
+                                  >recorded onboarding webinar
+                                  <a
+                                    style="
+                                      color: inherit !important;
+                                      text-decoration: inherit !important;
+                                      cursor: text !important;
+                                      pointer-events: none !important;
+                                      font-style: italic !important;
+                                    "
+                                    >{{appurl}}</a
+                                  ></span
+                                >.<br /><br />
+                                <h3
+                                  style="
+                                    font-size: 1.17em;
+                                    padding-top: 1em;
+                                    margin: 0;
+                                  "
+                                >
+                                  <b>Discover {{appname}}</b>
+                                </h3>
+                                <span style="color: #191919"
+                                  >Get hands-on experience with
+                                  <b>online interactive courses</b> on {{appname}}
+                                  Discover. You'll practice key features and
+                                  deep-dive into more advanced uses. </span
+                                ><br /><br /><span style="color: #191919"
+                                  ><span style="background-color: #ffcc80"
+                                    ><b> {{appname}} Tip: </b></span
+                                  >
+                                  As you invite your team to {{appname}}, encourage
+                                  them to complete courses in {{appname}} Discover. It
+                                  will really help them adopt {{appname}}!</span
+                                ><br /><br /><span style="color: #191919"
+                                  ><b
+                                    >Some of the topics covered in {{appname}}
+                                    Discover:</b
+                                  ></span
+                                ><br />
+                                <ul>
+                                  <li style="padding: 0; margin: 0">
+                                    <span style="color: #191919"
+                                      >Staying on top of your work</span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span style="color: #191919"
+                                      >Using your personal space</span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span style="color: #191919"
+                                      >Holding team meetings in {{appname}}</span
+                                    >
+                                  </li>
+                                </ul>
+                                <h5
+                                  style="
+                                    font-size: 0.83em;
+                                    padding-top: 1.67em;
+                                    margin: 0;
+                                  "
+                                >
+                                  <span
+                                    >Start your first course
+                                    <a
+                                      style="
+                                        color: inherit !important;
+                                        text-decoration: inherit !important;
+                                        cursor: text !important;
+                                        pointer-events: none !important;
+                                        font-style: italic !important;
+                                      "
+                                      >{{appurl}}</a
+                                    ></span
+                                  >
+                                </h5>
+                                <h3
+                                  style="
+                                    font-size: 1.17em;
+                                    padding-top: 1em;
+                                    margin: 0;
+                                  "
+                                >
+                                  <b>More Resources</b>
+                                </h3>
+                                <ul>
+                                  <li style="padding: 0; margin: 0">
+                                    <span
+                                      >Getting Started Guide
+                                      <a
+                                        style="
+                                          color: inherit !important;
+                                          text-decoration: inherit !important;
+                                          cursor: text !important;
+                                          pointer-events: none !important;
+                                          font-style: italic !important;
+                                        "
+                                        >{{appurl}}</a
+                                      ></span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span
+                                      >Video Tutorials
+                                      <a
+                                        style="
+                                          color: inherit !important;
+                                          text-decoration: inherit !important;
+                                          cursor: text !important;
+                                          pointer-events: none !important;
+                                          font-style: italic !important;
+                                        "
+                                        >{{appurl}}</a
+                                      ></span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <a href="#" style="color: #5794ff"
+                                      >Webinars</a
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span
+                                      >Community
+                                      <a
+                                        style="
+                                          color: inherit !important;
+                                          text-decoration: inherit !important;
+                                          cursor: text !important;
+                                          pointer-events: none !important;
+                                          font-style: italic !important;
+                                        "
+                                        >{{appurl}}</a
+                                      ></span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span
+                                      >Best Practices
+                                      <a
+                                        style="
+                                          color: inherit !important;
+                                          text-decoration: inherit !important;
+                                          cursor: text !important;
+                                          pointer-events: none !important;
+                                          font-style: italic !important;
+                                        "
+                                        >{{appurl}}</a
+                                      ></span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span
+                                      >Help Center
+                                      <a
+                                        style="
+                                          color: inherit !important;
+                                          text-decoration: inherit !important;
+                                          cursor: text !important;
+                                          pointer-events: none !important;
+                                          font-style: italic !important;
+                                        "
+                                        >{{appurl}}</a
+                                      ></span
+                                    >
+                                  </li>
+                                  <li style="padding: 0; margin: 0">
+                                    <span style="color: #191919"
+                                      >Templates (Click "?" to open {{appname}}
+                                      Assistant and choose the "Template"
+                                      section)</span
+                                    >
+                                  </li>
+                                </ul>
+                                <br />
+                              </div>
+                            </td>
+                            <td
+                              valign="top"
+                              align="right"
+                              class="indent_r"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <!-- STREAM -->
+
+                    <tr>
+                      <td
+                        style="
+                          border-bottom: 1px solid #d6d6d6;
+                          padding: 7px 0;
+                          font-size: 12px;
+                          font-weight: 400;
+                        "
+                        notranslate
+                        valign="top"
+                      ></td>
+                    </tr>
+                    <tr>
+                      <td
+                        colspan="5"
+                        width="100%"
+                        style="
+                          width: 100%;
+                          padding: 14px 0 4px;
+                          text-align: center;
+                        "
+                        width="100%"
+                      >
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          style="
+                            width: 100%;
+                            height: 24px;
+                            border-collapse: collapse;
+                          "
+                        >
+                          <tr>
+                            <td
+                              style="
+                                width: 50%;
+                                height: 12px;
+                                border-bottom: solid 1px #4488ff;
+                              "
+                            ></td>
+                            <td
+                              style="height: 24px; text-align: center"
+                              rowspan="2"
+                              nowrap="nowrap"
+                            >
+                              <p
+                                style="
+                                  padding: 2px 8px;
+                                  margin: 0;
+                                  font-size: 12px;
+                                  font-weight: 600;
+                                  line-height: 1.67;
+                                  color: #757575;
+                                  font-family: -apple-system, 'OpenSans',
+                                    'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                    'Helvetica Neue', 'Arial', sans-serif;
+                                  white-space: nowrap;
+                                "
+                              >
+                                Sep 13
+                              </p>
+                            </td>
+                            <td
+                              style="
+                                width: 50%;
+                                height: 12px;
+                                border-bottom: solid 1px #4488ff;
+                              "
+                            >
+                              <p
+                                style="
+                                  padding-right: 20px;
+                                  margin: 0;
+                                  text-align: right;
+                                  font-size: 11px;
+                                  font-weight: 600;
+                                  line-height: 1.45;
+                                  color: #4488ff;
+                                  font-family: -apple-system, 'OpenSans',
+                                    'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                    'Helvetica Neue', 'Arial', sans-serif;
+                                  white-space: nowrap;
+                                  position: relative;
+                                  top: 50%;
+                                "
+                              >
+                                <span
+                                  style="padding: 0 8px; background: #ffffff"
+                                >
+                                  New
+                                </span>
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="width: 50%; height: 12px"></td>
+                            <td style="width: 50%; height: 12px"></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td width="100%">
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              valign="top"
+                              align="left"
+                              class="indent_l"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                            <td
+                              valign="top"
+                              style="
+                                font-family: -apple-system, 'OpenSans',
+                                  'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                  'Helvetica Neue', 'Arial', sans-serif;
+                              "
+                            >
+                              <table
+                                align="left"
+                                cellpadding="0"
+                                cellspacing="0"
+                              >
+                                <tr>
+                                  <td
+                                    colspan="2"
+                                    valign="top"
+                                    width="32"
+                                    height="32"
+                                    style="
+                                      width: 32px;
+                                      height: 32px;
+                                      padding: 4px 8px 0 0;
+                                    "
+                                  >
+                                    <img
+                                      src="https://www.wrike.com/avatars/reminderbot.png"
+                                      width="32"
+                                      height="32"
+                                      style="
+                                        width: 32px;
+                                        height: 32px;
+                                        border-radius: 16px;
+                                      "
+                                      alt=""
+                                    />
+                                  </td>
+
+                                  <td style="overflow: visible; padding: 4px 0">
+                                    <table
+                                      align="left"
+                                      cellpadding="0"
+                                      cellspacing="0"
+                                    >
+                                      <tr>
+                                        <td
+                                          style="
+                                            padding: 8px 12px;
+                                            background-color: #f5f5f5;
+                                            border-radius: 4px;
+                                          "
+                                        >
+                                          <div style="margin: 0">
+                                            <a
+                                              style="
+                                                font-family: -apple-system,
+                                                  'OpenSans', 'Open Sans',
+                                                  'Segoe UI', 'Lucida Grande',
+                                                  'Helvetica Neue', 'Arial',
+                                                  sans-serif;
+                                                color: #191919;
+                                                font-size: 14px;
+                                                font-weight: 600;
+                                                line-height: 1.43;
+                                                text-decoration: none;
+                                              "
+                                              href="mailto:robot4964694reminder@wrike-robot.com"
+                                              >{{appname}}</a
+                                            >
+                                            <span
+                                              style="
+                                                padding-left: 8px;
+                                                font-family: -apple-system,
+                                                  'OpenSans', 'Open Sans',
+                                                  'Segoe UI', 'Lucida Grande',
+                                                  'Helvetica Neue', 'Arial',
+                                                  sans-serif;
+                                                color: #adadad;
+                                                font-size: 12px;
+                                                line-height: 1.67;
+                                              "
+                                            >
+                                              18:31
+                                            </span>
+                                          </div>
+
+                                          <div
+                                            style="
+                                              font-family: -apple-system,
+                                                'OpenSans', 'Open Sans',
+                                                'Segoe UI', 'Lucida Grande',
+                                                'Helvetica Neue', 'Arial',
+                                                sans-serif;
+                                              font-size: 14px;
+                                              line-height: 1.43;
+                                              color: #757575;
+                                            "
+                                          >
+                                            <span style="color: #181818">
+                                              <span
+                                                style="
+                                                  font-family: -apple-system,
+                                                    'OpenSans', 'Open Sans',
+                                                    'Segoe UI', 'Lucida Grande',
+                                                    'Helvetica Neue', 'Arial',
+                                                    sans-serif;
+                                                  -ms-word-break: break-all;
+                                                  word-break: break-word;
+                                                  word-wrap: break-word;
+                                                  -webkit-hyphens: auto;
+                                                  -moz-hyphens: auto;
+                                                  hyphens: auto;
+                                                "
+                                                ><a
+                                                  class="stream-user-id avatar"
+                                                  rel="3BZINA3aQPx9"
+                                                  style="
+                                                    color: #5794ff;
+                                                    text-decoration: none;
+                                                  "
+                                                  href={{email_from}}
+                                                  >@{{agentname}}</a
+                                                >, Need help getting started?
+                                                Check out these helpful videos,
+                                                guides, and interactive
+                                                tutorials. 😀</span
+                                              >
+                                            </span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td
+                              valign="top"
+                              align="right"
+                              class="indent_r"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="100%">
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              valign="top"
+                              align="left"
+                              class="indent_l"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                            <td
+                              valign="top"
+                              style="
+                                font-family: -apple-system, 'OpenSans',
+                                  'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                  'Helvetica Neue', 'Arial', sans-serif;
+                                padding-top: 12px;
+                              "
+                            ></td>
+                            <td
+                              valign="top"
+                              align="right"
+                              class="indent_r"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <!-- FOOTER -->
+
+                    <tr>
+                      <td width="100%">
+                        <table
+                          cellpadding="0"
+                          cellspacing="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              valign="top"
+                              align="left"
+                              class="indent_l"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                            <td
+                              valign="top"
+                              style="
+                                font-family: -apple-system, 'OpenSans',
+                                  'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                  'Helvetica Neue', 'Arial', sans-serif;
+                              "
+                            >
+                              <table
+                                cellpadding="0"
+                                align="left"
+                                cellspacing="0"
+                                style="
+                                  border-radius: 2px;
+                                  background-color: #5794ff;
+                                  color: #ffffff;
+                                "
+                              >
+                                <tr>
+                                  <td
+                                    align="center"
+                                    class="login_btn"
+                                    height="32"
+                                    style="
+                                      font-family: -apple-system, 'OpenSans',
+                                        'Open Sans', 'Segoe UI', 'Lucida Grande',
+                                        'Helvetica Neue', 'Arial', sans-serif;
+                                      padding: 0px 19px;
+                                      height: 32px;
+                                      font-size: 14px;
+                                      line-height: 12px;
+                                    "
+                                  >
+                                    <a
+                                      href="#"
+                                      style="
+                                        text-decoration: none;
+                                        color: #ffffff;
+                                      "
+                                      >Open update in {{appname}}</a
+                                    >
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td
+                              valign="top"
+                              align="right"
+                              class="indent_r"
+                              style="width: 40px"
+                            >
+                              <i></i>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td valign="top" width="100%">
+                <table
+                  valign="top"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td
+                      class="notification_footer_left"
+                      style="
+                        font-family: -apple-system, 'OpenSans', 'Open Sans',
+                          'Segoe UI', 'Lucida Grande', 'Helvetica Neue', 'Arial',
+                          sans-serif;
+                        padding-top: 24px;
+                        color: #a7a7a7;
+                        font-size: 14px;
+                        text-align: left;
+                        vertical-align: top;
+                      "
+                      align="left"
+                    >
+                      Reply to this email to add a comment. <br />
+                      You got this update because you've been mentioned in a
+                      comment.
+                      <a href="#" style="color: #4488ff; text-decoration: none"
+                        >Unfollow</a
+                      >
+                    </td>
+                    <td
+                      class="notification_footer_right"
+                      style="
+                        padding-top: 24px;
+                        padding-bottom: 24px;
+                        text-align: right;
+                        vertical-align: top;
+                      "
+                      align="right"
+                    >
+                      <a
+                        href="https://www.wrike.com/?utm_source=email&utm_medium=notification&utm_campaign=task_update_V2017&utm_uid=3BZINA3aQPx9&utm_date=2021-09-13&utm_msg_id=zkejEc9l&task_id=755959274&utm_email_group=WsFromUser&utm_content=logo"
+                        target="_blank"
+                      >
+                        <img
+                          src="https://cdn.wrike.com/static/email/w-logo-new-320-64.png"
+                          height="32"
+                          border="0"
+                        />
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  padding-top: 12px;
+                  line-height: 1px;
+                  height: 1px;
+                  font-size: 1px;
+                "
+              >
+                <img
+                  src="https://www.wrike.com/mark_as_read/task/uid_3BZINA3aQPx9_for_755959274.gif?tLast=1631583480227"
+                  alt=""
+                  width="1"
+                  height="1"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  src="https://www.wrike.com/viewedimage.gif?utm_source=email&utm_medium=notification&utm_campaign=task_update_V2017&utm_uid=3BZINA3aQPx9&utm_date=2021-09-13&utm_msg_id=zkejEc9l&task_id=755959274&utm_email_group=WsFromUser"
+                  alt=""
+                  width="1"
+                  height="1"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--[if mso]>
+  </td>
+  </tr>
+  </table>
+  <![endif]-->
+      </div>
+
+      <!--[if mso]>
+</td>
+</tr>
+</table>
+<![endif]-->
+    </body>
+  </html>
+</p>

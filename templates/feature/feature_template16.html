@@ -1,0 +1,299 @@
+
+                    <div style="border:1px solid gray;margin-bottom:5px;padding:5px">
+                        <h2>Getting everything in one place</h2>
+                        <div style="display:flex;width:100%;">
+                            <span style="font-weight:600;">From:&nbsp;<span class="mp_address_group"><span class="mp_address_name">{{appname}}</span> &lt;<a href={{email_from}} class="mp_address_email">{{email_from}}</a>&gt;</span></span>
+                            <span style="flex: 1 1 auto;"></span>
+                            <span style="color:silver;font-weight:600">8/18/2021, 1:20:01 AM</span>
+                        </div>
+                        <div style="font-size:12px;">
+                            To:&nbsp;<span class="mp_address_group"><a href={{email_to}} class="mp_address_email">{{email_to}}</a></span>
+                        </div>
+                    </div><p><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><head>
+<meta name="viewport" content="width=device-width"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>{{appname}}</title>
+
+<style>
+
+/* -------------------------------------
+      GLOBAL
+------------------------------------- */
+* {
+  margin:0;
+  padding:0;
+}
+
+* { font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+
+img {
+  max-width: 100%;
+}
+
+body {
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:none;
+  width: 100%!important;
+  height: 100%;
+  font-size:16px;
+  line-height:1.4;
+  color: #33373A;
+}
+
+
+/* -------------------------------------
+    ELEMENTS
+------------------------------------- */
+a { color: #1b6ac9;}
+
+.btn {
+  text-decoration: none;
+  color: #FFF;
+  background-color: #3cb371;
+  padding: 10px 16px;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 4px;
+  border-bottom: 2px solid #2f8d59;
+}
+
+p.callout {
+  padding:15px;
+  background-color:#DEDFE1;
+  margin-bottom: 25px;
+  color: #8C8D8F;
+  text-align: center;
+}
+
+p.caption {
+  color: #979797;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+p.footer {
+  color: #979797;
+  font-size: 13px;
+  text-align: left;
+}
+
+hr.footer {
+  border: 0;
+  color: #D1D1D1;
+  background-color: #D1D1D1;
+  height: 3px;
+  margin-bottom: 10px;
+}
+
+.button {
+  background: #29B2E6;
+  padding-top: 6px;
+  padding-right: 40px;
+  padding-bottom: 6px;
+  padding-left: 40px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: Helvetica, Arial, sans-serif;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+/* -------------------------------------
+    HEADER
+------------------------------------- */
+table.head-wrap { width: 100%;}
+
+.header.container table td.logo { padding: 15px; }
+.header.container table td.label { padding: 15px; padding-left:0px;}
+
+/* -------------------------------------
+    BODY
+------------------------------------- */
+table.body-wrap { width: 100%;}
+
+
+/* -------------------------------------
+    FOOTER
+------------------------------------- */
+table.footer-wrap { width: 100%;  clear:both!important;
+}
+.footer-wrap .container td.content  p { border-top: 1px solid rgb(215,215,215); padding-top:15px;}
+.footer-wrap .container td.content p {
+  font-size:10px;
+  font-weight: bold;
+
+}
+
+
+/* -------------------------------------
+    TYPOGRAPHY
+------------------------------------- */
+h1,h2,h3,h4,h5,h6 {
+font-family: "proxima-nova", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; line-height: 1.4; margin-bottom:25px; color:#30373D;
+}
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { font-size: 60%; color: #6f6f6f; line-height: 0; text-transform: none; }
+
+h1 { font-weight:500; font-size: 44px;}
+h2 { font-weight:500; font-size: 30px;}
+h3 { font-weight:500; font-size: 27px;}
+h4 { font-weight:500; font-size: 23px;}
+h5 { font-weight:900; font-size: 17px;}
+h6 { font-weight:900; font-size: 14px; text-transform: uppercase; color:#444;}
+
+.collapse { margin:0!important;}
+
+h3.margin-top { margin-top: 10px; }
+
+p, ul, ol {
+  margin-bottom: 20px;
+  font-weight: normal;
+  color: #30373D;
+  font-size:18px;
+  line-height:1.6;
+}
+p.lead { font-size: 22px; }
+p.last { margin-bottom: 0px;}
+p.smaller { font-size: 15.5px; }
+
+ul li {
+  margin-left:24px;
+  list-style-position: inside;
+  margin-bottom: 14px;
+}
+
+ol li {
+  margin-left:32px;
+  list-style-position: outside;
+  margin-bottom: 14px;
+}
+
+li {
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+blockquote {
+  margin: 30px 0;
+  border: 4px solid #F6F6F6;
+  padding: 10px;border
+}
+
+blockquote p{
+  color: #33373b;
+  font-weight: 200;
+  line-height: 26px;
+  font-size: 18px;
+  margin: 0;
+}
+
+cite {
+  display: block;
+}
+
+.small { font-size: 12px; }
+.grey { color: #8C8D8F;}
+
+
+/* ---------------------------------------------------
+    RESPONSIVENESS
+------------------------------------------------------ */
+
+.container {
+  display: block!important;
+  max-width: 700px!important;
+  clear: both!important;
+}
+
+.content {
+  display: block;
+  padding-bottom: 15px;
+}
+
+.content table { width: 100%; }
+
+.clear { display: block; clear: both; }
+
+
+/* -------------------------------------------
+    PHONE
+-------------------------------------------- */
+@media only screen {
+    *[class*="padded"] { padding: 15px 30px !important; }
+}
+
+@media only screen and (max-device-width: 480px) {
+    *[class*="padded"] { padding: 16px !important; }
+}
+
+@media only screen and (max-width: 600px) {
+  a[class="btn"] { 
+      display:block!important; 
+      margin-bottom:10px!important; 
+      background-image:none!important; 
+      margin-right:0!important;
+  }
+}
+
+</style>
+</head>
+
+<body bgcolor="#FFFFFF" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; font-size: 16px; line-height: 1.4; color: #33373A; margin: 0; padding: 0;">
+
+
+<!-- BODY -->
+<table class="body-wrap" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;">
+  <tbody><tr style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+    <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
+    <td class="container" bgcolor="#FFFFFF" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; display: block !important; max-width: 700px !important; clear: both !important; margin: 0; padding: 0;">
+      <div class="content padded" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; display: block; margin: 0; padding: 0 0 15px;">
+          <table style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;">
+            <tbody><tr style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+              <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+                 <img alt="" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;"/>Hi {{username}},<br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>Thanks again for trying {{appname}}—we hope you&#39;re enjoying it so far!<br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>{{appname}} gives you the perfect set of tools to manage your projects and communicate company-wide. This is so powerful because it keeps your work in <i style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">one place</i>, instead of <i style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">all over the place</i>. That makes
+ your whole team more productive and self-sufficient.<b style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/></b><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><b style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">Check out <a target="_blank" href="#" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #1b6ac9; margin: 0; padding: 0;">this quick video</a> to see how it works:</b><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><img alt="" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;"/><a target="_blank" href="#" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #1b6ac9; margin: 0; padding: 0;"><img alt="" src="https://userimg.customeriomail.com/DNrgPMutQwiSYNaS6xaB_tools.jpg" title="Image: https://userimg.customeriomail.com/DNrgPMutQwiSYNaS6xaB_tools.jpg" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;"/></a><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>Ready to give it a try? Hit the green button below, then start up a new project and experiment with Basecamp&#39;s tools for yourself.<br style="font-family: &#39;Helvetica
+ Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><a href="#" class="btn" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #FFF; text-decoration: none; background-color: #3cb371; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 4px; border-bottom-color: #2f8d59; border-bottom-width: 2px; border-bottom-style: solid; margin: 0 10px 0 0; padding: 10px 16px;">Jump back into {{appname}}</a><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>If you have any questions along the way, <a target="_blank" href="#" style="font-family: &#39;Helvetica
+ Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #1b6ac9; margin: 0; padding: 0;">reach out to our support team</a><u style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></u> and they&#39;ll get back to you just in a few minutes!<br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/><br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>Cheers,<br style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"/>The crew at {{appname}}
+              </td>
+            </tr>
+          </tbody></table>
+      </div><!-- /content -->
+    </td>
+    <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
+  </tr>
+</tbody></table><!-- /BODY -->
+
+<!-- FOOTER -->
+<table class="footer-wrap" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; width: 100%; clear: both !important; margin: 0; padding: 0;">
+  <tbody><tr style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+    <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
+    <td class="container" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; display: block !important; max-width: 700px !important; clear: both !important; margin: 0; padding: 0;">
+
+        <!-- content -->
+        <div class="content padded" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; display: block; margin: 0; padding: 0 0 15px;">
+        <table style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;">
+        <tbody><tr style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+          <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+            <p class="footer" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #979797; font-size: 13px; text-align: left; font-weight: normal; line-height: 1.6; margin: 0 0 20px; padding: 0;" align="left">
+              Want to stop getting onboarding emails from {{appname}}? <a class="untracked" href="#" style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; color: #1b6ac9; margin: 0; padding: 0;"><unsubscribe style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">Unsubscribe</unsubscribe></a>
+            </p>
+          </td>
+        </tr>
+      </tbody></table>
+        </div><!-- /content -->
+
+    </td>
+    <td style="font-family: &#39;Helvetica Neue&#39;, &#39;Helvetica&#39;, Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
+  </tr>
+</tbody></table><!-- /FOOTER -->
+
+
+
+</body></html></p>

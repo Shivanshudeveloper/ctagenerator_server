@@ -1,0 +1,454 @@
+
+                    <div style="border:1px solid gray;margin-bottom:5px;padding:5px">
+                        <h2>Connect {{appname}} to your favorite tools</h2>
+                        <div style="display:flex;width:100%;">
+                            <span style="font-weight:600;">From:&nbsp;<span class="mp_address_group"><span class="mp_address_name">{{appname}}</span> &lt;<a href={{email_from}} class="mp_address_email">{{email_from}}</a>&gt;</span></span>
+                            <span style="flex: 1 1 auto;"></span>
+                            <span style="color:silver;font-weight:600">9/20/2021, 11:00:52 AM</span>
+                        </div>
+                        <div style="font-size:12px;">
+                            To:&nbsp;<span class="mp_address_group"><a href={{email_to}} class="mp_address_email">{{email_to}}</a></span>
+                        </div>
+                    </div><p><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+<meta name="viewport" content="width=device-width"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<style>
+  table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+  body, table, td, p, ul, ol, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+  img {border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+  table {border-collapse:separate !important; border-spacing: 0;}
+  body {width:100% !important; min-width:100% !important;}
+
+  body, #bodyTable, #bodyCell{
+    background-color:#fafafa;
+    color:#555;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:150%;
+    margin:auto;
+    padding:0;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  h1{
+    color:#333 !important;
+    display:block;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    line-height:125%;
+    margin:0.75em 0 0.75em 0;
+    padding:0;
+    text-align:left;
+  }
+  h2{
+    color:#333 !important;
+    display:block;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:20px;
+    font-weight:bold;
+    line-height:125%;
+    margin:1em 0 0 0;
+    padding:0;
+    text-align:left;
+  }
+  p{
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:150%;
+    margin:1em 0 1em 0;
+    padding:0;
+  }
+  ul, ol{
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:150%;
+    margin:1em 0 1em 2em;
+    padding:0;
+  }
+  ul > li, ol > li{
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:150%;
+    margin:0 0 0.25em 0;
+    padding:0;
+  }
+  hr{
+    background-color:#ddd;
+    border:0;
+    height:1px;
+    margin:2em 0 2em 0;
+    padding:0;
+    width:100%;
+  }
+  img{
+    display:block;
+    margin-top:1.25em;
+    margin-right:auto;
+    margin-bottom:1.25em;
+    margin-left:auto;
+    max-width:100%;
+    padding:0;
+    width:auto;
+  }
+  h1 img, h2 img, p img, li img, span img{
+    display:inline-block;
+    margin:auto;
+  }
+  img.bordered{
+    border:1px solid #ddd;
+    padding:2px;
+  }
+
+  /* Customer Quotes */
+  blockquote{
+    background:#f4f4f4;
+    border-radius:6px;
+    margin:1em 0 1em 0;
+    padding:0;
+  }
+  blockquote p{
+    font-style:italic;
+    padding:20px;
+  }
+  blockquote p small{
+    display:block;
+    font-style:normal;
+    font-weight:bold;
+    margin-top:10px;
+  }
+
+  /* Header */
+  #templateHeader{
+    background-color:#f36c00;
+    background-image: url("https://harvestpublic.s3.amazonaws.com/email/email-orange-header.png");
+    background-position:0 0;
+    background-repeat:repeat;
+    border:1px solid #ce5d00;
+    margin-top:2.5em;
+    padding:0;
+    vertical-align:top;
+    width: 100% !important;
+  }
+  .headerContent{
+    font-family:Helvetica,Arial,sans-serif;
+    line-height:1;
+    margin:0;
+    padding:0 25px 0 25px;
+  }
+  #headerLogo{
+    color:#fff;
+    display:block !important;
+    height:62px;
+    margin:0;
+    padding:0;
+    width:145px;
+  }
+
+  /* Body */
+  #templateBody{
+    font-size:16px;
+    line-height:150%;
+    text-align:left;
+  }
+  .bodyContent{
+    background-color:#fff;
+    border-color:#ccc;
+    border-style:solid;
+    border-width:0 1px 1px 1px;
+    padding:10px 25px 10px 25px;
+  }
+  .bodyContent a, .bodyContent a:link, .bodyContent a:visited{
+    color:#f36c00 !important;
+    text-decoration:underline !important;
+  }
+  .bodyContent a.long-url{
+    word-break:break-all;
+  }
+
+  /* Main link */
+  .mainLinkContainer{
+    background-color:#46af32;
+    border:1px solid #148c00;
+    border-radius:4px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.15) !important;
+    margin:1.25em 0 1.25em 0;
+    padding:0;
+    text-align:center;
+  }
+  .mainLinkContainer td{
+    line-height:1;
+    margin:0;
+    padding:0;
+    text-align:center;
+  }
+  .mainLinkContainer a.mainLink{
+    border-color:#46af32;
+    border-radius:4px;
+    border-style:solid;
+    border-width:9px 19px 9px 19px;
+    color:#fff !important;
+    display:block;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:16px;
+    font-weight:bold;
+    line-height:150%;
+    text-align:center;
+    text-decoration:none !important;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  .mainLinkContainer a.mainLink:link, .mainLinkContainer a.mainLink:visited{
+    color:#fff !important;
+    text-decoration:none !important;
+  }
+  .mainLinkContainer.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Visual List Table */
+  .visual-list-table{
+    font-size:16px;
+    line-height:150%;
+    margin: 0.5em 0 0.5em 0;
+  }
+  .visual-list-table td{
+    font-family:Helvetica,Arial,sans-serif;
+    padding-bottom:0.75em;
+    padding-top:0.75em;
+    vertical-align:top;
+  }
+  .visual-list-visual img{
+    margin:0.25em 1em 0 0;
+    max-width:46px;
+  }
+
+  /* Sign In */
+  .signinContent{
+    padding-top:1em;
+  }
+  #templateSignin{
+    background:#eee;
+    font-size:0;
+    padding:20px 25px 20px 25px;
+  }
+  #templateSignin td{
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .signinColumn{
+    display:inline-table;
+    font-size:14px;
+    line-height:150%;
+    vertical-align:middle;
+  }
+  .signinMeta{
+    padding-right:10px;
+    width:350px;
+  }
+  .signinButton{
+    text-align:right;
+    width:140px;
+  }
+  .signinColumn a, .signinColumn a:link, .signinColumn a:visited{
+    color:inherit !important;
+    text-decoration:underline !important;
+  }
+  .mainLinkContainer.signinLinkContainer{
+    background:#fff;
+    border-color:#ccc;
+    box-shadow:0 1px 4px rgba(0,0,0,0.05) !important;
+    margin:0;
+    white-space:nowrap;
+  }
+  .mainLinkContainer.signinLinkContainer a.mainLink{
+    border-color:#fff;
+    border-width:7px 19px 7px 19px;
+    color:#444 !important;
+    font-size:14px;
+  }
+
+  /* Footer */
+  #templateFooter{
+    color:#888;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:14px;
+    line-height:150%;
+  }
+  .footerContent{
+    background-color:#fafafa;
+    padding:15px 25px 30px 25px;
+  }
+  .footerContent p{
+    font-size:inherit;
+  }
+  .footerContent a, .footerContent a:link, .footerContent a:visited{
+    color:#888 !important;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    white-space:nowrap;
+  }
+
+  @media only screen and (max-width: 540px) {
+    body, #bodyTable, #bodyCell, .mainLinkContainer, #templateSignin, .footerContent{
+      min-width:100% !important;
+      width:100% !important;
+    }
+    img{
+      max-width:100% !important;
+    }
+    .visual-list-visual img{
+      max-width:55px !important;
+    }
+    blockquote p{
+      padding-left:1em !important;
+    }
+    #templateHeader{
+      margin:0 !important;
+      padding:0 !important;
+    }
+    .signinContent {
+      padding-top:0 !important;
+    }
+    #templateSignin{
+      padding:10px 25px 20px 25px !important;
+    }
+    .signinColumn{
+      display:table !important;
+      padding:10px 0 0 0 !important;
+      width:100% !important;
+    }
+    .footerContent{
+      text-align:left !important;
+    }
+  }
+</style>
+</head>
+
+<body style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; min-width: 100% !important; background-color: #fafafa; color: #555; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; margin: auto; padding: 0;" bgcolor="#fafafa">
+<table align="center" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0;">
+  <tbody><tr><td align="center" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="540" id="bodyTable" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; background-color: #fafafa; color: #555; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; margin: auto; padding: 0;" bgcolor="#fafafa">
+      <tbody><tr>
+        <td align="left" valign="top" id="bodyCell" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #fafafa; color: #555; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; margin: auto; padding: 0;" bgcolor="#fafafa">
+
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateContainer" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0;">
+
+            <!-- Header -->
+            <tbody><tr>
+              <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader" background="https://harvestpublic.s3.amazonaws.com/email/email-orange-header.png" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; margin-top: 2.5em; vertical-align: top; width: 100% !important; background: #f36c00 url(&#39;https://harvestpublic.s3.amazonaws.com/email/email-orange-header.png&#39;) repeat; padding: 0; border: 1px solid #ce5d00;" bgcolor="#f36c00">
+                  <tbody><tr>
+                    <td class="headerContent" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; line-height: 1; margin: 0; padding: 0 25px;">
+                      <img src="" id="headerLogo" alt={{appname}} width="145" height="65" style="height: 62px; line-height: 100%; outline: none; text-decoration: none; display: block !important; max-width: 100%; width: 145px; color: #fff; margin: 0; padding: 0; border: 0;"/>
+                    </td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+
+            <!-- Body -->
+            <tr>
+              <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; font-size: 16px; line-height: 150%; text-align: left;">
+
+                  <!-- Content -->
+                  <tbody><tr>
+                    <td class="bodyContent" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #fff; padding: 10px 25px; border-color: #ccc; border-style: solid; border-width: 0 1px 1px;" bgcolor="#fff">
+                      <img src="https://s3.getharvest.com/email/email-integrations-connection.jpeg" alt="" style="height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; max-width: 100%; width: auto; margin: 0.5em auto 2em; padding: 0; border: 0;"/>
+
+<h1 style="color: #333 !important; display: block; font-family: Helvetica,Arial,sans-serif; font-size: 24px; font-weight: bold; line-height: 125%; text-align: left; margin: 0.75em 0; padding: 0;" align="left">Add time tracking to 
+    your
+   workflow</h1>
+
+
+ <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 1em 0; padding: 0;">Want to make it even easier to track time? Add time tracking to the tools you already use. That way, you can track time without interrupting your flow.</p>
+ <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 1em 0; padding: 0;">Check out {{appname}}&#39;s integrations and add time tracking to the tools you use:</p>
+ 
+
+<ul style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 1em 0 1em 2em; padding: 0;">
+<li style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 0 0 0.25em; padding: 0;">
+<strong>Project management</strong> - Track time from the tools where work happens, like <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Asana</a>, <a href="https://email.mailing.harvestapp.com/e/c/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSIsImhyZWYiOiJodHRwczovL3d3dy5nZXRoYXJ2ZXN0LmNvbS9pbnRlZ3JhdGlvbnMvYmFzZWNhbXA_dXRtX2NhbXBhaWduPUNhbXBhaWduKzQlM0ErQWhhXHUwMDI2dXRtX2NvbnRlbnQ9QzQrRTMlM0ErQU8rSW50ZWdyYXRpb25zXHUwMDI2dXRtX21lZGl1bT1lbWFpbF9hY3Rpb25cdTAwMjZ1dG1fc291cmNlPWN1c3RvbWVyLmlvIiwiaW50ZXJuYWwiOiI5MWU1MDMzYWI5MjY5OWMwNmEiLCJsaW5rX2lkIjozODg3Njg0OH0/46243a2389c4af06fe7af7765262180315ecf38101fe5521adb1d119ac3e4f43" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Basecamp</a>, <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">GitHub</a>, <a href="https://email.mailing.harvestapp.com/e/c/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSIsImhyZWYiOiJodHRwczovL3d3dy5nZXRoYXJ2ZXN0LmNvbS9pbnRlZ3JhdGlvbnMvdHJlbGxvP3V0bV9jYW1wYWlnbj1DYW1wYWlnbis0JTNBK0FoYVx1MDAyNnV0bV9jb250ZW50PUM0K0UzJTNBK0FPK0ludGVncmF0aW9uc1x1MDAyNnV0bV9tZWRpdW09ZW1haWxfYWN0aW9uXHUwMDI2dXRtX3NvdXJjZT1jdXN0b21lci5pbyIsImludGVybmFsIjoiOTFlNTAzM2FiOTI2OTljMDZhIiwibGlua19pZCI6Mzg4NzY4NTB9/d914bee8ea47451824b1e58c5a195900b8641c7822df7f3a67320b0115e11cb3" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Trello</a>, and <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Jira</a>.</li>
+<li style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 0 0 0.25em; padding: 0;">
+<strong>Calendar</strong> - Quickly turn calendar events from <a href="https://email.mailing.harvestapp.com/e/c/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSIsImhyZWYiOiJodHRwczovL3d3dy5nZXRoYXJ2ZXN0LmNvbS9pbnRlZ3JhdGlvbnMvZ29vZ2xlLWNhbGVuZGFyP3V0bV9jYW1wYWlnbj1DYW1wYWlnbis0JTNBK0FoYVx1MDAyNnV0bV9jb250ZW50PUM0K0UzJTNBK0FPK0ludGVncmF0aW9uc1x1MDAyNnV0bV9tZWRpdW09ZW1haWxfYWN0aW9uXHUwMDI2dXRtX3NvdXJjZT1jdXN0b21lci5pbyIsImludGVybmFsIjoiOTFlNTAzM2FiOTI2OTljMDZhIiwibGlua19pZCI6Mzg4NzY4NTJ9/9309b94c8d1b423ba942bd5645e5a69b37bbb0f82a2623c8458934ecc8515aef" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Google Calendar</a> or <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Outlook</a> into time entries.</li>
+<li style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 0 0 0.25em; padding: 0;">
+<strong>Slack</strong> - Start and stop {{appname}} timers without interrupting your <a href="https://email.mailing.harvestapp.com/e/c/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSIsImhyZWYiOiJodHRwczovL3d3dy5nZXRoYXJ2ZXN0LmNvbS9pbnRlZ3JhdGlvbnMvc2xhY2s_dXRtX2NhbXBhaWduPUNhbXBhaWduKzQlM0ErQWhhXHUwMDI2dXRtX2NvbnRlbnQ9QzQrRTMlM0ErQU8rSW50ZWdyYXRpb25zXHUwMDI2dXRtX21lZGl1bT1lbWFpbF9hY3Rpb25cdTAwMjZ1dG1fc291cmNlPWN1c3RvbWVyLmlvIiwiaW50ZXJuYWwiOiI5MWU1MDMzYWI5MjY5OWMwNmEiLCJsaW5rX2lkIjozODg3Njg1NH0/d72beabeaae58c089919de7b2e87a7f42b0342662aa27b1c365b47cfd6c69580" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Slack</a> conversation.</li>
+<li style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 150%; margin: 0 0 0.25em; padding: 0;">
+<strong>Browsers</strong> - Track time straight from <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Chrome</a>, <a href="https://email.mailing.harvestapp.com/e/c/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSIsImhyZWYiOiJodHRwczovL3d3dy5nZXRoYXJ2ZXN0LmNvbS9pbnRlZ3JhdGlvbnMvZmlyZWZveD91dG1fY2FtcGFpZ249Q2FtcGFpZ24rNCUzQStBaGFcdTAwMjZ1dG1fY29udGVudD1DNCtFMyUzQStBTytJbnRlZ3JhdGlvbnNcdTAwMjZ1dG1fbWVkaXVtPWVtYWlsX2FjdGlvblx1MDAyNnV0bV9zb3VyY2U9Y3VzdG9tZXIuaW8iLCJpbnRlcm5hbCI6IjkxZTUwMzNhYjkyNjk5YzA2YSIsImxpbmtfaWQiOjM4ODc2ODU2fQ/a6296862f0ee2d66ada5be1d7599690b66cd690037c86acc65d04e39b173ed74" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Firefox</a>, and <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #f36c00 !important; text-decoration: underline !important;">Microsoft Edge</a> with our browser extensions.</li>
+</ul>
+
+<table class="mainLinkContainer" border="0" cellpadding="0" cellspacing="0" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; background-color: #46af32; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important; text-align: center; margin: 1.25em 0; padding: 0; border: 1px solid #148c00;" bgcolor="#46af32">
+  <tbody><tr>
+    <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; line-height: 1; text-align: center; margin: 0; padding: 0;" align="center"><a href={{appurl}} class="mainLink" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #fff !important; text-decoration: none !important; border-radius: 4px; display: block; font-family: Helvetica,Arial,sans-serif; font-size: 16px; font-weight: bold; line-height: 150%; text-align: center; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; border-color: #46af32; border-style: solid; border-width: 9px 19px;">See All Integrations</a></td>
+  </tr>
+</tbody></table>
+                    </td>
+                  </tr>
+
+                  <!-- Sign In -->
+                  <tr>
+                    <td class="signinContent" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; padding-top: 1em;">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateSignin" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; background-color: #eee; font-size: 0; padding: 20px 25px;" bgcolor="#eee">
+                        <tbody><tr>
+                          <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="signinColumn signinMeta" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; display: inline-table; font-size: 14px; line-height: 150%; vertical-align: middle; padding-right: 10px; width: 350px;">
+                              <tbody><tr>
+                                <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif;">
+                                  <strong>Company:</strong> Messaged<br/>
+                                  <strong>Email:</strong> {{email_to}}
+                                </td>
+                              </tr>
+                            </tbody></table>
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="signinColumn signinButton" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; display: inline-table; font-size: 14px; line-height: 150%; vertical-align: middle; text-align: right; width: 140px;">
+                              <tbody><tr>
+                                <td align="right" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif;">
+                                  <table class="mainLinkContainer signinLinkContainer" border="0" cellpadding="0" cellspacing="0" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important; text-align: center; white-space: nowrap; margin: 0; padding: 0; border: 1px solid #ccc;" bgcolor="#fff">
+                                    <tbody><tr>
+                                      <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; line-height: 1; text-align: center; font-family: Helvetica,Arial,sans-serif; margin: 0; padding: 0;" align="center"><a href="#" class="mainLink" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-radius: 4px; color: #444 !important; display: block; font-family: Helvetica,Arial,sans-serif; font-size: 14px; font-weight: bold; line-height: 150%; text-align: center; text-decoration: none !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; border-color: #fff; border-style: solid; border-width: 7px 19px;">Open {{appname}}</a></td>
+                                    </tr>
+                                  </tbody></table>
+                                </td>
+                              </tr>
+                            </tbody></table>
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr>
+
+                </tbody></table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: separate !important; border-spacing: 0; color: #888; font-family: Helvetica,Arial,sans-serif; font-size: 14px; line-height: 150%;">
+                  <tbody><tr>
+                    <td align="center" class="footerContent" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #fafafa; padding: 15px 25px 30px;" bgcolor="#fafafa">
+                      <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: inherit; line-height: 150%; margin: 1em 0; padding: 0;">
+                        <strong>Questions?</strong> <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #888 !important; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap;">Check out our Help Center</a>
+                        or reply to this email to start a conversation with our support team.
+                      </p>
+                      <p style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Helvetica,Arial,sans-serif; font-size: inherit; line-height: 150%; margin: 1em 0; padding: 0;">
+                        <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #888 !important; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap;">View this email in your browser</a>
+                        •
+                        <a href="#" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #888 !important; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap;">Unsubscribe</a></p>
+                    </td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+
+          </tbody></table>
+
+        </td>
+      </tr>
+    </tbody></table>
+  </td>
+</tr></tbody></table>
+
+
+<img src="https://email.mailing.harvestapp.com/e/o/eyJlbWFpbF9pZCI6ImRnT1I1UU9SNVFNQUFBRjhBN2lxRnRlUnI3aFFNWTFlbzUwPSJ9" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important"/></body></html></p>

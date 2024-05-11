@@ -1,0 +1,3137 @@
+<div style="border: 1px solid gray; margin-bottom: 5px; padding: 5px">
+  <h2>Welcome to {{appname}}. Let's get started!</h2>
+  <div style="display: flex; width: 100%">
+    <span style="font-weight: 600"
+      >From:&nbsp;<span class="mp_address_group"
+        ><span class="mp_address_name">{{appname}}</span> &lt;<a
+          href="{{email_from}}"
+          class="mp_address_email"
+          >{{email_from}}</a
+        >&gt;</span
+      ></span
+    >
+    <span style="flex: 1 1 auto"></span>
+    <span style="color: silver; font-weight: 600">9/15/2021, 10:57:22 AM</span>
+  </div>
+  <div style="font-size: 12px">
+    To:&nbsp;<span class="mp_address_group"
+      ><a href="{{email_to}}" class="mp_address_email">{{email_to}}</a></span
+    >
+  </div>
+</div>
+<p>
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Welcome to {{appname}}. Business just got easier.</title>
+      <!--
+
+	An email present from your friends at Litmus (@litmusapp)
+
+	Email is surprisingly hard. While this has been thoroughly tested, your mileage may vary.
+	It's highly recommended that you test using a service like Litmus (http://litmus.com) and your own devices.
+
+	Enjoy!
+
+ -->
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <style type="text/css">
+        /* CLIENT-SPECIFIC STYLES */
+        body,
+        table,
+        td,
+        a {
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+        } /* Prevent WebKit and Windows mobile changing default text sizes */
+        table,
+        td {
+          mso-table-lspace: 0pt;
+          mso-table-rspace: 0pt;
+        } /* Remove spacing between tables in Outlook 2007 and up */
+        img {
+          -ms-interpolation-mode: bicubic;
+        } /* Allow smoother rendering of resized image in Internet Explorer */
+
+        /* RESET STYLES */
+        img {
+          border: 0;
+          height: auto;
+          line-height: 100%;
+          outline: none;
+          text-decoration: none;
+        }
+        table {
+          border-collapse: collapse !important;
+        }
+        body {
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+        }
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+          color: inherit !important;
+          text-decoration: none !important;
+          font-size: inherit !important;
+          font-family: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @media screen and (max-width: 665px) {
+          /* ALLOWS FOR FLUID TABLES */
+          .wrapper {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+
+          /* ADJUSTS LAYOUT OF LOGO IMAGE */
+          .logo img {
+            width: 90% !important;
+            margin: 0 auto !important;
+          }
+
+          /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+          .mobile-hide {
+            display: none !important;
+          }
+
+          .img-max {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+          }
+
+          /* FULL-WIDTH TABLES */
+          .responsive-table {
+            width: 100% !important;
+          }
+
+          /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
+          .padding {
+            padding: 10px 5% 15px 5% !important;
+          }
+
+          .padding2 {
+            padding: 5px 5px 5px 5px !important;
+          }
+
+          .padding3 {
+            padding: 0px 5px 0px 5px !important;
+          }
+
+          .padding4 {
+            padding: 0px 5px 0px 5px !important;
+          }
+
+          .padding-meta {
+            padding: 15px 5% 5px 5% !important;
+            text-align: center;
+          }
+
+          .no-padding {
+            padding: 0 !important;
+          }
+
+          .section-padding {
+            padding: 0px 15px 20px 15px !important;
+          }
+
+          .section-padding2 {
+            padding: 30px 15px 30px 15px !important;
+          }
+          .section-padding3 {
+            padding: 0px 15px 0px 15px !important;
+          }
+
+          /* UTILITY CLASSES FOR ADJUSTING HEADLINE ON MOBILE */
+          .padding_headline {
+            padding: 0px 5px 0px 5px !important;
+          }
+
+          .padding_headline2 {
+            padding: 10px 5px 5px 5px !important;
+          }
+
+          .section-padding-headline {
+            padding: 10px 15px 0px 15px !important;
+          }
+
+          /* ADJUST BUTTONS ON MOBILE */
+          .mobile-button-container {
+            padding: 0px 15px 15px 15px !important;
+            margin: 0 auto;
+            width: 100% !important;
+          }
+
+          .mobile-button {
+            padding: 15px 15px 15px 15px !important;
+            border: 0 !important;
+            font-size: 16px !important;
+            display: block !important;
+          }
+
+          .img-30 {
+            /*width: 30% !important;*/
+          }
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] {
+          margin: 0 !important;
+        }
+      </style>
+    </head>
+    <body
+      style="
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0;
+        padding: 0;
+      "
+    >
+      <div
+        style="display: none; max-height: 0px; overflow: hidden; mso-hide: all"
+      >
+        Log into 17hats now, and discover a streamlined, more efficient way to
+        do business
+      </div>
+      <div
+        style="display: none; max-height: 0px; overflow: hidden; mso-hide: all"
+      >
+         ‌ ‌ ‌ 
+      </div>
+
+      <div
+        style="
+          display: none;
+          font-size: 1px;
+          color: #fefefe;
+          line-height: 1px;
+          font-family: Helvetica, Arial, sans-serif;
+          max-height: 0px;
+          max-width: 0px;
+          opacity: 0;
+          overflow: hidden;
+        "
+      >
+        Build a better business with the all-in-one business management software
+        that will get you organized and looking like a pro!
+      </div>
+
+      <!-- HEADER -->
+      <table
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        width="100%"
+        style="
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+          mso-table-lspace: 0pt;
+          mso-table-rspace: 0pt;
+          border-collapse: collapse !important;
+        "
+      >
+        <tbody>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="wrapper"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      align="center"
+                      valign="top"
+                      width="100%"
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        border-top-color: #eee;
+                        border-top-style: solid;
+                        border-top-width: 1px;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 30px 5px 10px;
+                      "
+                      class="logo"
+                    >
+                      <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        align="left"
+                        width="120"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                padding-left: 15px;
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <a
+                                href="#"
+                                style="
+                                  display: inline-block;
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                "
+                              >
+                                <img
+                                  src="https://s3.amazonaws.com/17hats-marketing/17hats-logo-2018+(1).png"
+                                  alt="17hats Logo"
+                                  width="120"
+                                  style="
+                                    -ms-interpolation-mode: bicubic;
+                                    height: auto;
+                                    line-height: 100%;
+                                    outline: none;
+                                    text-decoration: none;
+                                    border: 0;
+                                  "
+                                />
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        align="right"
+                        width="230"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              height="15"
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            ></td>
+                          </tr>
+                          <tr>
+                            <td
+                              style="
+                                padding-right: 15px;
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <table
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                                align="right"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                      "
+                                    >
+                                      <a
+                                        href="#"
+                                        target="_blank"
+                                        style="
+                                          color: #666666;
+                                          text-decoration: none;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src="https://s3.amazonaws.com/17hats-marketing/general/facebook-social.png"
+                                          alt="facebook"
+                                          width="24"
+                                          height="24"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                      <span
+                                        style="
+                                          font-family: Arial, sans-serif;
+                                          font-size: 12px;
+                                          color: #444444;
+                                        "
+                                        > </span
+                                      >
+                                      <a
+                                        href="#"
+                                        target="_blank"
+                                        style="
+                                          color: #666666;
+                                          text-decoration: none;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src="https://s3.amazonaws.com/17hats-marketing/general/twitter-social.png"
+                                          alt="twitter"
+                                          width="24"
+                                          height="24"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                      <span
+                                        style="
+                                          font-family: Arial, sans-serif;
+                                          font-size: 12px;
+                                          color: #444444;
+                                        "
+                                        > </span
+                                      >
+                                      <a
+                                        href="#"
+                                        target="_blank"
+                                        style="
+                                          color: #666666;
+                                          text-decoration: none;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src="https://s3.amazonaws.com/17hats-marketing/general/instagram-social.png"
+                                          alt="instagram"
+                                          width="24"
+                                          height="24"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                      <span
+                                        style="
+                                          font-family: Arial, sans-serif;
+                                          font-size: 12px;
+                                          color: #444444;
+                                        "
+                                        > </span
+                                      >
+                                      <a
+                                        href="#"
+                                        target="_blank"
+                                        style="
+                                          color: #666666;
+                                          text-decoration: none;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src="https://s3.amazonaws.com/17hats-marketing/general/linkedin-social.png"
+                                          alt="linkedin"
+                                          width="24"
+                                          height="24"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                      <span
+                                        style="
+                                          font-family: Arial, sans-serif;
+                                          font-size: 12px;
+                                          color: #444444;
+                                        "
+                                        > </span
+                                      >
+
+                                      <a
+                                        href="#"
+                                        target="_blank"
+                                        style="
+                                          color: #666666;
+                                          text-decoration: none;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src="https://s3.amazonaws.com/17hats-marketing/general/youtube-social.png"
+                                          alt="youtube"
+                                          width="24"
+                                          height="24"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 10px 15px;
+                      "
+                      class="section-padding3"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <!--	<td align="left" style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #505050; padding-top: 25px;" class="padding">Please Confirm Your Email Address</td>
+										</tr>-->
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 10px 70px;
+                                      "
+                                      class="padding2"
+                                    >
+                                      Hi {{username}},
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 10px 70px;
+                                      "
+                                      class="padding2"
+                                    >
+                                      Welcome to {{appname}}. Welcome to the
+                                      better way of running a business. You have
+                                      some exciting times ahead of you, and we
+                                      cannot wait to be part of your journey.
+                                      Together, we will bring your business to a
+                                      whole new level! Thank you for letting us
+                                      be part of that.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 10px;
+                      "
+                      class="section-padding3"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <!--	<td align="center" style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #505050; padding-top: 25px;" class="padding">Please Confirm Your Email Address</td>
+										</tr>-->
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px 10px;
+                                      "
+                                      class="padding2"
+                                    >
+                                      We know that you went into business for a
+                                      reason—to have the freedom to do what you
+                                      love.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 10px;
+                      "
+                      class="section-padding3"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <!--	<td align="center" style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #505050; padding-top: 25px;" class="padding">Please Confirm Your Email Address</td>
+										</tr>-->
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px 10px;
+                                      "
+                                      class="padding2"
+                                    >
+                                      {{appname}} was designed to help you
+                                      accomplish that dream—and was created by
+                                      entrepreneurs who are passionate about
+                                      helping other entrepreneurs build better
+                                      businesses.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 30px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            ></td>
+                          </tr>
+                          <tr>
+                            <td
+                              align="center"
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- BULLETPROOF BUTTON -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        padding-top: 20px;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                      "
+                                      class="padding-meta"
+                                    >
+                                      <table
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        width=""
+                                        class="mobile-button-container"
+                                        style="
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                          mso-table-lspace: 0pt;
+                                          mso-table-rspace: 0pt;
+                                          border-collapse: collapse !important;
+                                        "
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
+                                              align="center"
+                                              style="
+                                                border-radius: 60px;
+                                                -webkit-text-size-adjust: 100%;
+                                                -ms-text-size-adjust: 100%;
+                                                mso-table-lspace: 0pt;
+                                                mso-table-rspace: 0pt;
+                                              "
+                                              bgcolor="#11CFA1"
+                                            >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  font-size: 16px;
+                                                  font-family: Helvetica, Arial,
+                                                    sans-serif;
+                                                  color: #ffffff;
+                                                  text-decoration: none;
+                                                  border-radius: 60px;
+                                                  display: inline-block;
+                                                  letter-spacing: 3px;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                  padding: 15px 71px;
+                                                  border: 1px solid #11cfa1;
+                                                "
+                                                class="mobile-button"
+                                                >GET STARTED</a
+                                              >
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding-headline"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 20px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 20px 70px 0px;
+                                      "
+                                      class="padding_headline2"
+                                    >
+                                      <strong
+                                        >All Your Documents in One Place
+                                      </strong>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px;
+                                      "
+                                      class="padding4"
+                                    >
+                                      Quotes, Emails, Questionnaires, oh my! If
+                                      you're ready to stop writing and
+                                      re-writing important documents you've come
+                                      to the right place. Don't have your own
+                                      documents?
+                                      <a
+                                        href="#"
+                                        class=""
+                                        style="
+                                          color: #11cfa1;
+                                          text-decoration: none;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                        >Visit the Template Marketplace</a
+                                      >
+                                      and download professional templates now.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 10px 15px 0px;
+                      "
+                      class="section-padding-headline"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 20px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 10px 70px 0px;
+                                      "
+                                      class="padding_headline"
+                                    >
+                                      <strong
+                                        >Send Invoices and Accept Payments
+                                        Online</strong
+                                      >
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px;
+                                      "
+                                      class="padding4"
+                                    >
+                                      Invoicing is easy with {{appname}}, and online
+                                      payments are even easier. Square,
+                                      Authorize.net, and PayPal - the gang's all
+                                      here. You can also enable ACH payments
+                                      that allow your clients to pay via echeck,
+                                      simply connect your Stripe account to get
+                                      started.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 10px 15px 0px;
+                      "
+                      class="section-padding-headline"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 20px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 10px 70px 0px;
+                                      "
+                                      class="padding_headline"
+                                    >
+                                      <strong>New Client Inquiries</strong>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 10px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px 10px;
+                                      "
+                                      class="padding4"
+                                    >
+                                      Organizing new clients is painless with
+                                      our custom Lead Form. Install it wherever
+                                      you get new leads, they'll automatically
+                                      sync to your {{appname}} account.
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 30px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            ></td>
+                          </tr>
+                          <tr>
+                            <td
+                              align="center"
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- BULLETPROOF BUTTON -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        padding-top: 20px;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                      "
+                                      class="padding-meta"
+                                    >
+                                      <table
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        width=""
+                                        class="mobile-button-container"
+                                        style="
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                          mso-table-lspace: 0pt;
+                                          mso-table-rspace: 0pt;
+                                          border-collapse: collapse !important;
+                                        "
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
+                                              align="center"
+                                              style="
+                                                border-radius: 60px;
+                                                -webkit-text-size-adjust: 100%;
+                                                -ms-text-size-adjust: 100%;
+                                                mso-table-lspace: 0pt;
+                                                mso-table-rspace: 0pt;
+                                              "
+                                              bgcolor="#11CFA1"
+                                            >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  font-size: 16px;
+                                                  font-family: Helvetica, Arial,
+                                                    sans-serif;
+                                                  color: #ffffff;
+                                                  text-decoration: none;
+                                                  border-radius: 60px;
+                                                  display: inline-block;
+                                                  letter-spacing: 3px;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                  padding: 15px 71px;
+                                                  border: 1px solid #11cfa1;
+                                                "
+                                                class="mobile-button"
+                                                >GET STARTED</a
+                                              >
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px;
+                                      "
+                                      class="padding3"
+                                    >
+                                      To get the most out of your account, make
+                                      sure to take advantage of the resources at
+                                      your fingertips:
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px;
+                                      "
+                                      class="padding4"
+                                    >
+                                      <ul>
+                                        <li>
+                                          <a
+                                            href={{appurl}}
+                                            class=""
+                                            style="
+                                              color: #11cfa1;
+                                              text-decoration: none;
+                                              -webkit-text-size-adjust: 100%;
+                                              -ms-text-size-adjust: 100%;
+                                            "
+                                            >Join The Hat Pack</a
+                                          >, our online community of {{appname}}
+                                          users on Facebook.
+                                        </li>
+                                        <li>
+                                          Get up to speed with videos and
+                                          articles in our
+                                          <a
+                                            href={{appurl}}
+                                            class=""
+                                            style="
+                                              color: #11cfa1;
+                                              text-decoration: none;
+                                              -webkit-text-size-adjust: 100%;
+                                              -ms-text-size-adjust: 100%;
+                                            "
+                                            >Help Center</a
+                                          >.
+                                        </li>
+                                        <li>
+                                          Don't hesitate to
+                                          <a
+                                            href={{email_from}}
+                                            class=""
+                                            style="
+                                              color: #11cfa1;
+                                              text-decoration: none;
+                                              -webkit-text-size-adjust: 100%;
+                                              -ms-text-size-adjust: 100%;
+                                            "
+                                            >contact our best in class Business
+                                            Support</a
+                                          >
+                                          with questions.
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px 20px;
+                                      "
+                                      class="padding3"
+                                    >
+                                      We're excited to join you on your journey
+                                      of building an amazing business!
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 0px 15px 30px;
+                      "
+                      class="section-padding"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <!--	<td align="center" style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #505050; padding-top: 0px;" class="padding">Please Confirm Your Email Address</td>
+										</tr>-->
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      style="
+                                        font-size: 18px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #505050;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 70px;
+                                      "
+                                      class="padding4"
+                                    >
+                                      Thank you, <br />Your {{agentname}} Team<br />
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <tr>
+            <td
+              bgcolor="#ffffff"
+              align="center"
+              style="
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+              "
+            >
+              <!--[if (gte mso 9)|(IE)]>
+			<table align="center" border="0" cellspacing="0" cellpadding="0" width="640">
+			<tr>
+			<td align="center" valign="top" width="640">
+			<![endif]-->
+              <table
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                width="100%"
+                style="
+                  max-width: 640px;
+                  -webkit-text-size-adjust: 100%;
+                  -ms-text-size-adjust: 100%;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  border-collapse: collapse !important;
+                "
+                class="responsive-table"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      bgcolor="#2b383e"
+                      style="
+                        border-left-style: solid;
+                        border-left-color: #eee;
+                        border-left-width: 1px;
+                        border-right-color: #eee;
+                        border-right-width: 1px;
+                        border-right-style: solid;
+                        -webkit-text-size-adjust: 100%;
+                        -ms-text-size-adjust: 100%;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        padding: 70px 15px;
+                      "
+                      class="section-padding2"
+                    >
+                      <table
+                        width="100%"
+                        border="0"
+                        cellspacing="0"
+                        cellpadding="0"
+                        style="
+                          -webkit-text-size-adjust: 100%;
+                          -ms-text-size-adjust: 100%;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          border-collapse: collapse !important;
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              style="
+                                -webkit-text-size-adjust: 100%;
+                                -ms-text-size-adjust: 100%;
+                                mso-table-lspace: 0pt;
+                                mso-table-rspace: 0pt;
+                              "
+                            >
+                              <!-- COPY -->
+                              <table
+                                width="100%"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                                style="
+                                  -webkit-text-size-adjust: 100%;
+                                  -ms-text-size-adjust: 100%;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  border-collapse: collapse !important;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 0px 0px 15px;
+                                      "
+                                      class=""
+                                    >
+                                      <a
+                                        href="#"
+                                        style="
+                                          display: inline-block;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                      >
+                                        <img
+                                          src={{appname}}
+                                          alt={{appame}}
+                                          width="80"
+                                          style="
+                                            -ms-interpolation-mode: bicubic;
+                                            height: auto;
+                                            line-height: 100%;
+                                            outline: none;
+                                            text-decoration: none;
+                                            border: 0;
+                                          "
+                                        />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 15px 70px 0px;
+                                      "
+                                      class="padding"
+                                    >
+                                      <table
+                                        border="0"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                        style="
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                          mso-table-lspace: 0pt;
+                                          mso-table-rspace: 0pt;
+                                          border-collapse: collapse !important;
+                                        "
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
+                                              align="center"
+                                              style="
+                                                -webkit-text-size-adjust: 100%;
+                                                -ms-text-size-adjust: 100%;
+                                                mso-table-lspace: 0pt;
+                                                mso-table-rspace: 0pt;
+                                              "
+                                            >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  color: #666666;
+                                                  text-decoration: none;
+                                                  width: 24px;
+                                                  height: 24px;
+                                                  display: inline-block;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                "
+                                              >
+                                                <img
+                                                  src="https://s3.amazonaws.com/17hats-marketing/general/facebook-social.png"
+                                                  alt="facebook"
+                                                  width="24"
+                                                  height="24"
+                                                  style="
+                                                    -ms-interpolation-mode: bicubic;
+                                                    height: auto;
+                                                    line-height: 100%;
+                                                    outline: none;
+                                                    text-decoration: none;
+                                                    border: 0;
+                                                  "
+                                                />
+                                              </a>
+                                              <span
+                                                style="
+                                                  font-family: Arial, sans-serif;
+                                                  font-size: 12px;
+                                                  color: #444444;
+                                                "
+                                                > </span
+                                              >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  color: #666666;
+                                                  text-decoration: none;
+                                                  width: 24px;
+                                                  height: 24px;
+                                                  display: inline-block;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                "
+                                              >
+                                                <img
+                                                  src="https://s3.amazonaws.com/17hats-marketing/general/twitter-social.png"
+                                                  alt="twitter"
+                                                  width="24"
+                                                  height="24"
+                                                  style="
+                                                    -ms-interpolation-mode: bicubic;
+                                                    height: auto;
+                                                    line-height: 100%;
+                                                    outline: none;
+                                                    text-decoration: none;
+                                                    border: 0;
+                                                  "
+                                                />
+                                              </a>
+                                              <span
+                                                style="
+                                                  font-family: Arial, sans-serif;
+                                                  font-size: 12px;
+                                                  color: #444444;
+                                                "
+                                                > </span
+                                              >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  color: #666666;
+                                                  text-decoration: none;
+                                                  width: 24px;
+                                                  height: 24px;
+                                                  display: inline-block;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                "
+                                              >
+                                                <img
+                                                  src="https://s3.amazonaws.com/17hats-marketing/general/instagram-social.png"
+                                                  alt="instagram"
+                                                  width="24"
+                                                  height="24"
+                                                  style="
+                                                    -ms-interpolation-mode: bicubic;
+                                                    height: auto;
+                                                    line-height: 100%;
+                                                    outline: none;
+                                                    text-decoration: none;
+                                                    border: 0;
+                                                  "
+                                                />
+                                              </a>
+                                              <span
+                                                style="
+                                                  font-family: Arial, sans-serif;
+                                                  font-size: 12px;
+                                                  color: #444444;
+                                                "
+                                                > </span
+                                              >
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  color: #666666;
+                                                  text-decoration: none;
+                                                  width: 24px;
+                                                  height: 24px;
+                                                  display: inline-block;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                "
+                                              >
+                                                <img
+                                                  src="https://s3.amazonaws.com/17hats-marketing/general/linkedin-social.png"
+                                                  alt="linkedin"
+                                                  width="24"
+                                                  height="24"
+                                                  style="
+                                                    -ms-interpolation-mode: bicubic;
+                                                    height: auto;
+                                                    line-height: 100%;
+                                                    outline: none;
+                                                    text-decoration: none;
+                                                    border: 0;
+                                                  "
+                                                />
+                                              </a>
+                                              <span
+                                                style="
+                                                  font-family: Arial, sans-serif;
+                                                  font-size: 12px;
+                                                  color: #444444;
+                                                "
+                                                > </span
+                                              >
+
+                                              <a
+                                                href="#"
+                                                target="_blank"
+                                                style="
+                                                  color: #666666;
+                                                  text-decoration: none;
+                                                  width: 24px;
+                                                  height: 24px;
+                                                  display: inline-block;
+                                                  -webkit-text-size-adjust: 100%;
+                                                  -ms-text-size-adjust: 100%;
+                                                "
+                                              >
+                                                <img
+                                                  src="https://s3.amazonaws.com/17hats-marketing/general/youtube-social.png"
+                                                  alt="youtube"
+                                                  width="24"
+                                                  height="24"
+                                                  style="
+                                                    -ms-interpolation-mode: bicubic;
+                                                    height: auto;
+                                                    line-height: 100%;
+                                                    outline: none;
+                                                    text-decoration: none;
+                                                    border: 0;
+                                                  "
+                                                />
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        font-size: 14px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        color: #7d8a8f;
+                                        letter-spacing: 2px;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 30px 0 0;
+                                      "
+                                      class=""
+                                    >
+                                      © {{appname}}<br /><br />251 S Lake Ave,
+                                      Pasadena CA, 91101<br /><br />All Rights
+                                      Reserved<br /><br />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      align="center"
+                                      style="
+                                        font-size: 14px;
+                                        line-height: 25px;
+                                        font-family: Helvetica, Arial,
+                                          sans-serif;
+                                        -webkit-text-size-adjust: 100%;
+                                        -ms-text-size-adjust: 100%;
+                                        mso-table-lspace: 0pt;
+                                        mso-table-rspace: 0pt;
+                                        padding: 10px 0 0;
+                                      "
+                                      class=""
+                                    >
+                                      <a
+                                        href="#"
+                                        class="untracked"
+                                        style="
+                                          color: #7d8a8f;
+                                          text-decoration: none;
+                                          letter-spacing: 2px;
+                                          -webkit-text-size-adjust: 100%;
+                                          -ms-text-size-adjust: 100%;
+                                        "
+                                        >Unsubscribe</a
+                                      >
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+			</td>
+			</tr>
+			</table>
+			<![endif]-->
+            </td>
+          </tr>
+          <!-- Old -->
+        </tbody>
+      </table>
+
+      <img
+        src="http://e.customeriomail.com/e/o/eyJlbWFpbF9pZCI6ImRnUEFvZ0hBb2dFQkFBRjc2ZlpYOW1OVk9QZnBPRVZPRXBvPSJ9"
+        style="
+          height: 1px !important;
+          max-height: 1px !important;
+          max-width: 1px !important;
+          width: 1px !important;
+        "
+      />
+    </body>
+  </html>
+  <!-- HIDDEN PREHEADER TEXT -->
+</p>
