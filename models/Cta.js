@@ -46,10 +46,6 @@ const ctaSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
-    features: {
-        type: Array,
-        required: false,
-    },
     status: {
         type: Number,
         required: false,
