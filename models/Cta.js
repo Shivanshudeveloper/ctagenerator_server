@@ -30,8 +30,20 @@ const ctaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    pacakages: {
+    links: {
         type: Array,
+        required: false,
+    },
+    photos: {
+        type: Array,
+        required: false,
+    },
+    banner: {
+        type: Object,
+        required: false,
+    },
+    footer: {
+        type: Object,
         required: false,
     },
     features: {
