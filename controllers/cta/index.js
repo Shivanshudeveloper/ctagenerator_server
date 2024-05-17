@@ -99,8 +99,8 @@ const getAllCtaInSystem = async (req, res) => {
 const updateCtaDetails = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const submitrequest = req.body;
-
-    Cta_Model.updateOne({ ctaUid: submitrequest?.ctaUid }, { $set: submitrequest })
+    console.log("hi updateCtaDetails");
+    Cta_Model.updateOne({ ctaPublicId: submitrequest?.ctaPublicId }, { $set: submitrequest.data})
         .then((data) => {
             res.status(200).json({ status: true, data });
         })
