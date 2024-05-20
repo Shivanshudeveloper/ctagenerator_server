@@ -18,6 +18,9 @@ router.delete('/removecta/:ctaid', ctaController.deleteCta);
 router.get('/getuserctaall/:organizationId', ctaController.getCtaforUser);
 router.get('/getadminallctasystem', ctaController.getAllCtaInSystem);
 router.put('/updatectadetails', ctaController.updateCtaDetails);
+router.put('/updatectacounts/:ctaPublicId', ctaController.updateCtaCounts);
+router.post('/getctaclicksdetails/:ctaPublicId', ctaController.getCtaClicksDetails);
+router.get('/getallctaclickstats/:organizationId', ctaController.getAllCtaClickStats);
 
 
 

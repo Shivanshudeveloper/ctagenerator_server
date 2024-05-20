@@ -46,6 +46,16 @@ const ctaSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
+    linkClicksCount: {
+        type: Number,
+        required: false,
+        default: 0,
+    },
+    viewCount: {
+        type: Number,
+        required: false,
+        default: 0,
+    },
     status: {
         type: Number,
         required: false,
