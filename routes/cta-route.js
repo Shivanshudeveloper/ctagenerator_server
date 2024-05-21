@@ -21,6 +21,7 @@ router.put('/updatectadetails', ctaController.updateCtaDetails);
 router.put('/updatectacounts/:ctaPublicId', ctaController.updateCtaCounts);
 router.post('/getctaclicksdetails/:ctaPublicId', ctaController.getCtaClicksDetails);
 router.get('/getallctaclickstats/:organizationId', ctaController.getAllCtaClickStats);
+router.get('/getctaclickslogs/:ctaPublicId', ctaController.getCtaClicksLogs);
 
 
 

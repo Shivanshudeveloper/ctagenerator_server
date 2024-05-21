@@ -89,6 +89,20 @@ const getCtaforUser = async (req, res) => {
   }
 };
 
+const getCtaClicksLogs = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  try {
+    ClicksCta_Model.find({ ctaPublicId })
+      .sort({ createdAt: -1 })
+      .then((data) => {
+        res.status(200).json({ status: true, data });
+      })
+      .catch((err) => console.log(err));
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 const getAllCtaClickStats = async (req, res) => {
   const { organizationId } = req.params;
   try {
@@ -260,7 +274,7 @@ const getCtaClicksDetails = async (req, res) => {
 
   console.log(ctaPublicId);
   console.log(startDate, endDate);
-
+  console.log(startDate,endDate);
   const start = new Date(startDate);
   const end = new Date(endDate);
   end.setHours(23, 59, 59, 999); // Set the end date to the end of the day
@@ -272,15 +286,21 @@ const getCtaClicksDetails = async (req, res) => {
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   };
-
+  
+  dateDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
   // Create an array of dates from startDate to endDate
   const datesArray = [];
   const tempDate = new Date(start);
-  for (let i = 0; i < 10; i++) {
-    datesArray.push(formatDate(tempDate));
+  let tomorrowDate = new Date(endDate)
+  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+  while(tempDate.toISOString().split('T')[0] != tomorrowDate.toISOString().split('T')[0]) {
+    datesArray.push(tempDate.toISOString().split('T')[0])  ;
     tempDate.setDate(tempDate.getDate() + 1);
   }
 
+  console.log(dateDifference);
+  console.log(start)
+  console.log(end)
   try {
     const resultView = await ClicksCta_Model.aggregate([
       {
@@ -349,10 +369,11 @@ const getCtaClicksDetails = async (req, res) => {
     ]);
 
     // Initialize arrays of length 10 with 0s
-    const viewClicksArray = new Array(10).fill(0);
-    const linkClicksArray = new Array(10).fill(0);
+    const viewClicksArray = new Array(dateDifference).fill(0);
+    const linkClicksArray = new Array(dateDifference).fill(0);
 
     // Populate the viewClicksArray based on the resultView
+    console.log(resultView);
     resultView.forEach(item => {
       const index = datesArray.indexOf(item.date);
       if (index !== -1) {
@@ -385,5 +406,6 @@ module.exports = {
   updateCtaDetails,
   updateCtaCounts,
   getCtaClicksDetails,
-  getAllCtaClickStats
+  getAllCtaClickStats,
+  getCtaClicksLogs
 };
