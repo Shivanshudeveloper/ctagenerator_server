@@ -79,7 +79,7 @@ const getCtaforUser = async (req, res) => {
   const { organizationId } = req.params;
   try {
     Cta_Model.find({ organizationId })
-      .sort({ date: -1 })
+      .sort({ createdAt: -1 })
       .then((data) => {
         res.status(200).json({ status: true, data });
       })
