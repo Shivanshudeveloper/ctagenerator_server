@@ -14,7 +14,7 @@ router.get('/test', (req, res) => {
 // Users
 router.post('/create', ctaController.createCta);
 router.get('/getpublicid/:ctaPublicId', ctaController.getCtabyPublicId);
-router.delete('/removecta/:ctaid', ctaController.deleteCta);
+router.delete('/removecta/:ctaPublicId', ctaController.deleteCta);
 router.get('/getuserctaall/:organizationId', ctaController.getCtaforUser);
 router.get('/getadminallctasystem', ctaController.getAllCtaInSystem);
 router.put('/updatectadetails', ctaController.updateCtaDetails);

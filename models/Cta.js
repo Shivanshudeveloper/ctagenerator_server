@@ -35,7 +35,7 @@ const ctaSchema = new mongoose.Schema({
         required: false,
     },
     photos: {
-        type: Array,
+        type: Object,
         required: false,
     },
     banner: {

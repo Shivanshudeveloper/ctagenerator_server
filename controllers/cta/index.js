@@ -53,10 +53,10 @@ const getCtabyPublicId = async (req, res) => {
 
 // Delete CTA by MongoDB UID
 const deleteCta = async (req, res) => {
-  const { ctaid } = req.params;
+  const { ctaPublicId } = req.params;
 
   try {
-    Cta_Model.findOneAndDelete({ _id: ctaid })
+    Cta_Model.findOneAndDelete({ ctaPublicId })
       .then((data) => {
         res.status(200).json({ status: true, data });
       })
@@ -139,7 +139,7 @@ const getAllCtaClickStats = async (req, res) => {
               $gte: startDate,
               $lte: endDate,
             },
-            clickType: "view",
+            clickType: "link",
             ctaPublicId: parseInt(cta.ctaPublicId),
           },
         },
