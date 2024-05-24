@@ -26,6 +26,14 @@ const clicksCtaSchema = new mongoose.Schema({
         type: String, // link, view, video
         required: false,
     },
+    videoStats:{
+        type: Object,
+        required: false,
+    },
+    totalTimeSpent:{
+        type: Number,
+        required: false,
+    },
     ctaPublicId: {
         type: Number,
         required: false,

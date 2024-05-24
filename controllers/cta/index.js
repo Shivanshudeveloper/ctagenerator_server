@@ -1,6 +1,7 @@
 const Cta_Model = require("../../models/Cta");
 const CtaCounter_Model = require("../../models/CtaCounter");
 const ClicksCta_Model = require("../../models/StatsCta");
+const VideoViews_Model = require("../../models/VideoViews");
 const { v4: uuidv4 } = require("uuid");
 
 const createCta = async (req, res) => {
@@ -50,7 +51,6 @@ const getCtabyPublicId = async (req, res) => {
   }
 };
 
-
 // Delete CTA by MongoDB UID
 const deleteCta = async (req, res) => {
   const { ctaPublicId } = req.params;
@@ -89,6 +89,141 @@ const getCtaforUser = async (req, res) => {
   }
 };
 
+const updateVideoViewCount = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+
+  try {
+    const { ctaPublicId, userIpAddress } = req.body;
+    console.log("video count is being updated");
+    const videoView = await VideoViews_Model.findOne({
+      ctaPublicId,
+      userIpAddress,
+    });
+    if (videoView) {
+      return res
+        .status(500)
+        .json({ success: false, data: "video view already exists" });
+    }
+    const newVideoView = new VideoViews_Model({
+      ctaPublicId,
+      userIpAddress,
+    });
+    await newVideoView.save();
+    return res
+      .status(200)
+      .json({ message: "video view is saved", success: true });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+};
+
+const getVideoViewCount = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId } = req.params;
+  try {
+    const counts = await VideoViews_Model.countDocuments({ ctaPublicId });
+    return res.status(200).json({ success: true, data: counts });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+};
+const saveTotalTimeSpent = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const {
+    fieldToUpdate,
+    userIpAddress,
+    userLocation,
+    userBrowser,
+    userDevice,
+    totalTimeSpent,
+    ctaPublicId,
+  } = req.body;
+  newCtaStat = new ClicksCta_Model({
+    clickType:
+      fieldToUpdate === "linkClicksCount"
+        ? "link"
+        : fieldToUpdate === "viewCount"
+        ? "view"
+        : fieldToUpdate === "video"
+        ? "video"
+        : "totalTimeSpent",
+    userIpAddress,
+    userLocation,
+    userBrowser,
+    userDevice,
+    ctaPublicId,
+    totalTimeSpent,
+  });
+  newCtaStat
+    .save()
+    .then((data) => {
+      return res.status(200).json({ success: true, data });
+    })
+    .catch((err) => {
+      return res
+        .status(500)
+        .json({ success: false, data: "Something went wrong" });
+    });
+};
+const saveVideoStats = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const {
+    fieldToUpdate,
+    userIpAddress,
+    userLocation,
+    userBrowser,
+    userDevice,
+    videoStats,
+    ctaPublicId,
+  } = req.body;
+  console.log(req.body);
+  const data = await Cta_Model.updateOne(
+    { ctaPublicId },
+    { $inc: { [fieldToUpdate]: 1 } }
+  );
+  if (!data) {
+    return res
+      .status(500)
+      .json({ status: false, data: "Something went wrong" });
+  }
+  const userClicks = await ClicksCta_Model.findOne({
+    ctaPublicId,
+    userIpAddress,
+    clickType:
+      fieldToUpdate === "linkClicksCount"
+        ? "link"
+        : fieldToUpdate === "viewCount"
+        ? "view"
+        : "video",
+  });
+  if (userClicks)
+    return res.status(500).json({ status: false, data: "user already exists" });
+  const currentCta = await Cta_Model.findOne({ ctaPublicId });
+  const newUserClicks = new ClicksCta_Model({
+    userIpAddress,
+    userLocation,
+    userBrowser,
+    userDevice,
+    ctaUid: currentCta._id,
+    clickType:
+      fieldToUpdate === "linkClicksCount"
+        ? "link"
+        : fieldToUpdate === "viewCount"
+        ? "view"
+        : "video",
+    ctaPublicId,
+    videoStats,
+    ctaClientEmail: currentCta.userEmail,
+  });
+  const savedUserClicks = await newUserClicks.save();
+
+  return res.status(200).json({ status: true, data: savedUserClicks });
+};
+
 const getCtaClicksLogs = async (req, res) => {
   const { ctaPublicId } = req.params;
   try {
@@ -101,7 +236,7 @@ const getCtaClicksLogs = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 const getAllCtaClickStats = async (req, res) => {
   const { organizationId } = req.params;
@@ -116,8 +251,8 @@ const getAllCtaClickStats = async (req, res) => {
     // Helper function to format date to 'YYYY-MM-DD'
     const formatDate = (date) => {
       const yyyy = date.getFullYear();
-      const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+      const dd = String(date.getDate()).padStart(2, "0");
       return `${yyyy}-${mm}-${dd}`;
     };
 
@@ -131,7 +266,7 @@ const getAllCtaClickStats = async (req, res) => {
 
     for (let i = 0; i < allCtas.length; i++) {
       const cta = allCtas[i];
-      
+
       const resultView = await ClicksCta_Model.aggregate([
         {
           $match: {
@@ -169,7 +304,7 @@ const getAllCtaClickStats = async (req, res) => {
       const clicksArray = new Array(10).fill(0);
 
       // Populate the clicksArray based on the resultView
-      resultView.forEach(item => {
+      resultView.forEach((item) => {
         const index = datesArray.indexOf(item.date);
         if (index !== -1) {
           clicksArray[index] = item.total_clicks;
@@ -184,7 +319,6 @@ const getAllCtaClickStats = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 // Get All CTA
 const getAllCtaInSystem = async (req, res) => {
@@ -274,7 +408,7 @@ const getCtaClicksDetails = async (req, res) => {
 
   console.log(ctaPublicId);
   console.log(startDate, endDate);
-  console.log(startDate,endDate);
+  console.log(startDate, endDate);
   const start = new Date(startDate);
   const end = new Date(endDate);
   end.setHours(23, 59, 59, 999); // Set the end date to the end of the day
@@ -282,25 +416,28 @@ const getCtaClicksDetails = async (req, res) => {
   // Helper function to format date to 'YYYY-MM-DD'
   const formatDate = (date) => {
     const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const dd = String(date.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
-  
+
   dateDifference = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
   // Create an array of dates from startDate to endDate
   const datesArray = [];
   const tempDate = new Date(start);
-  let tomorrowDate = new Date(endDate)
+  let tomorrowDate = new Date(endDate);
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  while(tempDate.toISOString().split('T')[0] != tomorrowDate.toISOString().split('T')[0]) {
-    datesArray.push(tempDate.toISOString().split('T')[0])  ;
+  while (
+    tempDate.toISOString().split("T")[0] !=
+    tomorrowDate.toISOString().split("T")[0]
+  ) {
+    datesArray.push(tempDate.toISOString().split("T")[0]);
     tempDate.setDate(tempDate.getDate() + 1);
   }
 
   console.log(dateDifference);
-  console.log(start)
-  console.log(end)
+  console.log(start);
+  console.log(end);
   try {
     const resultView = await ClicksCta_Model.aggregate([
       {
@@ -368,13 +505,47 @@ const getCtaClicksDetails = async (req, res) => {
       },
     ]);
 
+    const resultVideo = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: start,
+            $lte: end,
+          },
+          clickType: "video",
+          ctaPublicId: parseInt(ctaPublicId),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          total_watchTime: { $sum: "$videoStats.watchTime" },
+        },
+      },
+      {
+        $project: {
+          date: "$_id",
+          total_watchTime: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          date: 1,
+        },
+      },
+    ]);
+
     // Initialize arrays of length 10 with 0s
     const viewClicksArray = new Array(dateDifference).fill(0);
     const linkClicksArray = new Array(dateDifference).fill(0);
+    const videoWatchTimeArray = new Array(dateDifference).fill(0);
 
     // Populate the viewClicksArray based on the resultView
     console.log(resultView);
-    resultView.forEach(item => {
+    resultView.forEach((item) => {
       const index = datesArray.indexOf(item.date);
       if (index !== -1) {
         viewClicksArray[index] = item.total_clicks;
@@ -382,20 +553,36 @@ const getCtaClicksDetails = async (req, res) => {
     });
 
     // Populate the linkClicksArray based on the resultLink
-    resultLink.forEach(item => {
+    resultLink.forEach((item) => {
       const index = datesArray.indexOf(item.date);
       if (index !== -1) {
         linkClicksArray[index] = item.total_clicks;
       }
     });
 
-    res.status(200).json({ status: true, data: { resultView: viewClicksArray, resultLink: linkClicksArray } });
+    // Populate the videoWatchTimeArray based on the resultVideo
+    resultVideo.forEach((item) => {
+      const index = datesArray.indexOf(item.date);
+      if (index !== -1) {
+        videoWatchTimeArray[index] = item.total_watchTime;
+      }
+    });
+
+    res
+      .status(200)
+      .json({
+        status: true,
+        data: {
+          resultView: viewClicksArray,
+          resultLink: linkClicksArray,
+          resultVideo: videoWatchTimeArray,
+        },
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: false, data: "Something went wrong" });
   }
 };
-
 
 module.exports = {
   createCta,
@@ -407,5 +594,9 @@ module.exports = {
   updateCtaCounts,
   getCtaClicksDetails,
   getAllCtaClickStats,
-  getCtaClicksLogs
+  getCtaClicksLogs,
+  saveVideoStats,
+  updateVideoViewCount,
+  getVideoViewCount,
+  saveTotalTimeSpent,
 };

@@ -22,7 +22,10 @@ router.put('/updatectacounts/:ctaPublicId', ctaController.updateCtaCounts);
 router.post('/getctaclicksdetails/:ctaPublicId', ctaController.getCtaClicksDetails);
 router.get('/getallctaclickstats/:organizationId', ctaController.getAllCtaClickStats);
 router.get('/getctaclickslogs/:ctaPublicId', ctaController.getCtaClicksLogs);
-
+router.post('/savevideostats', ctaController.saveVideoStats);
+router.post('/updatevideoviewcount', ctaController.updateVideoViewCount);
+router.get('/getvideoviewcount/:ctaPublicId', ctaController.getVideoViewCount);
+router.post('/savetotaltimespent', ctaController.saveTotalTimeSpent);
 
 
 module.exports = router;
