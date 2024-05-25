@@ -113,6 +113,7 @@ const updateVideoViewCount = async (req, res) => {
       .status(200)
       .json({ message: "video view is saved", success: true });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ success: false, data: "Something went wrong" });
@@ -188,6 +189,7 @@ const saveVideoStats = async (req, res) => {
     { $inc: { [fieldToUpdate]: 1 } }
   );
   if (!data) {
+    console.log("Something went wrong");
     return res
       .status(500)
       .json({ status: false, data: "Something went wrong" });
@@ -202,8 +204,11 @@ const saveVideoStats = async (req, res) => {
         ? "view"
         : "video",
   });
+  
   if (userClicks)
     return res.status(500).json({ status: false, data: "user already exists" });
+
+
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
