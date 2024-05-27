@@ -26,6 +26,7 @@ router.post('/savevideostats', ctaController.saveVideoStats);
 router.post('/updatevideoviewcount', ctaController.updateVideoViewCount);
 router.get('/getvideoviewcount/:ctaPublicId', ctaController.getVideoViewCount);
 router.post('/savetotaltimespent', ctaController.saveTotalTimeSpent);
-
+router.post('/savectacontact',ctaController.saveCtaContact);
+router.get('/getctacontacts/:ctaPublicId', ctaController.getCtaContacts);
 
 module.exports = router;

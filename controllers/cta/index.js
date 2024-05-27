@@ -2,6 +2,7 @@ const Cta_Model = require("../../models/Cta");
 const CtaCounter_Model = require("../../models/CtaCounter");
 const ClicksCta_Model = require("../../models/StatsCta");
 const VideoViews_Model = require("../../models/VideoViews");
+const CtaContacts_Model = require("../../models/CtaContacts");
 const { v4: uuidv4 } = require("uuid");
 
 const createCta = async (req, res) => {
@@ -132,6 +133,39 @@ const getVideoViewCount = async (req, res) => {
       .json({ success: false, data: "Something went wrong" });
   }
 };
+
+const getCtaContacts = async (req, res) => {
+  try {
+    const { ctaPublicId } = req.params;
+    const ctaContacts = await CtaContacts_Model.find({ ctaPublicId }).sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, data: ctaContacts });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
+const saveCtaContact = async (req, res) => {
+  try {
+    const { ctaPublicId, firstName, lastName, email } = req.body;
+    const newCtaContact = new CtaContacts_Model({
+      ctaPublicId,
+      firstName,
+      lastName,
+      email,
+    });
+    const savedCtaContact = await newCtaContact.save();
+    return res.status(200).json({ success: true, data: savedCtaContact });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
 const saveTotalTimeSpent = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const {
@@ -159,6 +193,12 @@ const saveTotalTimeSpent = async (req, res) => {
     ctaPublicId,
     totalTimeSpent,
   });
+  const alreadyExists = await ClicksCta_Model.findOne({
+    ctaPublicId,
+    userIpAddress,
+    clickType: "totalTimeSpent",
+  });
+  if(alreadyExists) return res.status(500).json({ success: false, data: "user already exists" });
   newCtaStat
     .save()
     .then((data) => {
@@ -606,4 +646,6 @@ module.exports = {
   updateVideoViewCount,
   getVideoViewCount,
   saveTotalTimeSpent,
+  saveCtaContact,
+  getCtaContacts
 };
