@@ -7,7 +7,7 @@ const videoViewsSchema = new mongoose.Schema({
     },
     userIpAddress: {
         type: String,
-        required: true
+        required: false
     },
     createdAt: {
         type: Date,
