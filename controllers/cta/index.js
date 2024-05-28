@@ -96,15 +96,15 @@ const updateVideoViewCount = async (req, res) => {
   try {
     const { ctaPublicId, userIpAddress } = req.body;
     console.log("video count is being updated");
-    const videoView = await VideoViews_Model.findOne({
-      ctaPublicId,
-      userIpAddress,
-    });
-    if (videoView) {
-      return res
-        .status(500)
-        .json({ success: false, data: "video view already exists" });
-    }
+    // const videoView = await VideoViews_Model.findOne({
+    //   ctaPublicId,
+    //   userIpAddress,
+    // });
+    // if (videoView) {
+    //   return res
+    //     .status(500)
+    //     .json({ success: false, data: "video view already exists" });
+    // }
     const newVideoView = new VideoViews_Model({
       ctaPublicId,
       userIpAddress,
@@ -193,12 +193,12 @@ const saveTotalTimeSpent = async (req, res) => {
     ctaPublicId,
     totalTimeSpent,
   });
-  const alreadyExists = await ClicksCta_Model.findOne({
-    ctaPublicId,
-    userIpAddress,
-    clickType: "totalTimeSpent",
-  });
-  if(alreadyExists) return res.status(500).json({ success: false, data: "user already exists" });
+  // const alreadyExists = await ClicksCta_Model.findOne({
+  //   ctaPublicId,
+  //   userIpAddress,
+  //   clickType: "totalTimeSpent",
+  // });
+  // if(alreadyExists) return res.status(500).json({ success: false, data: "user already exists" });
   newCtaStat
     .save()
     .then((data) => {
@@ -234,19 +234,19 @@ const saveVideoStats = async (req, res) => {
       .status(500)
       .json({ status: false, data: "Something went wrong" });
   }
-  const userClicks = await ClicksCta_Model.findOne({
-    ctaPublicId,
-    userIpAddress,
-    clickType:
-      fieldToUpdate === "linkClicksCount"
-        ? "link"
-        : fieldToUpdate === "viewCount"
-        ? "view"
-        : "video",
-  });
+  // const userClicks = await ClicksCta_Model.findOne({
+  //   ctaPublicId,
+  //   userIpAddress,
+  //   clickType:
+  //     fieldToUpdate === "linkClicksCount"
+  //       ? "link"
+  //       : fieldToUpdate === "viewCount"
+  //       ? "view"
+  //       : "video",
+  // });
   
-  if (userClicks)
-    return res.status(500).json({ status: false, data: "user already exists" });
+  // if (userClicks)
+  //   return res.status(500).json({ status: false, data: "user already exists" });
 
 
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
@@ -416,18 +416,18 @@ const updateCtaCounts = async (req, res) => {
       .status(500)
       .json({ status: false, data: "Something went wrong" });
   }
-  const userClicks = await ClicksCta_Model.findOne({
-    ctaPublicId,
-    userIpAddress,
-    clickType:
-      fieldToUpdate === "linkClicksCount"
-        ? "link"
-        : fieldToUpdate === "viewCount"
-        ? "view"
-        : "video",
-  });
-  if (userClicks)
-    return res.status(500).json({ status: false, data: "user already exists" });
+  // const userClicks = await ClicksCta_Model.findOne({
+  //   ctaPublicId,
+  //   userIpAddress,
+  //   clickType:
+  //     fieldToUpdate === "linkClicksCount"
+  //       ? "link"
+  //       : fieldToUpdate === "viewCount"
+  //       ? "view"
+  //       : "video",
+  // });
+  // if (userClicks)
+  //   return res.status(500).json({ status: false, data: "user already exists" });
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
