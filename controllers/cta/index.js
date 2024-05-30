@@ -3,6 +3,7 @@ const CtaCounter_Model = require("../../models/CtaCounter");
 const ClicksCta_Model = require("../../models/StatsCta");
 const VideoViews_Model = require("../../models/VideoViews");
 const CtaContacts_Model = require("../../models/CtaContacts");
+const CtaTestimonial_Model = require("../../models/Testimonials");
 const { v4: uuidv4 } = require("uuid");
 
 const createCta = async (req, res) => {
@@ -137,7 +138,9 @@ const getVideoViewCount = async (req, res) => {
 const getCtaContacts = async (req, res) => {
   try {
     const { ctaPublicId } = req.params;
-    const ctaContacts = await CtaContacts_Model.find({ ctaPublicId }).sort({ createdAt: -1 });
+    const ctaContacts = await CtaContacts_Model.find({ ctaPublicId }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json({ success: true, data: ctaContacts });
   } catch (error) {
     console.log(error);
@@ -145,7 +148,7 @@ const getCtaContacts = async (req, res) => {
       .status(500)
       .json({ success: false, data: "Something went wrong" });
   }
-}
+};
 
 const saveCtaContact = async (req, res) => {
   try {
@@ -164,7 +167,7 @@ const saveCtaContact = async (req, res) => {
       .status(500)
       .json({ success: false, data: "Something went wrong" });
   }
-}
+};
 
 const saveTotalTimeSpent = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -187,7 +190,7 @@ const saveTotalTimeSpent = async (req, res) => {
         ? "video"
         : "totalTimeSpent",
     userIpAddress,
-    userLocation:userLocation.includes("undefined")?"NA":userLocation,
+    userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
     userBrowser,
     userDevice,
     ctaPublicId,
@@ -244,15 +247,14 @@ const saveVideoStats = async (req, res) => {
   //       ? "view"
   //       : "video",
   // });
-  
+
   // if (userClicks)
   //   return res.status(500).json({ status: false, data: "user already exists" });
-
 
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
-    userLocation:userLocation.includes('undefined')?"NA":userLocation,
+    userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
     userBrowser,
     userDevice,
     ctaUid: currentCta._id,
@@ -431,7 +433,7 @@ const updateCtaCounts = async (req, res) => {
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
-    userLocation:userLocation.includes('undefined')?"NA":userLocation,
+    userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
     userBrowser,
     userDevice,
     ctaUid: currentCta._id,
@@ -615,19 +617,64 @@ const getCtaClicksDetails = async (req, res) => {
       }
     });
 
-    res
-      .status(200)
-      .json({
-        status: true,
-        data: {
-          resultView: viewClicksArray,
-          resultLink: linkClicksArray,
-          resultVideo: videoWatchTimeArray,
-        },
-      });
+    res.status(200).json({
+      status: true,
+      data: {
+        resultView: viewClicksArray,
+        resultLink: linkClicksArray,
+        resultVideo: videoWatchTimeArray,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+const saveTestimonial = async (req,res) => {
+  try {
+    const { ctaPublicId, data } = req.body;
+    // const testimonials = data.testimonials;
+    // const links = data.links;
+    console.log(data);
+    const isExists = await CtaTestimonial_Model.findOne({ ctaPublicId});
+    if(isExists) {
+      const updatedData = await CtaTestimonial_Model.findOneAndUpdate({ ctaPublicId }, {
+        testimonials:{
+          testimonials:data.testimonials,
+          links:data.links
+        }
+      });
+      return res.status(200).json({ success: true, data:updatedData  });
+    }else{
+      const newTestimonial = new CtaTestimonial_Model({
+        ctaPublicId,
+        testimonials:{
+          testimonials:data.testimonials,
+          links:data.links
+        },
+      });
+      const savedData = await newTestimonial.save();
+      return res.status(200).json({ success: true, data:savedData  });
+    }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+};
+const getTestimonials = async (req,res) => {
+  try {
+    const { ctaPublicId } = req.params;
+    const data = await CtaTestimonial_Model.findOne({ ctaPublicId });
+    console.log("getTestimonials ",data.testimonials);
+    return res.status(200).json({ success: true, data});
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
   }
 };
 
@@ -647,5 +694,7 @@ module.exports = {
   getVideoViewCount,
   saveTotalTimeSpent,
   saveCtaContact,
-  getCtaContacts
+  getCtaContacts,
+  saveTestimonial,
+  getTestimonials,
 };
