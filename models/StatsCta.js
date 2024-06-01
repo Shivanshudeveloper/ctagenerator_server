@@ -10,6 +10,10 @@ const clicksCtaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    userCountry: {
+        type: String,
+        required: false,
+    },
     userBrowser: {
         type: String,
         required: false,

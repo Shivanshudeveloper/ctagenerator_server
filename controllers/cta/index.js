@@ -6,6 +6,22 @@ const CtaContacts_Model = require("../../models/CtaContacts");
 const CtaTestimonial_Model = require("../../models/Testimonials");
 const { v4: uuidv4 } = require("uuid");
 
+// Seperate the country from string
+function separateUppercaseWord(str) {
+  if (str === undefined || str === null) {
+    return "Unknown";
+  }
+
+  const words = str.split(' ');
+  const uppercaseWord = words.find(word => word === word.toUpperCase());
+
+  if (uppercaseWord) {
+    return `${uppercaseWord}`;
+  }
+
+  return str;
+}
+
 const createCta = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const submitrequest = req.body;
@@ -191,6 +207,7 @@ const saveTotalTimeSpent = async (req, res) => {
         : "totalTimeSpent",
     userIpAddress,
     userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
+    userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
     ctaPublicId,
@@ -242,6 +259,7 @@ const saveVideoStats = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
+    userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
     ctaUid: currentCta._id,
@@ -421,6 +439,7 @@ const updateCtaCounts = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     userLocation: userLocation.includes("undefined") ? "NA" : userLocation,
+    userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
     ctaUid: currentCta._id,
