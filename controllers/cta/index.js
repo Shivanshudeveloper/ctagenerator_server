@@ -412,6 +412,7 @@ const updateCtaCounts = async (req, res) => {
     userLocation,
     userBrowser,
     userDevice,
+    linkName
   } = req.body;
 
   const data = await Cta_Model.updateOne(
@@ -423,18 +424,6 @@ const updateCtaCounts = async (req, res) => {
       .status(500)
       .json({ status: false, data: "Something went wrong" });
   }
-  // const userClicks = await ClicksCta_Model.findOne({
-  //   ctaPublicId,
-  //   userIpAddress,
-  //   clickType:
-  //     fieldToUpdate === "linkClicksCount"
-  //       ? "link"
-  //       : fieldToUpdate === "viewCount"
-  //       ? "view"
-  //       : "video",
-  // });
-  // if (userClicks)
-  //   return res.status(500).json({ status: false, data: "user already exists" });
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
@@ -450,6 +439,7 @@ const updateCtaCounts = async (req, res) => {
         ? "view"
         : "video",
     ctaPublicId,
+    linkName,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
