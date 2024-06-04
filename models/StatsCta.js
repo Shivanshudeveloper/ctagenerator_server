@@ -27,7 +27,7 @@ const clicksCtaSchema = new mongoose.Schema({
         ref: 'cta',
     },
     clickType:{
-        type: String, // link, view, video
+        type: String, // link, view, video, scroll
         required: false,
     },
     linkName:{

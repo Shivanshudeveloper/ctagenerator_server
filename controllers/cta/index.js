@@ -437,7 +437,7 @@ const updateCtaCounts = async (req, res) => {
         ? "link"
         : fieldToUpdate === "viewCount"
         ? "view"
-        : "video",
+        : fieldToUpdate === "video"?"video":"scroll",
     ctaPublicId,
     linkName,
     ctaClientEmail: currentCta.userEmail,
