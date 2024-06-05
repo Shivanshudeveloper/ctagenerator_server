@@ -749,6 +749,90 @@ const getTestimonials = async (req,res) => {
   }
 };
 
+const totalCtas = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const totalCtas = await Cta_Model.countDocuments({ organizationId });
+    return res.status(200).json({ success: true, data: totalCtas });
+  }
+  catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  } 
+}
+
+const getTopPerformingCTAs = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId").select("title");
+    const map = {};
+    allCtaPublicIds.forEach((item) => {
+      map[item.ctaPublicId] = item.title;
+    });
+    // finding total number of clicks where type is link or scroll or view
+    const totalClicks = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          clickType: { $in: ["link", "scroll","view","video"] }
+        }
+      },
+      {
+        $group: {
+          _id: "$ctaPublicId",
+          totalClicks: { $sum: 1 }
+        }
+      },
+      {
+        $sort: {
+          totalClicks: -1
+        }
+      },
+      {
+        $limit: 5
+      }
+    ]);
+    return res.status(200).json({ success: true, data: totalClicks, mapper: map });
+  }
+  catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
+const getDevicesInfo = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
+    // finding the counts documents group by device for each ctaPublicId
+    const devices = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) }
+        }
+      },
+      {
+        $group: {
+          _id: "$userDevice",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    console.log(devices);
+    return res.status(200).json({ success: true, data: devices });
+  }
+  catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
 module.exports = {
   createCta,
   getCtabyPublicId,
@@ -768,5 +852,8 @@ module.exports = {
   getCtaContacts,
   saveTestimonial,
   getTestimonials,
-  getAllContacts
+  getAllContacts,
+  totalCtas,
+  getTopPerformingCTAs,
+  getDevicesInfo
 };

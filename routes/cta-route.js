@@ -31,5 +31,8 @@ router.get('/getctacontacts/:ctaPublicId', ctaController.getCtaContacts);
 router.post('/saveTestimonial', ctaController.saveTestimonial);
 router.get('/getTestimonials/:ctaPublicId', ctaController.getTestimonials);
 router.get('/getAllContacts/:organizationId',ctaController.getAllContacts);
+router.get('/totalctas/:organizationId', ctaController.totalCtas);
+router.get('/getTopPerformingCTAs/:organizationId', ctaController.getTopPerformingCTAs);
+router.get('/getDevicesInfo/:organizationId', ctaController.getDevicesInfo);
 
 module.exports = router;
