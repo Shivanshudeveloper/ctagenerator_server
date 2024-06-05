@@ -11,7 +11,13 @@ router.get('/test', (req, res) => {
 });
 
 
-// Users
+// CTA
+
+router.get('/ctaview', ctaController.viewCTA);
+
+router.get('/:ctaPublicId', ctaController.viewCTA);
+
+
 router.post('/create', ctaController.createCta);
 router.get('/getpublicid/:ctaPublicId', ctaController.getCtabyPublicId);
 router.delete('/removecta/:ctaPublicId', ctaController.deleteCta);

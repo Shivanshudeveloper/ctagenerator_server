@@ -5,6 +5,7 @@ const VideoViews_Model = require("../../models/VideoViews");
 const CtaContacts_Model = require("../../models/CtaContacts");
 const CtaTestimonial_Model = require("../../models/Testimonials");
 const { v4: uuidv4 } = require("uuid");
+const { APP_URL } = require("../../config/config");
 
 // Seperate the country from string
 function separateUppercaseWord(str) {
@@ -833,7 +834,58 @@ const getDevicesInfo = async (req, res) => {
   }
 }
 
+
+
+const viewCTA = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  
+  const referer = req.headers['referer'] || req.headers['referrer'];
+  const utm_source = req.query.utm_source;
+  const utm_medium = req.query.utm_medium;
+
+  console.log(referer, ctaPublicId, utm_source, utm_medium);
+
+  const data = await Cta_Model.findOne({ ctaPublicId });
+
+  if (utm_source && utm_medium === 'email') {
+    res.send(`Click from ${utm_source} email`);
+  } else if (referer) {
+    const domain = new URL(referer).hostname;
+    let referalDomain = "Unknown";
+
+    if (domain.includes('facebook.com')) {
+      referalDomain = "Facebook";
+    } else if (domain.includes('linkedin.com')) {
+      referalDomain = "LinkedIn";
+    } else if (domain.includes('twitter.com') || domain.includes('t.co')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('instagram.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('medium.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('reddit.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('tumblr.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('youtube.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('quora.com')) {
+      referalDomain = "Twitter";
+    } else if (domain.includes('pinterest.com')) {
+      referalDomain = "Twitter";
+    } else {
+      // Unknown
+      referalDomain = "Unknown";
+    }
+
+    res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
+  } else {
+    res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Unknown`);
+  }
+}
+
 module.exports = {
+  viewCTA,
   createCta,
   getCtabyPublicId,
   deleteCta,

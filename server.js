@@ -50,6 +50,7 @@ app.use(express.urlencoded({ limit: "50mb" }));
 app.use("/api/v1/main", express.json({ limit: "50mb" }), mainRoutes);
 app.use("/api/v1/main/cta", express.json({ limit: "50mb" }), ctaRoutes);
 
+app.use("/ctaview", express.json({ limit: "50mb" }), ctaRoutes);
 
 app.use("/api/v1/main/leads", express.json({ limit: "50mb" }), leadsRoutes);
 app.use(
