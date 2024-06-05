@@ -860,19 +860,19 @@ const viewCTA = async (req, res) => {
     } else if (domain.includes('twitter.com') || domain.includes('t.co')) {
       referalDomain = "Twitter";
     } else if (domain.includes('instagram.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Instagram";
     } else if (domain.includes('medium.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Medium";
     } else if (domain.includes('reddit.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Reddit";
     } else if (domain.includes('tumblr.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Tumblr";
     } else if (domain.includes('youtube.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Youtube";
     } else if (domain.includes('quora.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Quora";
     } else if (domain.includes('pinterest.com')) {
-      referalDomain = "Twitter";
+      referalDomain = "Pinterest";
     } else {
       // Unknown
       referalDomain = "Unknown";
