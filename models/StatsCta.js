@@ -22,6 +22,10 @@ const clicksCtaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    source:{
+        type: String, // Linkedin, Facebook, Twitter, Instagram, Email, Website, etc.
+        required: false,
+    },
     ctaUid:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'cta',

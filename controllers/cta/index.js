@@ -190,6 +190,7 @@ const saveTotalTimeSpent = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const {
     fieldToUpdate,
+    source,
     userIpAddress,
     userLocation,
     userBrowser,
@@ -207,6 +208,7 @@ const saveTotalTimeSpent = async (req, res) => {
         ? "video"
         : "totalTimeSpent",
     userIpAddress,
+    source,
     userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
@@ -237,6 +239,7 @@ const saveVideoStats = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const {
     fieldToUpdate,
+    source,
     userIpAddress,
     userLocation,
     userBrowser,
@@ -259,6 +262,7 @@ const saveVideoStats = async (req, res) => {
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
+    source,
     userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
@@ -409,6 +413,7 @@ const updateCtaCounts = async (req, res) => {
   const { ctaPublicId } = req.params;
   const {
     fieldToUpdate,
+    source,
     userIpAddress,
     userLocation,
     userBrowser,
@@ -428,6 +433,7 @@ const updateCtaCounts = async (req, res) => {
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
+    source,
     userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
@@ -823,7 +829,7 @@ const getDevicesInfo = async (req, res) => {
         }
       }
     ]);
-    console.log(devices);
+    // console.log(devices);
     return res.status(200).json({ success: true, data: devices });
   }
   catch (error) {
@@ -877,10 +883,100 @@ const viewCTA = async (req, res) => {
       // Unknown
       referalDomain = "Direct";
     }
+    
 
     res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
   } else {
     res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+  }
+}
+
+const getCtaViewsInDateRange = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
+    // finding the count of documents created on each date of last week for each ctaPublicId
+    const dateArrayLastWeek = [];
+    for (let i = 6; i >= 0; i--) {
+      let date = new Date();
+      date.setDate(date.getDate() - i);
+      dateArrayLastWeek.push(date.toISOString().split('T')[0]);
+    }
+    // finding the date range from current month's 1st date to current date
+    const dateRangeMonthToDate =[];
+    const date = new Date();
+    const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    console.log("first Date",firstDate)
+    let diff = 0;
+    while (firstDate.toISOString().split('T')[0] !== date.toISOString().split('T')[0]) {
+      diff+=1;
+      dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
+      firstDate.setDate(firstDate.getDate() + 1);
+    }
+    dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
+    const viewsWeek = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 6))
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const viewsMonthToDate = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          createdAt: {
+            $gte:new Date(date.getFullYear(), date.getMonth(), 1)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ])
+
+    console.log(dateRangeMonthToDate);
+    const viewsWeekArray = Array(7).fill(0);
+    const viewsMonthToDateArray = Array(diff).fill(0);
+    viewsWeek.forEach((item) => {
+      const index = dateArrayLastWeek.indexOf(item._id);
+      if (index !== -1) {
+        viewsWeekArray[index] = item.count;
+      }
+    });
+
+    viewsMonthToDate.forEach((item) => {
+      const index = dateRangeMonthToDate.indexOf(item._id);
+      if (index !== -1) {
+        viewsMonthToDateArray[index] = item.count;
+      }
+    });
+    console.log(viewsMonthToDateArray)
+
+    return res.status(200).json({ success: true, viewsWeekArray,dateArrayLastWeek,viewsMonthToDateArray,dateRangeMonthToDate});
+
+  }catch(error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
   }
 }
 
@@ -907,5 +1003,7 @@ module.exports = {
   getAllContacts,
   totalCtas,
   getTopPerformingCTAs,
-  getDevicesInfo
+  getDevicesInfo,
+  getCtaViewsInDateRange
+
 };
