@@ -875,7 +875,7 @@ const viewCTA = async (req, res) => {
       referalDomain = "Pinterest";
     } else {
       // Unknown
-      referalDomain = "Unknown";
+      referalDomain = "Direct";
     }
 
     res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
