@@ -880,7 +880,7 @@ const viewCTA = async (req, res) => {
 
     res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
   } else {
-    res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Unknown`);
+    res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
   }
 }
 
