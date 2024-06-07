@@ -41,5 +41,6 @@ router.get('/totalctas/:organizationId', ctaController.totalCtas);
 router.get('/getTopPerformingCTAs/:organizationId', ctaController.getTopPerformingCTAs);
 router.get('/getDevicesInfo/:organizationId', ctaController.getDevicesInfo);
 router.get('/getCtaViewsInDateRange/:organizationId', ctaController.getCtaViewsInDateRange);
+router.get('/getCtaSourcesData/:ctaPublicId', ctaController.getCtaSourcesData);
 
 module.exports = router;

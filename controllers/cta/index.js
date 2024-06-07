@@ -979,6 +979,30 @@ const getCtaViewsInDateRange = async (req, res) => {
       .json({ success: false, data: "Something went wrong" });
   }
 }
+const getCtaSourcesData = async (req, res) => {
+  const {ctaPublicId} = req.params;
+  try {
+    const data = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: parseInt(ctaPublicId)
+        }
+      },
+      {
+        $group: {
+          _id: "$source",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    return res.status(200).json({ success: true, data });
+  }catch(error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
 
 module.exports = {
   viewCTA,
@@ -1004,6 +1028,6 @@ module.exports = {
   totalCtas,
   getTopPerformingCTAs,
   getDevicesInfo,
-  getCtaViewsInDateRange
-
+  getCtaViewsInDateRange,
+  getCtaSourcesData
 };
