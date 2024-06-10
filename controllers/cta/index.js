@@ -198,7 +198,7 @@ const saveTotalTimeSpent = async (req, res) => {
     totalTimeSpent,
     ctaPublicId,
   } = req.body;
-  newCtaStat = new ClicksCta_Model({
+  const newCtaStat = new ClicksCta_Model({
     clickType:
       fieldToUpdate === "linkClicksCount"
         ? "link"
@@ -216,12 +216,6 @@ const saveTotalTimeSpent = async (req, res) => {
     ctaPublicId,
     totalTimeSpent,
   });
-  // const alreadyExists = await ClicksCta_Model.findOne({
-  //   ctaPublicId,
-  //   userIpAddress,
-  //   clickType: "totalTimeSpent",
-  // });
-  // if(alreadyExists) return res.status(500).json({ success: false, data: "user already exists" });
   newCtaStat
     .save()
     .then((data) => {
