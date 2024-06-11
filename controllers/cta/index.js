@@ -438,7 +438,8 @@ const updateCtaCounts = async (req, res) => {
         ? "link"
         : fieldToUpdate === "viewCount"
         ? "view"
-        : fieldToUpdate === "video"?"video":"scroll",
+        : fieldToUpdate === "video"?"video"
+        : fieldToUpdate === "scroll"?"scroll": "ctaOpened",
     ctaPublicId,
     linkName,
     ctaClientEmail: currentCta.userEmail,
@@ -973,6 +974,36 @@ const getCtaViewsInDateRange = async (req, res) => {
       .json({ success: false, data: "Something went wrong" });
   }
 }
+
+const getTotalActiveCTAs = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const totalActiveCtas = await Cta_Model.countDocuments({ organizationId, status: 1 });
+    return res.status(200).json({ success: true, data: totalActiveCtas });
+  }catch(error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+
+}
+
+const getTotalPausedCTAs = async (req, res) => {
+  const { organizationId } = req.params;
+  try {
+    const totalPausedCtas = await Cta_Model.countDocuments({ organizationId, status: 2 });
+    return res.status(200).json({ success: true, data: totalPausedCtas });
+  }catch(error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
+
+
 const getCtaSourcesData = async (req, res) => {
   const {ctaPublicId} = req.params;
   try {
@@ -1023,5 +1054,7 @@ module.exports = {
   getTopPerformingCTAs,
   getDevicesInfo,
   getCtaViewsInDateRange,
-  getCtaSourcesData
+  getCtaSourcesData,
+  getTotalActiveCTAs,
+  getTotalPausedCTAs
 };
