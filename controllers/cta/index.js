@@ -209,7 +209,7 @@ const saveTotalTimeSpent = async (req, res) => {
             : "totalTimeSpent",
     userIpAddress,
     source,
-    userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
+    userLocation: userLocation?.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
@@ -257,7 +257,7 @@ const saveVideoStats = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     source,
-    userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
+    userLocation: userLocation?.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
@@ -428,7 +428,7 @@ const updateCtaCounts = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     source,
-    userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
+    userLocation: userLocation?.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
     userDevice,
