@@ -44,4 +44,6 @@ router.get('/getCtaViewsInDateRange/:organizationId', ctaController.getCtaViewsI
 router.get('/getCtaSourcesData/:ctaPublicId', ctaController.getCtaSourcesData);
 router.get('/getTotalActiveCTAs/:organizationId', ctaController.getTotalActiveCTAs);
 router.get('/getTotalPausedCTAs/:organizationId', ctaController.getTotalPausedCTAs);
+router.post('/getctaclickslogsintimerange',ctaController.getCtaClicksLogsInTimeRange);
+
 module.exports = router;

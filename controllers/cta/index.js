@@ -203,10 +203,10 @@ const saveTotalTimeSpent = async (req, res) => {
       fieldToUpdate === "linkClicksCount"
         ? "link"
         : fieldToUpdate === "viewCount"
-        ? "view"
-        : fieldToUpdate === "video"
-        ? "video"
-        : "totalTimeSpent",
+          ? "view"
+          : fieldToUpdate === "video"
+            ? "video"
+            : "totalTimeSpent",
     userIpAddress,
     source,
     userLocation: userLocation.includes("undefined") ? "N/A" : userLocation,
@@ -266,8 +266,8 @@ const saveVideoStats = async (req, res) => {
       fieldToUpdate === "linkClicksCount"
         ? "link"
         : fieldToUpdate === "viewCount"
-        ? "view"
-        : "video",
+          ? "view"
+          : "video",
     ctaPublicId,
     videoStats,
     ctaClientEmail: currentCta.userEmail,
@@ -437,9 +437,9 @@ const updateCtaCounts = async (req, res) => {
       fieldToUpdate === "linkClicksCount"
         ? "link"
         : fieldToUpdate === "viewCount"
-        ? "view"
-        : fieldToUpdate === "video"?"video"
-        : fieldToUpdate === "scroll"?"scroll": "ctaOpened",
+          ? "view"
+          : fieldToUpdate === "video" ? "video"
+            : fieldToUpdate === "scroll" ? "scroll" : "ctaOpened",
     ctaPublicId,
     linkName,
     ctaClientEmail: currentCta.userEmail,
@@ -584,7 +584,7 @@ const getCtaClicksDetails = async (req, res) => {
         },
       },
     ]);
-    
+
 
     const videoViews = await VideoViews_Model.aggregate([
       {
@@ -617,7 +617,7 @@ const getCtaClicksDetails = async (req, res) => {
         },
       },
     ])
-    console.log("videoviews data ",videoViews);  
+    console.log("videoviews data ", videoViews);
     // Initialize arrays of length 10 with 0s
     const viewClicksArray = new Array(dateDifference).fill(0);
     const linkClicksArray = new Array(dateDifference).fill(0);
@@ -672,31 +672,31 @@ const getCtaClicksDetails = async (req, res) => {
   }
 };
 
-const saveTestimonial = async (req,res) => {
+const saveTestimonial = async (req, res) => {
   try {
     const { ctaPublicId, data } = req.body;
     // const testimonials = data.testimonials;
     // const links = data.links;
     console.log(data);
-    const isExists = await CtaTestimonial_Model.findOne({ ctaPublicId});
-    if(isExists) {
+    const isExists = await CtaTestimonial_Model.findOne({ ctaPublicId });
+    if (isExists) {
       const updatedData = await CtaTestimonial_Model.findOneAndUpdate({ ctaPublicId }, {
-        testimonials:{
-          testimonials:data.testimonials,
-          links:data.links
+        testimonials: {
+          testimonials: data.testimonials,
+          links: data.links
         }
       });
-      return res.status(200).json({ success: true, data:updatedData  });
-    }else{
+      return res.status(200).json({ success: true, data: updatedData });
+    } else {
       const newTestimonial = new CtaTestimonial_Model({
         ctaPublicId,
-        testimonials:{
-          testimonials:data.testimonials,
-          links:data.links
+        testimonials: {
+          testimonials: data.testimonials,
+          links: data.links
         },
       });
       const savedData = await newTestimonial.save();
-      return res.status(200).json({ success: true, data:savedData  });
+      return res.status(200).json({ success: true, data: savedData });
     }
   } catch (error) {
     console.log(error);
@@ -706,12 +706,12 @@ const saveTestimonial = async (req,res) => {
   }
 };
 
-const getAllContacts = async (req,res) => {
+const getAllContacts = async (req, res) => {
   try {
     const { organizationId } = req.params;
     const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId").select("title");
     const ctaPublicIds = allCtaPublicIds.map((item) => item.ctaPublicId.toString());
-    const titleMap= {};
+    const titleMap = {};
     allCtaPublicIds.forEach((item) => {
       titleMap[item.ctaPublicId] = item.title;
     })
@@ -728,8 +728,8 @@ const getAllContacts = async (req,res) => {
       }
     ]);
     console.log(allContacts);
-    return res.status(200).json({ success: true, data: allContacts,map:titleMap });
-  }catch(error) {
+    return res.status(200).json({ success: true, data: allContacts, map: titleMap });
+  } catch (error) {
     console.log(error);
     return res
       .status(500)
@@ -737,12 +737,12 @@ const getAllContacts = async (req,res) => {
   }
 }
 
-const getTestimonials = async (req,res) => {
+const getTestimonials = async (req, res) => {
   try {
     const { ctaPublicId } = req.params;
     const data = await CtaTestimonial_Model.findOne({ ctaPublicId });
-    console.log("getTestimonials ",data.testimonials);
-    return res.status(200).json({ success: true, data});
+    console.log("getTestimonials ", data.testimonials);
+    return res.status(200).json({ success: true, data });
   } catch (error) {
     console.log(error);
     return res
@@ -762,7 +762,7 @@ const totalCtas = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, data: "Something went wrong" });
-  } 
+  }
 }
 
 const getTopPerformingCTAs = async (req, res) => {
@@ -778,7 +778,7 @@ const getTopPerformingCTAs = async (req, res) => {
       {
         $match: {
           ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
-          clickType: { $in: ["link", "scroll","view","video"] }
+          clickType: { $in: ["link", "scroll", "view", "video"] }
         }
       },
       {
@@ -839,7 +839,7 @@ const getDevicesInfo = async (req, res) => {
 
 const viewCTA = async (req, res) => {
   const { ctaPublicId } = req.params;
-  
+
   const referer = req.headers['referer'] || req.headers['referrer'];
   const utm_source = req.query.utm_source;
   const utm_medium = req.query.utm_medium;
@@ -878,7 +878,7 @@ const viewCTA = async (req, res) => {
       // Unknown
       referalDomain = "Direct";
     }
-    
+
 
     res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
   } else {
@@ -898,13 +898,13 @@ const getCtaViewsInDateRange = async (req, res) => {
       dateArrayLastWeek.push(date.toISOString().split('T')[0]);
     }
     // finding the date range from current month's 1st date to current date
-    const dateRangeMonthToDate =[];
+    const dateRangeMonthToDate = [];
     const date = new Date();
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    console.log("first Date",firstDate)
+    console.log("first Date", firstDate)
     let diff = 0;
     while (firstDate.toISOString().split('T')[0] !== date.toISOString().split('T')[0]) {
-      diff+=1;
+      diff += 1;
       dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
       firstDate.setDate(firstDate.getDate() + 1);
     }
@@ -933,7 +933,7 @@ const getCtaViewsInDateRange = async (req, res) => {
         $match: {
           ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
           createdAt: {
-            $gte:new Date(date.getFullYear(), date.getMonth(), 1)
+            $gte: new Date(date.getFullYear(), date.getMonth(), 1)
           }
         }
       },
@@ -965,9 +965,9 @@ const getCtaViewsInDateRange = async (req, res) => {
     });
     console.log(viewsMonthToDateArray)
 
-    return res.status(200).json({ success: true, viewsWeekArray,dateArrayLastWeek,viewsMonthToDateArray,dateRangeMonthToDate});
+    return res.status(200).json({ success: true, viewsWeekArray, dateArrayLastWeek, viewsMonthToDateArray, dateRangeMonthToDate });
 
-  }catch(error) {
+  } catch (error) {
     console.log(error);
     return res
       .status(500)
@@ -980,7 +980,7 @@ const getTotalActiveCTAs = async (req, res) => {
   try {
     const totalActiveCtas = await Cta_Model.countDocuments({ organizationId, status: 1 });
     return res.status(200).json({ success: true, data: totalActiveCtas });
-  }catch(error) {
+  } catch (error) {
     console.log(error);
     return res
       .status(500)
@@ -994,7 +994,7 @@ const getTotalPausedCTAs = async (req, res) => {
   try {
     const totalPausedCtas = await Cta_Model.countDocuments({ organizationId, status: 2 });
     return res.status(200).json({ success: true, data: totalPausedCtas });
-  }catch(error) {
+  } catch (error) {
     console.log(error);
     return res
       .status(500)
@@ -1005,7 +1005,7 @@ const getTotalPausedCTAs = async (req, res) => {
 
 
 const getCtaSourcesData = async (req, res) => {
-  const {ctaPublicId} = req.params;
+  const { ctaPublicId } = req.params;
   try {
     const data = await ClicksCta_Model.aggregate([
       {
@@ -1021,7 +1021,126 @@ const getCtaSourcesData = async (req, res) => {
       }
     ]);
     return res.status(200).json({ success: true, data });
-  }catch(error) {
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
+const getCtaClicksLogsInTimeRange = async (req, res) => {
+  const { ctaPublicId1, ctaPublicId2, fromDate } = req.body;
+  console.log(ctaPublicId1, ctaPublicId2, fromDate);
+  dateRangeArray = [];
+  const date = new Date(fromDate);
+  const today = new Date();
+  while (date.toISOString().split('T')[0] !== today.toISOString().split('T')[0]) {
+    dateRangeArray.push(date.toISOString().split('T')[0]);
+    date.setDate(date.getDate() + 1);
+  }
+  dateRangeArray.push(date.toISOString().split('T')[0]);
+  console.log(dateRangeArray);
+  try {
+  // finding the count of documents created on each date of the time range for each ctaPublicId1 group by clickType
+    const data1 = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: parseInt(ctaPublicId1),
+          createdAt: {
+            $gte: new Date(fromDate)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          count: { $sum: 1 },
+          doc: { $push: "$$ROOT" }
+
+        }
+      },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
+    ]);
+    console.log(data1);
+    const data2 = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: parseInt(ctaPublicId2),
+          createdAt: {
+            $gte: new Date(fromDate)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          count: { $sum: 1 },
+          doc: { $push: "$$ROOT" }
+        }
+      }
+    ]);
+
+    linkDataArray1 = Array(dateRangeArray.length).fill(0);
+    linkDataArray2 = Array(dateRangeArray.length).fill(0);
+    viewDataArray1 = Array(dateRangeArray.length).fill(0);
+    viewDataArray2 = Array(dateRangeArray.length).fill(0);
+    ctaOpenedDataArray1 = Array(dateRangeArray.length).fill(0);
+    ctaOpenedDataArray2 = Array(dateRangeArray.length).fill(0);
+    engagementDataArray1 = Array(dateRangeArray.length).fill(0);
+    engagementDataArray2 = Array(dateRangeArray.length).fill(0);
+
+    data1.forEach((item) => {
+      const index = dateRangeArray.indexOf(item._id);
+      if (index !== -1) {
+        item.doc.forEach((doc) => {
+          if (doc.clickType === 'link') {
+            linkDataArray1[index] += 1;
+          } else if (doc.clickType === 'view') {
+            viewDataArray1[index] += 1;
+          } else if (doc.clickType === 'ctaOpened') {
+            ctaOpenedDataArray1[index] += 1;
+          } else if(doc.clickType === 'link' || doc.clickType === 'scroll'|| doc.clickType === 'video') {
+            engagementDataArray1[index] += 1;
+          }
+        });
+      }
+    })
+
+    console.log(linkDataArray1);
+
+
+    data2.forEach((item) => {
+      const index = dateRangeArray.indexOf(item._id);
+      if (index !== -1) {
+        item.doc.forEach((doc) => {
+          if (doc.clickType === 'link') {
+            linkDataArray2[index] += 1;
+          } else if (doc.clickType === 'view') {
+            viewDataArray2[index] += 1;
+          } else if (doc.clickType === 'ctaOpened') {
+            ctaOpenedDataArray2[index] += 1;
+          } else if(doc.clickType === 'link' || doc.clickType === 'scroll'|| doc.clickType === 'video') {
+            engagementDataArray2[index] += 1;
+          }
+        });
+      }
+    })
+    console.log(linkDataArray2);
+    
+    return res.status(200).json({ success: true, data1: { linkDataArray1, viewDataArray1, ctaOpenedDataArray1, engagementDataArray1 }, data2: { linkDataArray2, viewDataArray2, ctaOpenedDataArray2, engagementDataArray2 }, dateRangeArray });
+
+    // return res.status(200).json({ success: true, data1Array, data2Array, dateRangeArray });
+  }
+  catch (error) {
     console.log(error);
     return res
       .status(500)
@@ -1056,5 +1175,6 @@ module.exports = {
   getCtaViewsInDateRange,
   getCtaSourcesData,
   getTotalActiveCTAs,
-  getTotalPausedCTAs
+  getTotalPausedCTAs,
+  getCtaClicksLogsInTimeRange
 };
