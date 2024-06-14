@@ -234,6 +234,7 @@ const saveVideoStats = async (req, res) => {
   const {
     fieldToUpdate,
     source,
+    uniqueUserId,
     userIpAddress,
     userLocation,
     userBrowser,
@@ -257,6 +258,7 @@ const saveVideoStats = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     source,
+    uniqueUserId,
     userLocation: userLocation?.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
@@ -408,6 +410,7 @@ const updateCtaCounts = async (req, res) => {
   const {
     fieldToUpdate,
     source,
+    uniqueUserId,
     userIpAddress,
     userLocation,
     userBrowser,
@@ -428,6 +431,7 @@ const updateCtaCounts = async (req, res) => {
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     source,
+    uniqueUserId,
     userLocation: userLocation?.includes("undefined") ? "N/A" : userLocation,
     userCountry: separateUppercaseWord(userLocation),
     userBrowser,
