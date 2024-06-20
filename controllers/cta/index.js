@@ -745,7 +745,6 @@ const getTestimonials = async (req, res) => {
   try {
     const { ctaPublicId } = req.params;
     const data = await CtaTestimonial_Model.findOne({ ctaPublicId });
-    console.log("getTestimonials ", data.testimonials);
     return res.status(200).json({ success: true, data });
   } catch (error) {
     console.log(error);
