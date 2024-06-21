@@ -48,6 +48,7 @@ const getUserDetials = async (req, res) => {
     const { email } = req.params;
     User_Model.findOne({ email }).sort({ createdAt: -1 })
         .then((data) => {
+            console.log("user Found : ",data);
             res.status(200).json({ status: true, data });
         })
         .catch((err) => console.log(err));

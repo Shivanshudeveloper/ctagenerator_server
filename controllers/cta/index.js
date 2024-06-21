@@ -1016,12 +1016,12 @@ const getCtaSourcesData = async (req, res) => {
           ctaPublicId: parseInt(ctaPublicId)
         }
       },
-      {
-        $group: {
-          _id: "$source",
-          count: { $sum: 1 }
-        }
-      }
+      // {
+      //   $group: {
+      //     _id: "$source",
+      //     count: { $sum: 1 }
+      //   }
+      // }
     ]);
     return res.status(200).json({ success: true, data });
   } catch (error) {
