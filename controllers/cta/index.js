@@ -794,11 +794,16 @@ const getTopPerformingCTAs = async (req, res) => {
         $sort: {
           totalClicks: -1
         }
-      },
-      {
-        $limit: 5
       }
     ]);
+
+    allCtaPublicIds.forEach((item) => {
+      const cta = totalClicks.find((click) => click._id === item.ctaPublicId);
+      if (!cta) {
+        totalClicks.push({ _id: item.ctaPublicId, totalClicks: 0 });
+      }
+    });
+
     return res.status(200).json({ success: true, data: totalClicks, mapper: map });
   }
   catch (error) {
@@ -1213,6 +1218,255 @@ const getCtaTimeMap = async (req, res) => {
   }
 }
 
+const getTotalCtaClicked = async (req,res)=>{
+  const { organizationId } = req.params;
+  const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
+  const totalClicks = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+        clickType: { $in: ["link", "scroll", "view", "video"] }
+      }
+    },
+    {
+      $group: {
+        _id: "$ctaPublicId",
+        totalClicks: { $sum: 1 }
+      },
+
+    },
+  ]);
+  return res.status(200).json({ success: true, data: totalClicks.length});
+
+}
+
+const getTotalStatsInTimeRange = async (req, res) => {
+  const { organizationId } = req.params;
+  let { startDate } = req.body;
+  const dateDiff = new Date().getDate() - new Date(startDate).getDate();
+  const allCtaPublicIds = await Cta_Model.find({organizationId}).select("ctaPublicId");
+  console.log(dateDiff);
+  if(dateDiff <=  31 && dateDiff > 0){
+    const dateArray = [];
+    for(let i = dateDiff; i >= 0; i--){
+      let date = new Date();
+      date.setDate(date.getDate() - i);
+      dateArray.push(date.toISOString().split('T')[0]);
+    }
+    const data = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          createdAt: {
+            $gte: new Date(startDate)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          activity: { $push: "$$ROOT" },
+        }
+      },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
+    ]);
+    //  console.log(data);
+
+    const dataArray = {}
+    dateArray.forEach((date) => {
+      dataArray[date] = {
+        linkClicks: 0,
+        viewCount: 0,
+        ctaOpened: 0,
+        engagements: 0
+      }
+    })
+    
+
+    data.forEach((item) => {
+      const index = dateArray.indexOf(item._id);
+      if (index !== -1) {
+        item.activity.forEach((activity) => {
+          if (activity.clickType === "link") {
+            dataArray[item._id].linkClicks += 1;
+          } else if (activity.clickType === "view") {
+            dataArray[item._id].viewCount += 1;
+          } else if (activity.clickType === "ctaOpened") {
+            dataArray[item._id].ctaOpened += 1;
+          } else if(activity.clickType === 'link' || activity.clickType === 'scroll'|| activity.clickType === 'video'){
+            dataArray[item._id].engagements += 1;
+          }
+        });
+      }
+    })
+    return res.status(200).json({ success: true, data: dataArray, dateArray });
+  }else{
+    const monthArray = [];
+    const fromDate = new Date(startDate);
+    monthArray.push(`${new Date(fromDate).getMonth()+1} - ${new Date(fromDate).getFullYear()}`)
+    startDate = new Date(fromDate).setMonth(new Date(fromDate).getMonth() + 1);
+    while(new Date(startDate).getMonth()!== new Date().getMonth()){
+      monthArray.push(`${new Date(startDate).getMonth()+1} - ${new Date(startDate).getFullYear()}`)
+      startDate = new Date(startDate).setMonth(new Date(startDate).getMonth() + 1); 
+    }
+    monthArray.push(`${new Date(startDate).getMonth()+1} - ${new Date(startDate).getFullYear()}`);
+    console.log(monthArray);
+    const data = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          createdAt: {
+            $gte: fromDate
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m", date: "$createdAt" }
+          },
+          activity: { $push: "$$ROOT" },
+        }
+      },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
+    ]);
+    console.log(monthArray);
+    const dataArray = {}
+    monthArray.forEach((date) => {
+      dataArray[date] = {
+        linkClicks: 0,
+        viewCount: 0,
+        ctaOpened: 0,
+        engagements: 0
+      }
+    })
+    console.log(data)
+    data.forEach((item) => {
+      const val = `${new Date(item._id).getMonth()+1} - ${new Date(item._id).getFullYear()}`
+      const index = monthArray.indexOf(val);
+      console.log(index);
+      if (index !== -1) {
+        item.activity.forEach((activity) => {
+          if (activity.clickType === "link") {
+            dataArray[val].linkClicks += 1;
+          } else if (activity.clickType === "view") {
+            dataArray[val].viewCount += 1;
+          } else if (activity.clickType === "ctaOpened") {
+            dataArray[val].ctaOpened += 1;
+          } else if(activity.clickType === 'link' || activity.clickType === 'scroll'|| activity.clickType === 'video'){
+            dataArray[val].engagements += 1;
+          }
+        });
+      }
+    })
+    return res.status(200).json({ success: true, data: dataArray, dateArray: monthArray });
+    
+  }
+
+}
+
+const getTopPerformingCtaInTimeRange = async (req, res) => {
+  const { startDate } = req.body;
+  const { organizationId } = req.params;
+  const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId").select("title");
+  const mapper = {};
+  allCtaPublicIds.forEach((item) => {
+    mapper[item.ctaPublicId] = item.title;
+  });
+  const data = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+        createdAt: {
+          $gte: new Date(startDate)
+        }
+      }
+    },
+    {
+      $group: {
+        _id: "$ctaPublicId",
+        totalClicks: { $sum: 1 }
+      }
+    },
+    {
+      $sort: {
+        totalClicks: -1
+      }
+    }
+  ])
+
+  return res.status(200).json({ success: true, data, mapper });
+
+  }
+
+ const getAllCtaStatsInTimeRange = async (req, res)=>{
+  const { organizationId } = req.params;
+  const { startDate } = req.body;
+  console.log(startDate);
+
+  const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId").select('title').select('typecta');
+  const mapper = {};
+  allCtaPublicIds.forEach((item) => {
+    mapper[item.ctaPublicId] = {title : item.title,typecta : item.typecta};
+  })
+  const data = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+        createdAt: {
+          $gte: new Date(startDate)
+        }
+      }
+    },
+    {
+      $group: {
+        _id: {
+          ctaPublicId: "$ctaPublicId",
+          clickType: "$clickType"
+        },
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+  const result = data.reduce((acc, item) => {
+    const { ctaPublicId, clickType } = item._id;
+    const count = item.count;
+
+    if (!acc[ctaPublicId]) {
+      acc[ctaPublicId] = {
+        linkClicks: 0,
+        viewCount: 0,
+        ctaOpened: 0,
+        engagements: 0
+      };
+    }
+
+    if (clickType === "link") {
+      acc[ctaPublicId].linkClicks = count;
+    } else if (clickType === "view") {
+      acc[ctaPublicId].viewCount = count;
+    } else if (clickType === "ctaOpened") {
+      acc[ctaPublicId].ctaOpened = count;
+    } else if(clickType === 'link' || clickType === 'scroll'|| clickType === 'video'){
+      acc[ctaPublicId].engagements = count;
+    }
+
+    return acc;
+  }, {});
+    // console.log(result);
+    return res.status(200).json({ success: true, data: result ,mapper});
+ }
+
 module.exports = {
   viewCTA,
   createCta,
@@ -1242,5 +1496,9 @@ module.exports = {
   getTotalActiveCTAs,
   getTotalPausedCTAs,
   getCtaClicksLogsInTimeRange,
-  getCtaTimeMap
+  getCtaTimeMap,
+  getTotalCtaClicked,
+  getTotalStatsInTimeRange,
+  getTopPerformingCtaInTimeRange,
+  getAllCtaStatsInTimeRange
 };

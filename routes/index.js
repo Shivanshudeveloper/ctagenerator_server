@@ -10,10 +10,7 @@ const validateApiKeyController = require('../auth').authenticateApiKey;
 
 // Controllers
 const tokensController = require('../controllers/tokens');
-
-
 const userController = require('../controllers/users');
-
 
 router.get('/test', (req, res) => {
     res.send('Working');
