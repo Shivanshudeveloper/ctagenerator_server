@@ -1189,12 +1189,12 @@ const getCtaTimeMap = async (req, res) => {
       }
       return hours;
     };
-
+    console.log(data);
     const result = data.reduce((acc, item) => {
       const { country } = item._id;
       const hour = new Date(item.date).getHours();
       const count = item.count;
-
+      
       if (!acc[country]) {
         acc[country] = initializeHours();
       }
