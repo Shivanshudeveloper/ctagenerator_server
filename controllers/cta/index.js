@@ -621,12 +621,47 @@ const getCtaClicksDetails = async (req, res) => {
         },
       },
     ])
+
+    const resultCtaClick = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: start,
+            $lte: end,
+          },
+          clickType: "ctaOpened",
+          ctaPublicId: parseInt(ctaPublicId),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          total_clicks: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          date: "$_id",
+          total_clicks: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          date: 1,
+        },
+      },
+    ]);
+
     console.log("videoviews data ", videoViews);
     // Initialize arrays of length 10 with 0s
     const viewClicksArray = new Array(dateDifference).fill(0);
     const linkClicksArray = new Array(dateDifference).fill(0);
     const videoWatchTimeArray = new Array(dateDifference).fill(0);
     const videoViewsArray = new Array(dateDifference).fill(0);
+    const ctaClicksArray = new Array(dateDifference).fill(0);
 
     // Populate the viewClicksArray based on the resultView
     console.log(resultView);
@@ -653,6 +688,14 @@ const getCtaClicksDetails = async (req, res) => {
       }
     });
 
+    // Populate the ctaClicksArray based on the resultCtaClick
+    resultCtaClick.forEach((item) => {
+      const index = datesArray.indexOf(item.date);
+      if (index !== -1) {
+        ctaClicksArray[index] = item.total_clicks;
+      }
+    })
+
     // Populate the videoViewsArray based on the videoViews
     videoViews.forEach((item) => {
       const index = datesArray.indexOf(item.date);
@@ -668,6 +711,7 @@ const getCtaClicksDetails = async (req, res) => {
         resultLink: linkClicksArray,
         resultVideo: videoWatchTimeArray,
         videoViews: videoViewsArray,
+        resultCtaClick: ctaClicksArray,
       },
     });
   } catch (error) {
