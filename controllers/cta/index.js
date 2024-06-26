@@ -1159,6 +1159,8 @@ const getCtaClicksLogsInTimeRange = async (req, res) => {
 const getCtaTimeMap = async (req, res) => {
   const { ctaPublicId } = req.params;
   console.log(ctaPublicId);
+  let istOffset = 5.5 * 60 * 60 * 1000;
+
   try {
     // finding the count of documents in time range of 1 hour from 1:00 to 24:00 of any day for each ctaPublicId
     const data = await ClicksCta_Model.aggregate([
@@ -1182,34 +1184,35 @@ const getCtaTimeMap = async (req, res) => {
       }
     ]);
     
-    const initializeHours = () => {
-      const hours = [];
-      for (let i = 0; i < 24; i++) {
-        hours.push({ hour: i, count: 0 });
-      }
-      return hours;
-    };
-    console.log(data);
-    const result = data.reduce((acc, item) => {
-      const { country } = item._id;
-      const hour = new Date(item.date).getHours();
-      const count = item.count;
+    // const initializeHours = () => {
+    //   const hours = [];
+    //   for (let i = 0; i < 24; i++) {
+    //     hours.push({ hour: i, count: 0 });
+    //   }
+    //   return hours;
+    // };
+    // console.log(data);
+    // const result = data.reduce((acc, item) => {
+    //   const { country } = item._id;
+    //   // const hour = new Date(item.date).getHours();
+    //   const hour = new Date(new Date(item.date).getTime() + (5.5*60*60*1000)).getUTCHours();
+    //   const count = item.count;
       
-      if (!acc[country]) {
-        acc[country] = initializeHours();
-      }
+    //   if (!acc[country]) {
+    //     acc[country] = initializeHours();
+    //   }
 
-      // Find the hour in the array and update the count
-      const hourIndex = acc[country].findIndex(h => h.hour === hour);
-      if (hourIndex !== -1) {
-        acc[country][hourIndex].count = count;
-      }
+    //   // Find the hour in the array and update the count
+    //   const hourIndex = acc[country].findIndex(h => h.hour === hour);
+    //   if (hourIndex !== -1) {
+    //     acc[country][hourIndex].count = count;
+    //   }
 
-      return acc;
-    }, {});
+    //   return acc;
+    // }, {});
 
     // console.log("time map ", result);
-    return res.status(200).json({ success: true, data:result });
+    return res.status(200).json({ success: true, data:data });
   } catch (error) {
     console.log(error);
     return res
