@@ -46,6 +46,7 @@ const addRegisteredUser = async (req, res) => {
 // Get User Details
 const getUserDetials = async (req, res) => {
     const { email } = req.params;
+    console.log("Email : ",email);
     User_Model.findOne({ email }).sort({ createdAt: -1 })
         .then((data) => {
             console.log("user Found : ",data);

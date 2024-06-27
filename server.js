@@ -20,7 +20,7 @@ const leadsRoutes = require("./routes/leads-route");
 const userStatsRoutes = require("./routes/user-stats-route");
 const linksTrackRoutes = require("./routes/link-track");
 const projectTimelineRoutes = require("./routes/projectTimelineRoutes");
-
+require('./processors/index')
 // DB Connection
 const db = process.env.MONGODB_URI;
 

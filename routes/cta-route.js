@@ -50,5 +50,6 @@ router.get('/getTotalCtaClicked/:organizationId', ctaController.getTotalCtaClick
 router.post('/getTotalStatsInTimeRange/:organizationId', ctaController.getTotalStatsInTimeRange);
 router.post('/getTopPerformingCtaInTimeRange/:organizationId', ctaController.getTopPerformingCtaInTimeRange);
 router.post('/getAllCtaStatsInTimeRange/:organizationId', ctaController.getAllCtaStatsInTimeRange);
+router.get('/sendMailToContacts/:ctaPublicId', ctaController.sendMailToContacts);
 
 module.exports = router;

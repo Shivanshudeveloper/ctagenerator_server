@@ -17,6 +17,11 @@ const ctaContactsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    notify_status:{
+        type: String,
+        required: true,
+        default:'To be Notified'
+    },
     createdAt: {
         type: Date,
         default: Date.now

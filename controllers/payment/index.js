@@ -5,7 +5,7 @@ require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const { APP_URL } = require("../../config/config");
-const sendEmailResend = require("../../lib/resend_email").sendEmail;
+const sendEmailResend = require("../../lib/resend_email").default.sendEmail;
 
 const Razorpay = require('razorpay');
 const { v4: uuidv4 } = require('uuid');
