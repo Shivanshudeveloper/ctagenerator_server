@@ -1315,12 +1315,24 @@ const getTotalCtaClicked = async (req, res) => {
 
 }
 
+function getDaysBetweenDates(date1, date2) {
+  // Calculate the time difference in milliseconds
+  console.log(date1, date2);
+  const timeDifference = Math.abs(date2 - date1);
+
+  // Convert time difference from milliseconds to days
+  const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+  return daysDifference;
+}
 const getTotalStatsInTimeRange = async (req, res) => {
   const { organizationId } = req.params;
   let { startDate } = req.body;
-  const dateDiff = new Date().getDate() - new Date(startDate).getDate();
+  // const dateDiff = new Date().getDate() - new Date(startDate).getDate();
+  const dateDiff = getDaysBetweenDates(new Date(startDate), new Date());
   const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
-  console.log(dateDiff);
+  console.log("dateDiff ",dateDiff);
+
   if (dateDiff <= 31 && dateDiff > 0) {
     const dateArray = [];
     for (let i = dateDiff; i >= 0; i--) {
@@ -1556,7 +1568,7 @@ const sendMailToContacts = async (req, res) => {
     ])
     // await CtaContacts_Model.deleteMany({ ctaPublicId: ctaPublicId });
     // console.log(contacts);
-    const ctaType =await Cta_Model.findOne({ ctaPublicId }).select('typecta'); 
+    const ctaType = await Cta_Model.findOne({ ctaPublicId }).select('typecta');
     console.log(ctaType?.typecta);
     console.log(ctaPublicId)
 
