@@ -13,6 +13,7 @@ emailQueue.process(async (job,done) => {
     const emailResponse = await sendEmail(job.data.contact.firstName, job.data.contact.email);
     console.log(emailResponse)
     done();
+    
     return { success:true,
          emailResponse 
     };

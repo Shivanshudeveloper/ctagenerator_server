@@ -6,7 +6,7 @@ const CtaContacts_Model = require("../../models/CtaContacts");
 const CtaTestimonial_Model = require("../../models/Testimonials");
 const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
-const {sendEmail} = require("../../lib/resend_email").default;
+const { sendEmail } = require("../../lib/resend_email").default;
 const Queue = require('bull');
 
 const emailQueue = new Queue('emailQueue', {
@@ -402,13 +402,13 @@ const updateCtaDetails = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const submitrequest = req.body;
   console.log("hi updateCtaDetails");
-  
+
   try {
     const data = await Cta_Model.updateOne(
       { ctaPublicId: submitrequest?.ctaPublicId },
       { $set: submitrequest.data }
     )
-    
+
     return res.status(200).json({ status: true, data });
   } catch (error) {
     return res.status(500).json({ status: false, data: "Something went wrong" });
@@ -1214,7 +1214,7 @@ const getCtaClicksLogsInTimeRange = async (req, res) => {
 const getCtaTimeMap = async (req, res) => {
   const { ctaPublicId } = req.params;
   console.log(ctaPublicId);
-  let istOffset = 5.5 * 60 * 60 * 1000;
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   try {
     // finding the count of documents in time range of 1 hour from 1:00 to 24:00 of any day for each ctaPublicId
@@ -1228,16 +1228,33 @@ const getCtaTimeMap = async (req, res) => {
         $group: {
           _id: {
             country: "$userCountry",
-            hour: { $hour: "$createdAt" }
+            hour: { $hour: { date: "$createdAt", timezone: timeZone } },
           },
           date: { $first: "$createdAt" },
           count: { $sum: 1 }
         }
       },
       {
-        $sort: { "_id.hour": 1 }
+
+        $addFields: {
+          newdate: {
+            $dateToString: {
+              date: "$date",
+              timezone: timeZone
+            }
+          }
+        }
+      },
+      {
+        $sort: {
+          date: 1
+        }
       }
     ]);
+    console.log(data);
+    // data.forEach((item) => {
+    //   console.log(`${item.root.createdAt}--> ${new Date(item.root.createdAt).getHours()}`)
+    // })
 
     // const initializeHours = () => {
     //   const hours = [];
@@ -1526,33 +1543,37 @@ const getAllCtaStatsInTimeRange = async (req, res) => {
 }
 
 const sendMailToContacts = async (req, res) => {
-  const {ctaPublicId} = req.params;
+  const { ctaPublicId } = req.params;
   console.log(ctaPublicId);
   try {
     const contacts = await CtaContacts_Model.aggregate([
       {
         $match: {
-          ctaPublicId:ctaPublicId,
-          notify_status:'To be Notified'
+          ctaPublicId: ctaPublicId,
+          notify_status: 'To be Notified'
         }
       }
     ])
+    // await CtaContacts_Model.deleteMany({ ctaPublicId: ctaPublicId });
+    // console.log(contacts);
+    const ctaType =await Cta_Model.findOne({ ctaPublicId }).select('typecta'); 
+    console.log(ctaType?.typecta);
+    console.log(ctaPublicId)
 
-    contacts.forEach((contact,i)=>{
-      emailQueue.add({contact}).then((job)=>{
-        if(i===contacts.length-1){
-          console.log("all contacts added to queue")
-        }
-      })
+    // return;
+    contacts.forEach(async (contact, i) => {
+      const emailResponse = await sendEmail(`${contact.firstName} ${contact.lastName}`, contact.email, ctaPublicId, ctaType?.typecta);
+      console.log(emailResponse);
+      if (emailResponse.success) {
+        await CtaContacts_Model.findByIdAndUpdate(contact._id, { notify_status: "Notified" });
+      }
     })
-    
-    // console.log("all contacts added to queue")
-  
-    return res.status(200).json({success:true});
+
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.log("mailing error : ",error);
-    return res.status(500).json({success:false,data:"Something went wrong while sending mail"});
-    
+    console.log("mailing error : ", error);
+    return res.status(500).json({ success: false, data: "Something went wrong while sending mail" });
+
   }
 
 }
