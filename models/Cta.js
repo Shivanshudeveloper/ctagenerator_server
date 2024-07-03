@@ -38,6 +38,10 @@ const ctaSchema = new mongoose.Schema({
         type:Object,
         required:false
     },
+    aiAgent:{
+        type:Object,
+        required:false
+    },
     photos: {
         type: Object,
         required: false,
