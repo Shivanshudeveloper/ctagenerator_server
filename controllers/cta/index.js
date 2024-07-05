@@ -8,13 +8,9 @@ const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
 const { sendEmail } = require("../../lib/resend_email").default;
 const Queue = require('bull');
+const azureBotResponse = require('../../lib/azure_openai')
 
-const emailQueue = new Queue('emailQueue', {
-  redis: {
-    host: '127.0.0.1',
-    port: 6379,
-  }
-});
+
 // Seperate the country from string
 function separateUppercaseWord(str) {
   if (str === undefined || str === null) {
@@ -1590,6 +1586,21 @@ const sendMailToContacts = async (req, res) => {
 
 }
 
+const getBotResponse = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  const { message } = req.body;
+  try {
+
+    const information = await Cta_Model.findOne({ ctaPublicId }).select('aiAgent');
+    // console.log(information);
+    const responseFromBot = await azureBotResponse(information.aiAgent,message)
+    return res.status(200).json({ success: true, data: responseFromBot });
+  }catch(error) {
+    console.log(error);
+    return res.status(500).json({ success: false, data: "Something went wrong" });
+  }
+}
+
 module.exports = {
   viewCTA,
   createCta,
@@ -1624,5 +1635,6 @@ module.exports = {
   getTotalStatsInTimeRange,
   getTopPerformingCtaInTimeRange,
   getAllCtaStatsInTimeRange,
-  sendMailToContacts
+  sendMailToContacts,
+  getBotResponse
 };

@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@azure/communication-email": "^1.0.0",
+    "@azure/identity": "^4.3.0",
+    "@azure/openai": "^1.0.0-beta.12",
     "axios": "^1.4.0",
     "bull": "^4.14.0",
     "colors": "^1.4.0",
@@ -25,6 +27,7 @@
     "mongoose": "^7.4.3",
     "nodemailer": "^6.9.4",
     "npm": "^10.7.0",
+    "openai": "^4.52.3",
     "razorpay": "^2.9.3",
     "resend": "^3.2.0",
     "stripe": "^13.5.0",

@@ -51,5 +51,6 @@ router.post('/getTotalStatsInTimeRange/:organizationId', ctaController.getTotalS
 router.post('/getTopPerformingCtaInTimeRange/:organizationId', ctaController.getTopPerformingCtaInTimeRange);
 router.post('/getAllCtaStatsInTimeRange/:organizationId', ctaController.getAllCtaStatsInTimeRange);
 router.get('/sendMailToContacts/:ctaPublicId', ctaController.sendMailToContacts);
+router.post('/getBotResponse/:ctaPublicId', ctaController.getBotResponse);
 
 module.exports = router;
