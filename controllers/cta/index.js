@@ -445,12 +445,12 @@ const updateCtaCounts = async (req, res) => {
     userDevice,
     ctaUid: currentCta._id,
     clickType:
-      fieldToUpdate === "linkClicksCount"
-        ? "link"
-        : fieldToUpdate === "viewCount"
-          ? "view"
+      fieldToUpdate === "linkClicksCount" ? "link"
+        : fieldToUpdate === "viewCount" ? "view"
           : fieldToUpdate === "video" ? "video"
-            : fieldToUpdate === "scroll" ? "scroll" : "ctaOpened",
+            : fieldToUpdate === "scroll" ? "scroll"
+              : fieldToUpdate === "ctaOpened" ? "ctaOpened"
+                : fieldToUpdate === "chat" ? "chat" : "",
     ctaPublicId,
     linkName,
     ctaClientEmail: currentCta.userEmail,
@@ -1327,7 +1327,7 @@ const getTotalStatsInTimeRange = async (req, res) => {
   // const dateDiff = new Date().getDate() - new Date(startDate).getDate();
   const dateDiff = getDaysBetweenDates(new Date(startDate), new Date());
   const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
-  console.log("dateDiff ",dateDiff);
+  console.log("dateDiff ", dateDiff);
 
   if (dateDiff <= 31 && dateDiff > 0) {
     const dateArray = [];
@@ -1593,9 +1593,9 @@ const getBotResponse = async (req, res) => {
 
     const information = await Cta_Model.findOne({ ctaPublicId }).select('aiAgent');
     // console.log(information);
-    const responseFromBot = await azureBotResponse(information.aiAgent,message)
+    const responseFromBot = await azureBotResponse(information.aiAgent, message)
     return res.status(200).json({ success: true, data: responseFromBot });
-  }catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, data: "Something went wrong" });
   }
