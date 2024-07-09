@@ -450,7 +450,7 @@ const updateCtaCounts = async (req, res) => {
           : fieldToUpdate === "video" ? "video"
             : fieldToUpdate === "scroll" ? "scroll"
               : fieldToUpdate === "ctaOpened" ? "ctaOpened"
-                : fieldToUpdate === "chat" ? "chat" : "",
+                : fieldToUpdate === "chat" ? "chat" : fieldToUpdate,
     ctaPublicId,
     linkName,
     ctaClientEmail: currentCta.userEmail,
@@ -538,6 +538,70 @@ const getCtaClicksDetails = async (req, res) => {
             $lte: end,
           },
           clickType: "link",
+          ctaPublicId: parseInt(ctaPublicId),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          total_clicks: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          date: "$_id",
+          total_clicks: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          date: 1,
+        },
+      },
+    ]);
+    const meetingsBookedData = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: start,
+            $lte: end,
+          },
+          clickType: "meetingScheduled",
+          ctaPublicId: parseInt(ctaPublicId),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          total_clicks: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          date: "$_id",
+          total_clicks: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          date: 1,
+        },
+      },
+    ]);
+    const chatData = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: start,
+            $lte: end,
+          },
+          clickType: "chat",
           ctaPublicId: parseInt(ctaPublicId),
         },
       },
@@ -662,13 +726,15 @@ const getCtaClicksDetails = async (req, res) => {
       },
     ]);
 
-    console.log("videoviews data ", videoViews);
+    // console.log("videoviews data ", videoViews);
     // Initialize arrays of length 10 with 0s
     const viewClicksArray = new Array(dateDifference).fill(0);
     const linkClicksArray = new Array(dateDifference).fill(0);
     const videoWatchTimeArray = new Array(dateDifference).fill(0);
     const videoViewsArray = new Array(dateDifference).fill(0);
     const ctaClicksArray = new Array(dateDifference).fill(0);
+    const meetingsBookedArray = new Array(dateDifference).fill(0);
+    const chatArray = new Array(dateDifference).fill(0);
 
     // Populate the viewClicksArray based on the resultView
     console.log(resultView);
@@ -711,6 +777,22 @@ const getCtaClicksDetails = async (req, res) => {
       }
     })
 
+    // Populate the meetingsBookedArray based on the meetingsBookedData
+    meetingsBookedData.forEach((item) => {
+      const index = datesArray.indexOf(item.date);
+      if (index !== -1) {
+        meetingsBookedArray[index] = item.total_clicks;
+      }
+    })
+
+    // Populate the chatArray based on the chatData
+    chatData.forEach((item) => {
+      const index = datesArray.indexOf(item.date);
+      if (index !== -1) {
+        chatArray[index] = item.total_clicks;
+      }
+    })
+
     res.status(200).json({
       status: true,
       data: {
@@ -719,6 +801,8 @@ const getCtaClicksDetails = async (req, res) => {
         resultVideo: videoWatchTimeArray,
         videoViews: videoViewsArray,
         resultCtaClick: ctaClicksArray,
+        meetingsBooked: meetingsBookedArray,
+        chatData: chatArray
       },
     });
   } catch (error) {
