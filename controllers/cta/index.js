@@ -1685,6 +1685,30 @@ const getBotResponse = async (req, res) => {
   }
 }
 
+const getClicklogsInTimeRange = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  const { startDate } = req.body;
+  console.log("timerange timerange",ctaPublicId, startDate);
+  const data = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: parseInt(ctaPublicId),
+        createdAt: {
+          $gte: new Date(startDate)
+        }
+      }
+    },
+    {
+      $sort: {
+        // sort the data in descending order of createdAt
+        createdAt: -1
+      }
+    }
+  ])
+  // console.log("data click logs",data);
+  return res.status(200).json({ success: true, data });
+}
+
 module.exports = {
   viewCTA,
   createCta,
@@ -1720,5 +1744,6 @@ module.exports = {
   getTopPerformingCtaInTimeRange,
   getAllCtaStatsInTimeRange,
   sendMailToContacts,
-  getBotResponse
+  getBotResponse,
+  getClicklogsInTimeRange
 };
