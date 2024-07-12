@@ -1240,6 +1240,8 @@ const getCtaClicksLogsInTimeRange = async (req, res) => {
     ctaOpenedDataArray2 = Array(dateRangeArray.length).fill(0);
     engagementDataArray1 = Array(dateRangeArray.length).fill(0);
     engagementDataArray2 = Array(dateRangeArray.length).fill(0);
+    meetingScheduledDataArray1 = Array(dateRangeArray.length).fill(0);
+    meetingScheduledDataArray2 = Array(dateRangeArray.length).fill(0);
 
     data1.forEach((item) => {
       const index = dateRangeArray.indexOf(item._id);
@@ -1253,6 +1255,8 @@ const getCtaClicksLogsInTimeRange = async (req, res) => {
             ctaOpenedDataArray1[index] += 1;
           } else if (doc.clickType === 'link' || doc.clickType === 'scroll' || doc.clickType === 'video') {
             engagementDataArray1[index] += 1;
+          } else if (doc.clickType === 'meetingScheduled') {
+            meetingScheduledDataArray1[index] += 1;
           }
         });
       }
@@ -1273,13 +1277,15 @@ const getCtaClicksLogsInTimeRange = async (req, res) => {
             ctaOpenedDataArray2[index] += 1;
           } else if (doc.clickType === 'link' || doc.clickType === 'scroll' || doc.clickType === 'video') {
             engagementDataArray2[index] += 1;
+          } else if (doc.clickType === 'meetingScheduled') {
+            meetingScheduledDataArray2[index] += 1;
           }
         });
       }
     })
     console.log(linkDataArray2);
 
-    return res.status(200).json({ success: true, data1: { linkDataArray1, viewDataArray1, ctaOpenedDataArray1, engagementDataArray1 }, data2: { linkDataArray2, viewDataArray2, ctaOpenedDataArray2, engagementDataArray2 }, dateRangeArray });
+    return res.status(200).json({ success: true, data1: { linkDataArray1, viewDataArray1, ctaOpenedDataArray1, engagementDataArray1, meetingScheduledDataArray1 }, data2: { linkDataArray2, viewDataArray2, ctaOpenedDataArray2, engagementDataArray2, meetingScheduledDataArray2 }, dateRangeArray });
 
     // return res.status(200).json({ success: true, data1Array, data2Array, dateRangeArray });
   }
@@ -1451,7 +1457,8 @@ const getTotalStatsInTimeRange = async (req, res) => {
         linkClicks: 0,
         viewCount: 0,
         ctaOpened: 0,
-        engagements: 0
+        engagements: 0,
+        meetingScheduled:0
       }
     })
 
@@ -1468,6 +1475,8 @@ const getTotalStatsInTimeRange = async (req, res) => {
             dataArray[item._id].ctaOpened += 1;
           } else if (activity.clickType === 'link' || activity.clickType === 'scroll' || activity.clickType === 'video') {
             dataArray[item._id].engagements += 1;
+          } else if (activity.clickType === 'meetingScheduled') {
+            dataArray[item._id].meetingScheduled += 1;
           }
         });
       }
@@ -1614,7 +1623,8 @@ const getAllCtaStatsInTimeRange = async (req, res) => {
         linkClicks: 0,
         viewCount: 0,
         ctaOpened: 0,
-        engagements: 0
+        engagements: 0,
+        meetingScheduled: 0
       };
     }
 
@@ -1626,6 +1636,8 @@ const getAllCtaStatsInTimeRange = async (req, res) => {
       acc[ctaPublicId].ctaOpened = count;
     } else if (clickType === 'link' || clickType === 'scroll' || clickType === 'video') {
       acc[ctaPublicId].engagements = count;
+    }else if (clickType === 'meetingScheduled') {
+      acc[ctaPublicId].meetingScheduled = count;
     }
 
     return acc;
@@ -1709,6 +1721,48 @@ const getClicklogsInTimeRange = async (req, res) => {
   return res.status(200).json({ success: true, data });
 }
 
+const getTotalMeetingBooked = async (req, res) => {
+  const { organizationId } = req.params;
+  const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
+  const totalClicks = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+        clickType: { $in: ["meetingScheduled"] }
+      }
+    },
+    {
+      $group: {
+        _id: "$ctaPublicId",
+        totalClicks: { $sum: 1 }
+      },
+
+    },
+  ]);
+  return res.status(200).json({ success: true, data: totalClicks.length });
+}
+
+const getTotalLinksClicked = async (req, res) => {
+  const { organizationId } = req.params;
+  const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId");
+  const totalClicks = await ClicksCta_Model.aggregate([
+    {
+      $match: {
+        ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+        clickType: { $in: ["link"] }
+      }
+    },
+    {
+      $group: {
+        _id: "$ctaPublicId",
+        totalClicks: { $sum: 1 }
+      },
+
+    },
+  ]);
+  return res.status(200).json({ success: true, data: totalClicks.length });
+}
+
 module.exports = {
   viewCTA,
   createCta,
@@ -1745,5 +1799,7 @@ module.exports = {
   getAllCtaStatsInTimeRange,
   sendMailToContacts,
   getBotResponse,
-  getClicklogsInTimeRange
+  getClicklogsInTimeRange,
+  getTotalMeetingBooked,
+  getTotalLinksClicked
 };
