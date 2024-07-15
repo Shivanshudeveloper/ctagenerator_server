@@ -1523,7 +1523,8 @@ const getTotalStatsInTimeRange = async (req, res) => {
         linkClicks: 0,
         viewCount: 0,
         ctaOpened: 0,
-        engagements: 0
+        engagements: 0,
+        meetingScheduled:0
       }
     })
     console.log(data)
@@ -1541,6 +1542,8 @@ const getTotalStatsInTimeRange = async (req, res) => {
             dataArray[val].ctaOpened += 1;
           } else if (activity.clickType === 'link' || activity.clickType === 'scroll' || activity.clickType === 'video') {
             dataArray[val].engagements += 1;
+          } else if (activity.clickType === 'meetingScheduled') {
+            dataArray[val].meetingScheduled += 1;
           }
         });
       }
