@@ -77,6 +77,8 @@ app.use(
   express.json({ limit: "50mb" }),
   paymentRoutes
 );
+
+
 app.use("/api/v1/main/feature", express.json({ limit: "50mb" }), featureRoutes);
 app.use(
   "/api/v1/main/template",

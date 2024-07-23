@@ -97,7 +97,7 @@ const createRazorpayOrder = async (req, res) => {
 
         const options = {
             amount: amount*100, // amount in smallest currency unit
-            currency: "INR",
+            currency: "USD",
             receipt: receipt,
         };
 
@@ -117,24 +117,16 @@ const successRazorPay = async (req, res) => {
     try {
         // getting the details back from our font-end
         const {
-            orderCreationId,
-            razorpayPaymentId,
-            razorpayOrderId,
-            razorpaySignature,
-            fullName,
+            plan,
             email,
-            phone,
-            institutionName,
-            packagePlan,
-            course
         } = req.body;
 
         
-        const existingUser = await RegisteredUsers_Model.findOne({ email, packagePlan, institutionName, fullName });
+        // const existingUser = await RegisteredUsers_Model.findOne({ email, packagePlan, institutionName, fullName });
 
-        if (existingUser) {
-            return res.status(400).json({ status: false, data: 'User already registered for the course' });
-        }
+        // if (existingUser) {
+        //     return res.status(400).json({ status: false, data: 'User already registered for the course' });
+        // }
 
         try {
             const newUser = new RegisteredUsers_Model({
@@ -153,7 +145,7 @@ const successRazorPay = async (req, res) => {
             });
             const userres = await newUser.save();
 
-            sendEmailResend(fullName, email, packagePlan, userres?._id);
+            // sendEmailResend(fullName, email, packagePlan, userres?._id);
 
             return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
         } catch (error) {
