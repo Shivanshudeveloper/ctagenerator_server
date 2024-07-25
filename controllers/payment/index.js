@@ -85,9 +85,25 @@ const alertSeen = async (req, res) => {
 
 // Create User Checkout Session
 const createRazorpayOrder = async (req, res) => {
-    const { amount } = req.body;
+    const { amount, plan, userEmail } = req.body;
 
-    const receipt = `receipt_${Date.now()}`;
+    let receipt = `RECIPT_${Date.now()}_${uuidv4()}`;
+
+    receipt = receipt.slice(0, 40);
+
+    console.log(`Payment Order for User ${userEmail} of Plan ${plan}. RECIPT: ${receipt}`);
+
+    let mainAmount = 0;
+
+    if (plan === "basic") {
+        mainAmount = 4.99;
+    } else if (plan === "starter"){
+        mainAmount = 9.99;
+    } else if (plan === "premium"){
+        mainAmount = 11.99;
+    } else {
+        mainAmount = 11.99;
+    }
 
     try {
         const instance = new Razorpay({
@@ -96,7 +112,7 @@ const createRazorpayOrder = async (req, res) => {
         });
 
         const options = {
-            amount: amount*100, // amount in smallest currency unit
+            amount: mainAmount * 100, // amount in smallest currency unit
             currency: "USD",
             receipt: receipt,
         };
