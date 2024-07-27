@@ -55,5 +55,6 @@ router.post('/getBotResponse/:ctaPublicId', ctaController.getBotResponse);
 router.post('/getClicklogsInTimeRange/:ctaPublicId', ctaController.getClicklogsInTimeRange);
 router.get('/getTotalMeetingBooked/:organizationId', ctaController.getTotalMeetingBooked);
 router.get('/getTotalLinksClicked/:organizationId', ctaController.getTotalLinksClicked);
+router.post('/getAllCtaDataInTimeRange', ctaController.getAllCtaDataInTimeRange);
 
 module.exports = router;

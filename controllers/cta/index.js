@@ -1043,7 +1043,10 @@ const getCtaViewsInDateRange = async (req, res) => {
     // finding the date range from current month's 1st date to current date
     const dateRangeMonthToDate = [];
     const date = new Date();
-    const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    // const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    // first date of current month
+    const tempdate = new Date();
+    const firstDate = new Date(tempdate.setDate(1));
     console.log("first Date", firstDate)
     let diff = 0;
     while (firstDate.toISOString().split('T')[0] !== date.toISOString().split('T')[0]) {
@@ -1051,7 +1054,9 @@ const getCtaViewsInDateRange = async (req, res) => {
       dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
       firstDate.setDate(firstDate.getDate() + 1);
     }
+    console.log("dateRangeMonthToDate", dateRangeMonthToDate);
     dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
+    diff += 1;
     const viewsWeek = await ClicksCta_Model.aggregate([
       {
         $match: {
@@ -1338,36 +1343,36 @@ const getCtaTimeMap = async (req, res) => {
       }
     ]);
     console.log(data);
-    // data.forEach((item) => {
-    //   console.log(`${item.root.createdAt}--> ${new Date(item.root.createdAt).getHours()}`)
-    // })
+    data.forEach((item) => {
+      console.log(`${item.root.createdAt}--> ${new Date(item.root.createdAt).getHours()}`)
+    })
 
-    // const initializeHours = () => {
-    //   const hours = [];
-    //   for (let i = 0; i < 24; i++) {
-    //     hours.push({ hour: i, count: 0 });
-    //   }
-    //   return hours;
-    // };
-    // console.log(data);
-    // const result = data.reduce((acc, item) => {
-    //   const { country } = item._id;
-    //   // const hour = new Date(item.date).getHours();
-    //   const hour = new Date(new Date(item.date).getTime() + (5.5*60*60*1000)).getUTCHours();
-    //   const count = item.count;
+    const initializeHours = () => {
+      const hours = [];
+      for (let i = 0; i < 24; i++) {
+        hours.push({ hour: i, count: 0 });
+      }
+      return hours;
+    };
+    console.log(data);
+    const result = data.reduce((acc, item) => {
+      const { country } = item._id;
+      // const hour = new Date(item.date).getHours();
+      const hour = new Date(new Date(item.date).getTime() + (5.5 * 60 * 60 * 1000)).getUTCHours();
+      const count = item.count;
 
-    //   if (!acc[country]) {
-    //     acc[country] = initializeHours();
-    //   }
+      if (!acc[country]) {
+        acc[country] = initializeHours();
+      }
 
-    //   // Find the hour in the array and update the count
-    //   const hourIndex = acc[country].findIndex(h => h.hour === hour);
-    //   if (hourIndex !== -1) {
-    //     acc[country][hourIndex].count = count;
-    //   }
+      // Find the hour in the array and update the count
+      const hourIndex = acc[country].findIndex(h => h.hour === hour);
+      if (hourIndex !== -1) {
+        acc[country][hourIndex].count = count;
+      }
 
-    //   return acc;
-    // }, {});
+      return acc;
+    }, {});
 
     // console.log("time map ", result);
     return res.status(200).json({ success: true, data: data });
@@ -1458,7 +1463,7 @@ const getTotalStatsInTimeRange = async (req, res) => {
         viewCount: 0,
         ctaOpened: 0,
         engagements: 0,
-        meetingScheduled:0
+        meetingScheduled: 0
       }
     })
 
@@ -1524,7 +1529,7 @@ const getTotalStatsInTimeRange = async (req, res) => {
         viewCount: 0,
         ctaOpened: 0,
         engagements: 0,
-        meetingScheduled:0
+        meetingScheduled: 0
       }
     })
     console.log(data)
@@ -1639,7 +1644,7 @@ const getAllCtaStatsInTimeRange = async (req, res) => {
       acc[ctaPublicId].ctaOpened = count;
     } else if (clickType === 'link' || clickType === 'scroll' || clickType === 'video') {
       acc[ctaPublicId].engagements = count;
-    }else if (clickType === 'meetingScheduled') {
+    } else if (clickType === 'meetingScheduled') {
       acc[ctaPublicId].meetingScheduled = count;
     }
 
@@ -1703,7 +1708,7 @@ const getBotResponse = async (req, res) => {
 const getClicklogsInTimeRange = async (req, res) => {
   const { ctaPublicId } = req.params;
   const { startDate } = req.body;
-  console.log("timerange timerange",ctaPublicId, startDate);
+  console.log("timerange timerange", ctaPublicId, startDate);
   const data = await ClicksCta_Model.aggregate([
     {
       $match: {
@@ -1765,7 +1770,205 @@ const getTotalLinksClicked = async (req, res) => {
   ]);
   return res.status(200).json({ success: true, data: totalClicks.length });
 }
+const extractOS = (userAgent) => {
+  if (/Windows/i.test(userAgent)) {
+    if (/Windows Phone/i.test(userAgent)) {
+      return 'Windows Phone';
+    }
+    return 'Windows';
+  } else if (/Android/i.test(userAgent)) {
+    return 'Android';
+  } else if (/Linux/i.test(userAgent)) {
+    return 'Linux';
+  } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+    return 'iOS';
+  } else if (/Mac/i.test(userAgent)) {
+    return 'Mac OS';
+  } else {
+    return 'Unknown';
+  }
+};
 
+const getAllCtaDataInTimeRange = async (req, res) => {
+  const { organizationId, range } = req.body;
+  console.log(organizationId, range);
+  let startDate = new Date();
+  // These should be in the range of 7 Days, 14 Days, 3 Weeks, Month to Date, 3 Months, 6 Months, 12 Months, All Lifetime
+  if (range === "7 Days") {
+    startDate.setDate(startDate.getDate() - 6);
+  } else if (range === "14 Days") {
+    startDate.setDate(startDate.getDate() - 13);
+  } else if (range === "3 Weeks") {
+    startDate.setDate(startDate.getDate() - 20);
+  } else if (range === "Month to Date") {
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  } else if (range === "3 Months") {
+    startDate.setMonth(startDate.getMonth() - 2);
+  } else if (range === "6 Months") {
+    startDate.setMonth(startDate.getMonth() - 5);
+  } else if (range === "12 Months") {
+    startDate.setMonth(startDate.getMonth() - 11);
+  } else if (range === "All Lifetime") {
+    startDate = new Date("2021-01-01");
+  }
+
+  const initializeHours = () => {
+    const hours = [];
+    for (let i = 0; i < 24; i++) {
+      hours.push({ hour: i, count: 0 });
+    }
+    return hours;
+  };
+
+  console.log(startDate);
+  try {
+    const allCtaPublicIds = await Cta_Model.find({ organizationId }).select("ctaPublicId").select('title').select('typecta');
+    const mapper = {};
+    allCtaPublicIds.forEach((item) => {
+      mapper[item.ctaPublicId] = { title: item.title, typecta: item.typecta };
+    })
+    const data = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: { $in: allCtaPublicIds.map(item => item.ctaPublicId) },
+          createdAt: {
+            $gte: startDate
+          }
+        }
+      },
+      {
+        $group: {
+          _id: "$ctaPublicId",
+          stat: { $push: "$$ROOT" },
+        }
+      }
+    ]);
+
+    // get  timemap for each ctaPublicId for each country group by hours
+    const timeMap = data.reduce((acc, item) => {
+      const ctaPublicId = item._id;
+      const stat = item.stat;
+      acc[ctaPublicId] = {};
+      stat.forEach((item) => {
+        const country = item.userCountry;
+        const hour = new Date(new Date(item.createdAt).getTime() + (5.5 * 60 * 60 * 1000)).getUTCHours();
+        if (!acc[ctaPublicId][country]) {
+          acc[ctaPublicId][country] = {};
+        }
+        if (!acc[ctaPublicId][country][hour]) {
+          acc[ctaPublicId][country][hour] = 0;
+        }
+        acc[ctaPublicId][country][hour] += 1;
+      })
+      return acc;
+    }, {});
+
+    console.log(timeMap);
+
+    // get top 5 performing CTAs with most linkClicks groupby ctaPublicId
+    let topPerformingCtas = {};
+    data.forEach((item) => {
+      topPerformingCtas[item._id] = {}
+      item.stat.forEach((stat) => {
+        if (Object.keys(topPerformingCtas[item._id]).length > 5) {
+          return;
+        }
+        if (stat.clickType === "link") {
+          if (topPerformingCtas[item._id][stat.linkName]) {
+            topPerformingCtas[item._id][stat.linkName].count += 1;
+          } else {
+            topPerformingCtas[item._id][stat.linkName] = { count: 1 };
+          }
+        }
+      })
+    })
+
+    // sort the topPerformingCtas based on the count of linkClicks
+    for (const ctaPublicId in topPerformingCtas) {
+      topPerformingCtas[ctaPublicId] = Object.fromEntries(Object.entries(topPerformingCtas[ctaPublicId]).sort((a, b) => b[1].count - a[1].count));
+    }
+
+    let topPerformingCountries = {};
+    data.forEach((item) => {
+      item.stat.forEach((stat) => {
+        let ctaPublicId = item._id;
+        let country = stat.userCountry;
+        let device = extractOS(stat.userDevice);
+
+        if (device.includes("undefined")) {
+          device = "Unknown";
+        }
+        if (country.includes("undefined")) {
+          country = "Unknown";
+        }
+        topPerformingCountries[ctaPublicId] = topPerformingCountries[ctaPublicId] ? topPerformingCountries[ctaPublicId] : {};
+        topPerformingCountries[ctaPublicId][country] = topPerformingCountries[ctaPublicId][country] ? topPerformingCountries[ctaPublicId][country] : {};
+        topPerformingCountries[ctaPublicId][country][device] = topPerformingCountries[ctaPublicId][country][device] ? topPerformingCountries[ctaPublicId][country][device] + 1 : 1;
+
+      })
+    })
+
+    // sort the topPerformingCountries based on total devices used in each country
+    for (const ctaPublicId in topPerformingCountries) {
+      for (const country in topPerformingCountries[ctaPublicId]) {
+        topPerformingCountries[ctaPublicId][country] = Object.fromEntries(Object.entries(topPerformingCountries[ctaPublicId][country]).sort((a, b) => b[1] - a[1]));
+      }
+    }
+    // now sort the topPerformingCountries based on the total number of devices used in each country
+    for (const ctaPublicId in topPerformingCountries) {
+      topPerformingCountries[ctaPublicId] = Object.fromEntries((Object.entries(topPerformingCountries[ctaPublicId])).sort((a, b) => {
+        let totalDevicesA = Object.values(a[1]).reduce((acc, item) => acc + item, 0);
+        let totalDevicesB = Object.values(b[1]).reduce((acc, item) => acc + item, 0);
+        return totalDevicesB - totalDevicesA;
+      }));
+
+    }
+    // console.log('topPerformingCountries', topPerformingCountries);
+
+
+    const result = data.reduce((acc, item) => {
+      const ctaPublicId = item._id;
+      const stat = item.stat;
+      const linkClicks = stat.filter(item => item.clickType === "link").length;
+      const viewCount = stat.filter(item => item.clickType === "view").length;
+      const ctaOpened = stat.filter(item => item.clickType === "ctaOpened").length;
+      const engagements = stat.filter(item => item.clickType === "link" || item.clickType === "scroll" || item.clickType === "video").length;
+      const meetingScheduled = stat.filter(item => item.clickType === "meetingScheduled").length;
+      const videoViews = stat.filter(item => item.clickType === "video").length;
+
+      // topPerformingCtas[ctaPublicId][item.stat.linkName].count+=linkClicks;
+
+      acc[ctaPublicId] = {
+        ctaName: mapper[ctaPublicId].title,
+        ctaType: mapper[ctaPublicId].typecta,
+        linkClicks,
+        viewCount,
+        ctaOpened,
+        engagements,
+        meetingScheduled,
+        topPerformingLinks: Object.keys(topPerformingCtas[ctaPublicId]).map(link => ({ link, count: topPerformingCtas[ctaPublicId][link].count })),
+        topPerformingCountries: Object.keys(topPerformingCountries[ctaPublicId]).map(country => ({ country, devices: Object.keys(topPerformingCountries[ctaPublicId][country]).map(device => ({ device, count: topPerformingCountries[ctaPublicId][country][device] })) })),
+        timeMap: timeMap[ctaPublicId]
+      }
+
+
+      if (mapper[ctaPublicId]?.typecta === "video") {
+        acc[ctaPublicId].videoViews = videoViews;
+        acc[ctaPublicId].watchTime = stat.filter(item => item.clickType === "video").reduce((acc, item) => acc + item.videoStats.watchTime, 0);
+      }
+
+      return acc;
+    }, {});
+
+
+
+    return res.status(200).json({ success: true, result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, error });
+  }
+  // return res.status(200).json({ success: true, data: result, mapper });
+}
 module.exports = {
   viewCTA,
   createCta,
@@ -1804,5 +2007,6 @@ module.exports = {
   getBotResponse,
   getClicklogsInTimeRange,
   getTotalMeetingBooked,
-  getTotalLinksClicked
+  getTotalLinksClicked,
+  getAllCtaDataInTimeRange
 };
