@@ -1957,12 +1957,20 @@ const getAllCtaDataInTimeRange = async (req, res) => {
         acc[ctaPublicId].watchTime = stat.filter(item => item.clickType === "video").reduce((acc, item) => acc + item.videoStats.watchTime, 0);
       }
 
+
       return acc;
     }, {});
+    // let resultArray = [];
+    const resultArray = Object.keys(result).map((key) => {
+      return {
+        ctaPublicId: key,
+        ...result[key],
+      }
+    }
+    )
 
 
-
-    return res.status(200).json({ success: true, result });
+    return res.status(200).json({ success: true, resultArray });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, error });
