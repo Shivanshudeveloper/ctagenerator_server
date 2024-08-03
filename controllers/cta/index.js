@@ -4,6 +4,8 @@ const ClicksCta_Model = require("../../models/StatsCta");
 const VideoViews_Model = require("../../models/VideoViews");
 const CtaContacts_Model = require("../../models/CtaContacts");
 const CtaTestimonial_Model = require("../../models/Testimonials");
+const FeedbackCta_Model = require("../../models/FeedbackCta");
+
 const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
 const { sendEmail } = require("../../lib/resend_email").default;
@@ -425,6 +427,58 @@ const updateCtaFeedbackSetting = async (req, res) => {
     )
 
     return res.status(200).json({ status: true, data });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+// Get User Feedback Info
+const getUserFeedbackInfo = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { clieIdLoc } = req.params;
+
+  try {
+    const existingDocument = await FeedbackCta_Model.findOne({
+      clieIdLoc
+    });
+    console.log(existingDocument);
+    return res.status(200).json({ status: true, data: existingDocument });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+// Get Feedback
+const getFeedbackClient = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const submitrequest = req.body;
+
+  try {
+    const existingDocument = await FeedbackCta_Model.findOne({
+        ctaPublicId: submitrequest?.ctaPublicId,
+        clieIdLoc: submitrequest?.clieIdLoc
+    });
+
+    if (existingDocument) {
+      const updatedDocument = await FeedbackCta_Model.findOneAndUpdate(
+        { ctaPublicId: submitrequest?.ctaPublicId, clieIdLoc: submitrequest?.clieIdLoc },
+        { $set: { feedback: submitrequest?.feedback } },
+        { new: true }
+      );
+      console.log("Updated document:", updatedDocument);
+
+      return res.status(200).json({ status: true, data: updatedDocument });
+    } else {
+      const newDocument = new FeedbackCta_Model({
+        ctaPublicId: submitrequest?.ctaPublicId,
+        clieIdLoc: submitrequest?.clieIdLoc,
+        feedback: submitrequest?.feedback
+      });
+      const savedDocument = await newDocument.save();
+      console.log("New document created:", savedDocument);
+      return res.status(200).json({ status: true, data: savedDocument });
+    }
+  
   } catch (error) {
     return res.status(500).json({ status: false, data: "Something went wrong" });
   }
@@ -2013,12 +2067,14 @@ module.exports = {
   updateVideoViewCount,
   getVideoViewCount,
   saveTotalTimeSpent,
+  getUserFeedbackInfo,
   saveCtaContact,
   getCtaContacts,
   saveTestimonial,
   getTestimonials,
   getAllContacts,
   totalCtas,
+  getFeedbackClient,
   getTopPerformingCTAs,
   getDevicesInfo,
   getCtaViewsInDateRange,
