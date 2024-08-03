@@ -5,6 +5,10 @@ const ctaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    feedback: {
+        type: Boolean,
+        required: false,
+    },
     userEmail: {
         type: String,
         required: false,

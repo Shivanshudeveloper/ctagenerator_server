@@ -19,6 +19,8 @@ router.get('/:ctaPublicId', ctaController.viewCTA);
 
 
 router.post('/create', ctaController.createCta);
+router.put('/updatectafeedbacksetting/:ctaPublicId', ctaController.updateCtaFeedbackSetting);
+
 router.get('/getpublicid/:ctaPublicId', ctaController.getCtabyPublicId);
 router.delete('/removecta/:ctaPublicId', ctaController.deleteCta);
 router.get('/getuserctaall/:organizationId', ctaController.getCtaforUser);

@@ -42,6 +42,7 @@ const createCta = async (req, res) => {
     const newCta = new Cta_Model({
       organizationId: submitrequest.organizationId,
       userEmail: submitrequest.userEmail,
+      feedback: true,
       typecta: submitrequest.typecta,
       title: submitrequest.title,
       ctaPublicId: counter.sequence_value,
@@ -398,6 +399,24 @@ const updateCtaDetails = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const submitrequest = req.body;
   console.log("hi updateCtaDetails");
+
+  try {
+    const data = await Cta_Model.updateOne(
+      { ctaPublicId: submitrequest?.ctaPublicId },
+      { $set: submitrequest.data }
+    )
+
+    return res.status(200).json({ status: true, data });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+// Update CTA Feedback Setting
+const updateCtaFeedbackSetting = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const submitrequest = req.body;
+  console.log("CTA Feedback Setting", submitrequest?.ctaPublicId, submitrequest?.data);
 
   try {
     const data = await Cta_Model.updateOne(
@@ -1990,6 +2009,7 @@ module.exports = {
   getAllCtaClickStats,
   getCtaClicksLogs,
   saveVideoStats,
+  updateCtaFeedbackSetting,
   updateVideoViewCount,
   getVideoViewCount,
   saveTotalTimeSpent,
