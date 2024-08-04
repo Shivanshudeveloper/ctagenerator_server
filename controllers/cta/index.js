@@ -448,6 +448,42 @@ const getUserFeedbackInfo = async (req, res) => {
   }
 };
 
+// Get Feedback Numbers for CTA
+const getFeedbackNumberPerCTA = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  try {
+    const result = await FeedbackCta_Model.aggregate([
+      { $match: { ctaPublicId: ctaPublicId } },
+      {
+        $group: {
+          _id: null,
+          likes: {
+            $sum: {
+              $cond: [{ $eq: ["$feedback", "like"] }, 1, 0]
+            }
+          },
+          dislikes: {
+            $sum: {
+              $cond: [{ $eq: ["$feedback", "dislike"] }, 1, 0]
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          likes: 1,
+          dislikes: 1
+        }
+      }
+    ]);
+    const data = result.length > 0 ? result[0] : { likes: 0, dislikes: 0 };
+    res.status(200).json({ status: true, data: data });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // Get Feedback
 const getFeedbackClient = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -2064,6 +2100,7 @@ module.exports = {
   getCtaClicksLogs,
   saveVideoStats,
   updateCtaFeedbackSetting,
+  getFeedbackNumberPerCTA,
   updateVideoViewCount,
   getVideoViewCount,
   saveTotalTimeSpent,
