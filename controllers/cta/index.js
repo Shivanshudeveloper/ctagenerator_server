@@ -1165,14 +1165,15 @@ const getCtaViewsInDateRange = async (req, res) => {
     // first date of current month
     const tempdate = new Date();
     const firstDate = new Date(tempdate.setDate(1));
-    console.log("first Date", firstDate)
+    // console.log("first Date", firstDate)
     let diff = 0;
     while (firstDate.toISOString().split('T')[0] !== date.toISOString().split('T')[0]) {
       diff += 1;
       dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
       firstDate.setDate(firstDate.getDate() + 1);
     }
-    console.log("dateRangeMonthToDate", dateRangeMonthToDate);
+    // console.log("dateRangeMonthToDate", dateRangeMonthToDate);
+    // console.log("lastWeek", dateArrayLastWeek);
     dateRangeMonthToDate.push(firstDate.toISOString().split('T')[0]);
     diff += 1;
     const viewsWeek = await ClicksCta_Model.aggregate([
@@ -1189,11 +1190,12 @@ const getCtaViewsInDateRange = async (req, res) => {
           _id: {
             $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
           },
-          count: { $sum: 1 }
+          count: { $sum: 1 },
+          // root: { $push: "$$ROOT" }
         }
       }
     ]);
-
+    // console.log(viewsWeek);
     const viewsMonthToDate = await ClicksCta_Model.aggregate([
       {
         $match: {
@@ -1213,8 +1215,8 @@ const getCtaViewsInDateRange = async (req, res) => {
       }
     ])
 
-    console.log(dateRangeMonthToDate);
-    const viewsWeekArray = Array(7).fill(0);
+    // console.log(dateRangeMonthToDate);
+    const viewsWeekArray = Array(dateArrayLastWeek.length).fill(0);
     const viewsMonthToDateArray = Array(diff).fill(0);
     viewsWeek.forEach((item) => {
       const index = dateArrayLastWeek.indexOf(item._id);
@@ -1222,6 +1224,7 @@ const getCtaViewsInDateRange = async (req, res) => {
         viewsWeekArray[index] = item.count;
       }
     });
+    // console.log("viewsWeeks", viewsWeekArray)
 
     viewsMonthToDate.forEach((item) => {
       const index = dateRangeMonthToDate.indexOf(item._id);
@@ -1229,7 +1232,7 @@ const getCtaViewsInDateRange = async (req, res) => {
         viewsMonthToDateArray[index] = item.count;
       }
     });
-    console.log(viewsMonthToDateArray)
+    // console.log(viewsMonthToDateArray)
 
     return res.status(200).json({ success: true, viewsWeekArray, dateArrayLastWeek, viewsMonthToDateArray, dateRangeMonthToDate });
 
