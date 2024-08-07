@@ -1092,7 +1092,7 @@ const getDevicesInfo = async (req, res) => {
 const viewCTA = async (req, res) => {
   const { ctaPublicId } = req.params;
   const { u } = req.query;
-
+  console.log(u);
   
 
   const referer = req.headers['referer'] || req.headers['referrer'];
@@ -1143,7 +1143,13 @@ const viewCTA = async (req, res) => {
     }
 
   } else {
-    res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+    if (u) {
+      console.log(u);
+      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct&u=${u}`);
+    } else {
+      console.log("No U");
+      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+    }
   }
 }
 
