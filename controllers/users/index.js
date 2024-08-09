@@ -55,8 +55,21 @@ const getUserDetials = async (req, res) => {
         .catch((err) => console.log(err));
 }
 
+// Get User Details
+const getUserPlanDetails = async (req, res) => {
+    const { organizationId } = req.params;
+    console.log("organizationId : ", organizationId);
+    User_Model.findOne({ organizationId }).sort({ createdAt: -1 })
+        .then((data) => {
+            console.log("user Found : ", data);
+            res.status(200).json({ status: true, planSubscribed: data?.plan });
+        })
+        .catch((err) => console.log(err));
+}
+
 module.exports = {
     checkUser,
     addRegisteredUser,
-    getUserDetials
+    getUserDetials,
+    getUserPlanDetails
 }

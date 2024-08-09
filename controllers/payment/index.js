@@ -1,5 +1,6 @@
 const User_Model = require('../../models/User');
 const RegisteredUsers_Model = require('../../models/RegisteredUsers');
+const UserTransactions_Model = require('../../models/UserTransactions');
 
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -135,35 +136,33 @@ const successRazorPay = async (req, res) => {
         const {
             plan,
             email,
+            organizationId,
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature
         } = req.body;
 
-        
-        // const existingUser = await RegisteredUsers_Model.findOne({ email, packagePlan, institutionName, fullName });
-
-        // if (existingUser) {
-        //     return res.status(400).json({ status: false, data: 'User already registered for the course' });
-        // }
-
         try {
-            const newUser = new RegisteredUsers_Model({
-                fullName,
-                email,
-                phone,
-                institutionName,
-                packagePlan,
-                course,
-                paymentInformation: {
-                    orderCreationId,
-                    razorpayPaymentId,
-                    razorpayOrderId,
-                    razorpaySignature
-                }
-            });
-            const userres = await newUser.save();
-
-            // sendEmailResend(fullName, email, packagePlan, userres?._id);
-
-            return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
+            User_Model.updateOne({ organizationId }, { $set: {plan: plan } })
+                .then(async (data) => {
+                    const newUserTransaction = new UserTransactions_Model({
+                        email,
+                        organizationId,
+                        plan,
+                        channel: "PayPal",
+                        paymentInformation: {
+                            orderCreationId,
+                            razorpayPaymentId,
+                            razorpayOrderId,
+                            razorpaySignature
+                        }
+                    });
+                    const userres = await newUserTransaction.save();
+                    // sendEmailResend(fullName, email, packagePlan, userres?._id);
+                    return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
+                })
+                .catch((err) => console.log(err));
         } catch (error) {
             res.status(400).send({ error: error.message });
         }

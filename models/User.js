@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   plan: {
     type: String,
     required: true,
-    default: 'basic', 
+    default: 'free', 
   },
   apiKey: {
     type: String,
