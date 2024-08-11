@@ -10,7 +10,7 @@ const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
 const { sendEmail } = require("../../lib/resend_email").default;
 const Queue = require('bull');
-const azureBotResponse = require('../../lib/azure_openai')
+const {azureBotResponse,azureBotResponseForMedical} = require('../../lib/azure_openai')
 
 
 // Seperate the country from string
@@ -2104,6 +2104,18 @@ const getAllCtaDataInTimeRange = async (req, res) => {
   }
   // return res.status(200).json({ success: true, data: result, mapper });
 }
+
+const getBotResponseForMedical = async (req, res) => {
+  const {question} = req.body;
+  try {
+    const responseFromBot = await azureBotResponseForMedical(question);
+    return res.status(200).json({ success: true, data: responseFromBot });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, data: "Something went wrong" });
+  }
+}
+
 module.exports = {
   viewCTA,
   createCta,
@@ -2147,5 +2159,6 @@ module.exports = {
   getClicklogsInTimeRange,
   getTotalMeetingBooked,
   getTotalLinksClicked,
-  getAllCtaDataInTimeRange
+  getAllCtaDataInTimeRange,
+  getBotResponseForMedical
 };
