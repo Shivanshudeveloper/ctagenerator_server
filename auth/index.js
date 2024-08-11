@@ -1,8 +1,15 @@
 const jwt = require('jsonwebtoken');
 
 const User_Model = require('../models/User');
+const Cta_Model = require("../models/Cta");
+const { USER_PLANS } = require('../config/config');
 
 const SECRET_KEY = process.env.SECRET_KEY;
+
+function findPlan(planName) {
+  const lowercasePlanName = planName.toLowerCase();
+  return USER_PLANS.find(plan => plan.plan.toLowerCase() === lowercasePlanName) || null;
+}
 
 const validateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -45,7 +52,42 @@ const authenticateApiKey = async (req, res, next) => {
     }
 };
 
+// Middleware for total CTA limit
+const authenticateUserLimit = async (req, res, next) => {
+  const submitrequest = req.body;
+
+  try {
+
+    User_Model.findOne({ organizationId: submitrequest?.organizationId })
+        .then(async (data) => {
+            console.log(data, findPlan(data?.plan));
+            const userLimit = findPlan(data?.plan);
+
+            const activeCtaCount = await Cta_Model.countDocuments({
+              organizationId: submitrequest?.organizationId,
+              status: 1
+            });
+
+            console.log(userLimit?.limit, activeCtaCount);
+
+            if ( userLimit?.limit >  activeCtaCount ) {
+              next();
+            } else {
+              return res.status(403).json({ error: 'Please upgrade your plan or contact customer support' });
+            }
+
+        })
+        .catch((err) => console.log(err));
+
+
+
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
     validateToken,
-    authenticateApiKey
+    authenticateApiKey,
+    authenticateUserLimit
 }

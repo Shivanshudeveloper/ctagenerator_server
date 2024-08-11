@@ -5,6 +5,7 @@ require('dotenv').config();
 
 
 const ctaController = require('../controllers/cta');
+const validateUserLimit = require('../auth').authenticateUserLimit;
 
 router.get('/test', (req, res) => {
     res.send('Working');
@@ -18,7 +19,7 @@ router.get('/ctaview', ctaController.viewCTA);
 router.get('/:ctaPublicId', ctaController.viewCTA);
 
 
-router.post('/create', ctaController.createCta);
+router.post('/create', validateUserLimit, ctaController.createCta);
 router.put('/updatectafeedbacksetting/:ctaPublicId', ctaController.updateCtaFeedbackSetting);
 router.post('/sendfeedback', ctaController.getFeedbackClient);
 router.get('/getuserfeedbackinf/:clieIdLoc', ctaController.getUserFeedbackInfo);
