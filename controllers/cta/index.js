@@ -11,7 +11,7 @@ const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
 const { sendEmail } = require("../../lib/resend_email").default;
 const Queue = require('bull');
-const { azureBotResponse, azureBotResponseForMedical } = require('../../lib/azure_openai')
+const { azureBotResponse } = require('../../lib/azure_openai')
 
 
 // Seperate the country from string
@@ -205,7 +205,8 @@ const saveTotalTimeSpent = async (req, res) => {
     userDevice,
     totalTimeSpent,
     ctaPublicId,
-    localTime
+    localTime,
+    prospectInfo
   } = req.body;
   const newCtaStat = new ClicksCta_Model({
     clickType:
@@ -224,6 +225,7 @@ const saveTotalTimeSpent = async (req, res) => {
     userDevice,
     ctaPublicId,
     localTime,
+    prospectInfo,
     // createdAt: new Date(),
 
     totalTimeSpent,
@@ -253,6 +255,7 @@ const saveVideoStats = async (req, res) => {
     userDevice,
     videoStats,
     ctaPublicId,
+    prospectInfo
   } = req.body;
   console.log(req.body);
   const data = await Cta_Model.updateOne(
@@ -284,6 +287,7 @@ const saveVideoStats = async (req, res) => {
           : "video",
     ctaPublicId,
     videoStats,
+    prospectInfo,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
@@ -538,7 +542,8 @@ const updateCtaCounts = async (req, res) => {
     userBrowser,
     userDevice,
     linkName,
-    timezone
+    timezone,
+    prospectInfo
   } = req.body;
 
   const data = await Cta_Model.updateOne(
@@ -573,6 +578,7 @@ const updateCtaCounts = async (req, res) => {
     ctaPublicId,
     linkName,
     localTime,
+    prospectInfo,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
@@ -2116,16 +2122,6 @@ const getAllCtaDataInTimeRange = async (req, res) => {
   // return res.status(200).json({ success: true, data: result, mapper });
 }
 
-const getBotResponseForMedical = async (req, res) => {
-  const { question } = req.body;
-  try {
-    const responseFromBot = await azureBotResponseForMedical(question);
-    return res.status(200).json({ success: true, data: responseFromBot });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ success: false, data: "Something went wrong" });
-  }
-}
 
 module.exports = {
   viewCTA,
@@ -2170,6 +2166,5 @@ module.exports = {
   getClicklogsInTimeRange,
   getTotalMeetingBooked,
   getTotalLinksClicked,
-  getAllCtaDataInTimeRange,
-  getBotResponseForMedical
+  getAllCtaDataInTimeRange
 };
