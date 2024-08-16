@@ -5,12 +5,13 @@ const VideoViews_Model = require("../../models/VideoViews");
 const CtaContacts_Model = require("../../models/CtaContacts");
 const CtaTestimonial_Model = require("../../models/Testimonials");
 const FeedbackCta_Model = require("../../models/FeedbackCta");
+const moment = require("moment-timezone");
 
 const { v4: uuidv4 } = require("uuid");
 const { APP_URL } = require("../../config/config");
 const { sendEmail } = require("../../lib/resend_email").default;
 const Queue = require('bull');
-const {azureBotResponse,azureBotResponseForMedical} = require('../../lib/azure_openai')
+const { azureBotResponse, azureBotResponseForMedical } = require('../../lib/azure_openai')
 
 
 // Seperate the country from string
@@ -204,6 +205,7 @@ const saveTotalTimeSpent = async (req, res) => {
     userDevice,
     totalTimeSpent,
     ctaPublicId,
+    localTime
   } = req.body;
   const newCtaStat = new ClicksCta_Model({
     clickType:
@@ -221,6 +223,9 @@ const saveTotalTimeSpent = async (req, res) => {
     userBrowser,
     userDevice,
     ctaPublicId,
+    localTime,
+    // createdAt: new Date(),
+
     totalTimeSpent,
   });
   newCtaStat
@@ -292,6 +297,7 @@ const getCtaClicksLogs = async (req, res) => {
     ClicksCta_Model.find({ ctaPublicId })
       .sort({ createdAt: -1 })
       .then((data) => {
+        // console.log(data)
         res.status(200).json({ status: true, data });
       })
       .catch((err) => console.log(err));
@@ -491,8 +497,8 @@ const getFeedbackClient = async (req, res) => {
 
   try {
     const existingDocument = await FeedbackCta_Model.findOne({
-        ctaPublicId: submitrequest?.ctaPublicId,
-        clieIdLoc: submitrequest?.clieIdLoc
+      ctaPublicId: submitrequest?.ctaPublicId,
+      clieIdLoc: submitrequest?.clieIdLoc
     });
 
     if (existingDocument) {
@@ -514,7 +520,7 @@ const getFeedbackClient = async (req, res) => {
       console.log("New document created:", savedDocument);
       return res.status(200).json({ status: true, data: savedDocument });
     }
-  
+
   } catch (error) {
     return res.status(500).json({ status: false, data: "Something went wrong" });
   }
@@ -531,7 +537,8 @@ const updateCtaCounts = async (req, res) => {
     userLocation,
     userBrowser,
     userDevice,
-    linkName
+    linkName,
+    timezone
   } = req.body;
 
   const data = await Cta_Model.updateOne(
@@ -543,6 +550,9 @@ const updateCtaCounts = async (req, res) => {
       .status(500)
       .json({ status: false, data: "Something went wrong" });
   }
+  // const localTime = moment().tz(timezone).toDate();
+  const localTime = moment().tz(timezone).format('HH:mm:ss');
+  console.log('Local Time:', localTime);
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
@@ -562,6 +572,7 @@ const updateCtaCounts = async (req, res) => {
                 : fieldToUpdate === "chat" ? "chat" : fieldToUpdate,
     ctaPublicId,
     linkName,
+    localTime,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
@@ -1093,7 +1104,7 @@ const viewCTA = async (req, res) => {
   const { ctaPublicId } = req.params;
   const { u } = req.query;
   console.log(u);
-  
+
 
   const referer = req.headers['referer'] || req.headers['referrer'];
   const utm_source = req.query.utm_source;
@@ -2106,7 +2117,7 @@ const getAllCtaDataInTimeRange = async (req, res) => {
 }
 
 const getBotResponseForMedical = async (req, res) => {
-  const {question} = req.body;
+  const { question } = req.body;
   try {
     const responseFromBot = await azureBotResponseForMedical(question);
     return res.status(200).json({ success: true, data: responseFromBot });

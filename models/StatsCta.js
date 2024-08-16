@@ -58,6 +58,10 @@ const clicksCtaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },  
+    localTime: {
+        type: String,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
