@@ -24,6 +24,9 @@ router.put('/updatectafeedbacksetting/:ctaPublicId', ctaController.updateCtaFeed
 router.post('/sendfeedback', ctaController.getFeedbackClient);
 router.get('/getuserfeedbackinf/:clieIdLoc', ctaController.getUserFeedbackInfo);
 router.get('/getfeedbacknumbersinfo/:ctaPublicId', ctaController.getFeedbackNumberPerCTA);
+router.get('/getdevicestotalcount/:ctaPublicId', ctaController.getDeviceCountData);
+
+
 
 router.get('/getpublicid/:ctaPublicId', ctaController.getCtabyPublicId);
 router.delete('/removecta/:ctaPublicId', ctaController.deleteCta);

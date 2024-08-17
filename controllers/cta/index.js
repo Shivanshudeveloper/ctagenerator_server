@@ -458,6 +458,46 @@ const getUserFeedbackInfo = async (req, res) => {
   }
 };
 
+
+// Get Feedback Numbers for CTA
+const getDeviceCountData = async (req, res) => {
+  const { ctaPublicId } = req.params;
+  try {
+    const results = await ClicksCta_Model.aggregate([
+      {
+        $match: {
+          ctaPublicId: Number(ctaPublicId),
+          clientDeviceDetect: { $in: ['Tablet', 'Mobile', 'Desktop'] }
+        }
+      },
+      {
+        $group: {
+          _id: '$clientDeviceDetect',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Create an object to store counts
+    const counts = {
+      Tablet: 0,
+      Mobile: 0,
+      Desktop: 0
+    };
+
+    // Populate the counts object
+    results.forEach(result => {
+      counts[result._id] = result.count;
+    });
+
+    console.log("YOUR DATA",counts);
+    res.status(200).json({ status: true, data: [counts.Tablet, counts.Mobile, counts.Desktop] });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 // Get Feedback Numbers for CTA
 const getFeedbackNumberPerCTA = async (req, res) => {
   const { ctaPublicId } = req.params;
@@ -543,7 +583,8 @@ const updateCtaCounts = async (req, res) => {
     userDevice,
     linkName,
     timezone,
-    prospectInfo
+    prospectInfo,
+    clientDeviceDetect
   } = req.body;
 
   const data = await Cta_Model.updateOne(
@@ -558,7 +599,9 @@ const updateCtaCounts = async (req, res) => {
   // const localTime = moment().tz(timezone).toDate();
   const localTime = moment().tz(timezone).format('HH:mm:ss');
   console.log('Local Time:', localTime);
+
   const currentCta = await Cta_Model.findOne({ ctaPublicId });
+
   const newUserClicks = new ClicksCta_Model({
     userIpAddress,
     source,
@@ -579,6 +622,7 @@ const updateCtaCounts = async (req, res) => {
     linkName,
     localTime,
     prospectInfo,
+    clientDeviceDetect,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
@@ -2151,6 +2195,7 @@ module.exports = {
   getFeedbackClient,
   getTopPerformingCTAs,
   getDevicesInfo,
+  getDeviceCountData,
   getCtaViewsInDateRange,
   getCtaSourcesData,
   getTotalActiveCTAs,
