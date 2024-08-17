@@ -255,7 +255,8 @@ const saveVideoStats = async (req, res) => {
     userDevice,
     videoStats,
     ctaPublicId,
-    prospectInfo
+    prospectInfo,
+    clientDeviceDetect
   } = req.body;
   console.log(req.body);
   const data = await Cta_Model.updateOne(
@@ -288,6 +289,7 @@ const saveVideoStats = async (req, res) => {
     ctaPublicId,
     videoStats,
     prospectInfo,
+    clientDeviceDetect: clientDeviceDetect,
     ctaClientEmail: currentCta.userEmail,
   });
   const savedUserClicks = await newUserClicks.save();
