@@ -426,6 +426,65 @@ const updateCtaDetails = async (req, res) => {
   }
 };
 
+// Get All CTA
+const getAllUserTags = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId } = req.params;
+
+  const publicId = Number(ctaPublicId);
+
+  if (isNaN(publicId)) {
+    return res.status(400).json({ status: false, data: "Invalid ctaPublicId format" });
+  }
+
+  try {
+    // Find the document and select only the tags field
+    const result = await Cta_Model.findOne(
+      { ctaPublicId: publicId },
+      { tags: 1, _id: 0 } // 1 means include, 0 means exclude
+    );
+
+    if (!result) {
+      return res.status(200).json({ status: true, data: [] });
+    }
+
+    return res.status(200).json({ status: true, data: result?.tags || [] });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+// Update CTA Tags
+const updateCtaTags = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId, tags } = req.body;
+
+  // Ensure ctaPublicId is a number
+  const publicId = Number(ctaPublicId);
+
+  if (isNaN(publicId)) {
+    return res.status(400).json({ status: false, data: "Invalid ctaPublicId format" });
+  }
+
+  try {
+
+    // Update the document
+    const updatedCta = await Cta_Model.findOneAndUpdate(
+      { ctaPublicId: publicId },
+      { $set: { tags: tags } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCta) {
+      return res.status(404).json({ status: false, data: "CTA not found" });
+    }
+    
+    return res.status(200).json({ status: true, updatedCta });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
 // Update CTA Feedback Setting
 const updateCtaFeedbackSetting = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -2213,5 +2272,7 @@ module.exports = {
   getClicklogsInTimeRange,
   getTotalMeetingBooked,
   getTotalLinksClicked,
-  getAllCtaDataInTimeRange
+  getAllCtaDataInTimeRange,
+  updateCtaTags,
+  getAllUserTags
 };

@@ -20,7 +20,10 @@ router.get('/:ctaPublicId', ctaController.viewCTA);
 
 
 router.post('/create', validateUserLimit, ctaController.createCta);
-router.put('/updatectafeedbacksetting/:ctaPublicId', ctaController.updateCtaFeedbackSetting);
+router.put('/updatectatags', ctaController.updateCtaTags);
+router.get('/getallusertags/:ctaPublicId', ctaController.getAllUserTags);
+
+router.put('/updatectafeedbacksetting', ctaController.updateCtaFeedbackSetting);
 router.post('/sendfeedback', ctaController.getFeedbackClient);
 router.get('/getuserfeedbackinf/:clieIdLoc', ctaController.getUserFeedbackInfo);
 router.get('/getfeedbacknumbersinfo/:ctaPublicId', ctaController.getFeedbackNumberPerCTA);

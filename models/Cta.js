@@ -77,6 +77,10 @@ const ctaSchema = new mongoose.Schema({
         required: false,
         default: 1, 
     },
+    tags: {
+        type: Array,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
