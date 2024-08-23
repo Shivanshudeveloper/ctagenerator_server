@@ -171,10 +171,35 @@ const successRazorPay = async (req, res) => {
     }
 }
 
+const getUserAccountStatus = async (req, res) => {
+    try {
+        const { organizationId } = req.params; // Assuming organizationId is passed as a route parameter
+        // Validate organizationId
+        if (!organizationId) {
+            res.status(400).send({ error: "No OrgId" });
+        }
+
+        // Find the user document and select only the accountStatus field
+        const result = await User_Model.findOne(
+            { organizationId: organizationId },
+            { accountStatus: 1, _id: 0 } // 1 means include, 0 means exclude
+        );
+
+        if (!result) {
+            res.status(400).send({ error: "User not found" });
+        }
+
+        res.json({ status: true, data: result?.accountStatus });
+    } catch (error) {
+        res.status(400).json({ status: false, message: error.message });
+    }
+}
+
 module.exports = {
     createCheckoutSession,
     checkSubscriptionStatus,
     alertSeen,
     createRazorpayOrder,
-    successRazorPay
+    successRazorPay,
+    getUserAccountStatus
 }
