@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: 'free', 
   },
+  planPurchaseDate: {
+    type: Date,
+    required: false,
+  },
+  lastPaymentMadeDate: {
+    type: Date,
+    required: false,
+  },
+  nextPaymentDate: {
+    type: Date,
+    required: false,
+  },
   apiKey: {
     type: String,
     required: false,

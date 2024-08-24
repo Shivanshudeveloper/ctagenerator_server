@@ -9,6 +9,10 @@ const userTransactionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  paymentType: {
+    type: String,
+    required: false,
+  },
   plan: {
     type: String,
     required: true,

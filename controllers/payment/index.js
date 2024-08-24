@@ -17,6 +17,38 @@ const keyId = process.env.RAZORPAY_KEY_ID;
 const keySecret = process.env.RAZORPAY_SECRET;
 
 
+// Calculate one month ahead date
+function getOneMonthAhead(date) {
+    // Create a new Date object from the passed date
+    const currentDate = new Date(date);
+    
+    // Get the current month
+    let month = currentDate.getMonth();
+    
+    // Get the current year
+    let year = currentDate.getFullYear();
+    
+    // Add one month
+    month++;
+    
+    // If the month is now 12 (December), reset to 0 (January) and increment the year
+    if (month > 11) {
+      month = 0;
+      year++;
+    }
+    
+    // Create a new date with the same day, but next month and potentially next year
+    const futureDate = new Date(year, month, currentDate.getDate());
+    
+    // Check if the day is different (happens when current date is, for example, March 31 and next month only has 30 days)
+    if (futureDate.getDate() !== currentDate.getDate()) {
+      // Set to the last day of the previous month
+      futureDate.setDate(0);
+    }
+    
+    return futureDate;
+}
+
 // Create User Checkout Session
 const createCheckoutSession = async (req, res) => {
     try {
@@ -143,14 +175,72 @@ const successRazorPay = async (req, res) => {
             razorpaySignature
         } = req.body;
 
+        var  currentDate = Date.now();
+        const oneMonthAhead = getOneMonthAhead(currentDate);
+
+        console.log('Current date:', currentDate);
+        console.log('One month ahead:', oneMonthAhead.toDateString());
+
         try {
-            User_Model.updateOne({ organizationId }, { $set: {plan: plan } })
+            User_Model.updateOne({ organizationId }, { $set: { plan: plan, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+                accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({
                         email,
                         organizationId,
                         plan,
                         channel: "PayPal",
+                        paymentType: "Plan Subscribed",
+                        paymentInformation: {
+                            orderCreationId,
+                            razorpayPaymentId,
+                            razorpayOrderId,
+                            razorpaySignature
+                        }
+                    });
+                    const userres = await newUserTransaction.save();
+                    // sendEmailResend(fullName, email, packagePlan, userres?._id);
+                    return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
+                })
+                .catch((err) => console.log(err));
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+const successRazorPay2 = async (req, res) => {
+    try {
+        // getting the details back from our font-end
+        const {
+            plan,
+            email,
+            organizationId,
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature
+        } = req.body;
+
+        var  currentDate = Date.now();
+        const oneMonthAhead = getOneMonthAhead(currentDate);
+
+        console.log('Current date:', currentDate);
+        console.log('One month ahead:', oneMonthAhead.toDateString());
+        console.log('Plan Renew', email, plan);
+
+        try {
+            User_Model.updateOne({ organizationId }, { $set: { lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+                accountStatus: 1 }})
+                .then(async (data) => {
+                    const newUserTransaction = new UserTransactions_Model({
+                        email,
+                        organizationId,
+                        plan,
+                        channel: "PayPal",
+                        paymentType: "Plan Renew",
                         paymentInformation: {
                             orderCreationId,
                             razorpayPaymentId,
@@ -173,7 +263,7 @@ const successRazorPay = async (req, res) => {
 
 const getUserAccountStatus = async (req, res) => {
     try {
-        const { organizationId } = req.params; // Assuming organizationId is passed as a route parameter
+        const { organizationId, reason } = req.params; // Assuming organizationId is passed as a route parameter
         // Validate organizationId
         if (!organizationId) {
             res.status(400).send({ error: "No OrgId" });
@@ -182,14 +272,47 @@ const getUserAccountStatus = async (req, res) => {
         // Find the user document and select only the accountStatus field
         const result = await User_Model.findOne(
             { organizationId: organizationId },
-            { accountStatus: 1, _id: 0 } // 1 means include, 0 means exclude
+            // { accountStatus: 1, _id: 0 } // 1 means include, 0 means exclude
         );
+
+        console.log(result);
+
+        if (!result) {
+            res.status(400).send({ error: "User not found" });
+        }
+        if (reason === "1") {
+            res.json({ status: true, data: result?.accountStatus });
+        } else {
+            res.json({ status: true, data: {
+                accountStatus: result?.accountStatus,
+                plan: result?.premium,
+            }});
+        }
+
+    } catch (error) {
+        res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+const getUserHistoryTransaction = async (req, res) => {
+    try {
+        const { organizationId } = req.params; // Assuming organizationId is passed as a route parameter
+        // Validate organizationId
+        if (!organizationId) {
+            res.status(400).send({ error: "No OrgId" });
+        }
+
+        // Find the user document and select only the accountStatus field
+        const result = await UserTransactions_Model.find(
+            { organizationId: organizationId },
+            // { accountStatus: 1, _id: 0 } // 1 means include, 0 means exclude
+        ).sort({ createdAt: -1 });
 
         if (!result) {
             res.status(400).send({ error: "User not found" });
         }
 
-        res.json({ status: true, data: result?.accountStatus });
+        res.json({ status: true, data: result });
     } catch (error) {
         res.status(400).json({ status: false, message: error.message });
     }
@@ -201,5 +324,7 @@ module.exports = {
     alertSeen,
     createRazorpayOrder,
     successRazorPay,
-    getUserAccountStatus
+    getUserAccountStatus,
+    successRazorPay2,
+    getUserHistoryTransaction
 }
