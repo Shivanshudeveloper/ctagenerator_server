@@ -263,36 +263,37 @@ const successRazorPay2 = async (req, res) => {
 
 const getUserAccountStatus = async (req, res) => {
     try {
-        const { organizationId, reason } = req.params; // Assuming organizationId is passed as a route parameter
+        const { organizationId, reason } = req.params;
+
         // Validate organizationId
         if (!organizationId) {
-            res.status(400).send({ error: "No OrgId" });
+            return res.status(400).json({ status: false, error: "No OrgId" });
         }
 
-        // Find the user document and select only the accountStatus field
-        const result = await User_Model.findOne(
-            { organizationId: organizationId },
-            // { accountStatus: 1, _id: 0 } // 1 means include, 0 means exclude
-        );
-
-        console.log(result);
+        // Find the user document
+        const result = await User_Model.findOne({ organizationId: organizationId });
 
         if (!result) {
-            res.status(400).send({ error: "User not found" });
+            return res.status(404).json({ status: false, error: "User not found" });
         }
+
         if (reason === "1") {
-            res.json({ status: true, data: result?.accountStatus });
+            return res.json({ status: true, data: result.accountStatus });
         } else {
-            res.json({ status: true, data: {
-                accountStatus: result?.accountStatus,
-                plan: result?.premium,
-            }});
+            return res.json({ 
+                status: true, 
+                data: {
+                    accountStatus: result.accountStatus,
+                    plan: result.premium,
+                }
+            });
         }
 
     } catch (error) {
-        res.status(400).json({ status: false, message: error.message });
+        console.error('Error in getUserAccountStatus:', error);
+        return res.status(500).json({ status: false, message: "Internal server error" });
     }
-}
+};
 
 const getUserHistoryTransaction = async (req, res) => {
     try {
