@@ -7,6 +7,7 @@ const aiController = require('../controllers/ai');
 
 
 router.post('/getscore', aiController.getScoreSalesPage);
+router.post('/summarizesalespagedata', aiController.getSummarizeSalesPage);
 
 
 module.exports = router;
