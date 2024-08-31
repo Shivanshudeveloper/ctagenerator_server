@@ -9,6 +9,10 @@ const ctaSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
     },
+    speeddial: {
+        type: Object,
+        required: false,
+    },
     userEmail: {
         type: String,
         required: false,

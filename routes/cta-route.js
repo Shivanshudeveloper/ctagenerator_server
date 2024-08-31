@@ -22,6 +22,7 @@ router.get('/:ctaPublicId', ctaController.viewCTA);
 router.post('/create', validateUserLimit, ctaController.createCta);
 router.put('/updatectatags', ctaController.updateCtaTags);
 router.get('/getallusertags/:ctaPublicId', ctaController.getAllUserTags);
+router.put('/updatesettingsspeeddials', ctaController.speedDialSettingsUpdate);
 
 router.put('/updatectafeedbacksetting', ctaController.updateCtaFeedbackSetting);
 router.post('/sendfeedback', ctaController.getFeedbackClient);

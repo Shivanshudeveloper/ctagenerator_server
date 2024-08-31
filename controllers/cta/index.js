@@ -454,6 +454,45 @@ const getAllUserTags = async (req, res) => {
   }
 };
 
+
+// Update Speed Dial Settings
+
+const speedDialSettingsUpdate = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId, phoneNumber, message, btnMessage, speedDialHidden } = req.body;
+
+  var speeddial = {
+    phoneNumber,
+    message,
+    btnMessage,
+    speedDialHidden
+  }
+
+  // Ensure ctaPublicId is a number
+  const publicId = Number(ctaPublicId);
+
+  if (isNaN(publicId)) {
+    return res.status(400).json({ status: false, data: "Invalid ctaPublicId format" });
+  }
+
+  try {
+    // Update the document
+    const updatedCta = await Cta_Model.findOneAndUpdate(
+      { ctaPublicId: publicId },
+      { $set: { speeddial: speeddial } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCta) {
+      return res.status(404).json({ status: false, data: "CTA not found" });
+    }
+    
+    return res.status(200).json({ status: true, updatedCta });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
 // Update CTA Tags
 const updateCtaTags = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -2237,6 +2276,7 @@ module.exports = {
   getAllCtaInSystem,
   updateCtaDetails,
   updateCtaCounts,
+  speedDialSettingsUpdate,
   getCtaClicksDetails,
   getAllCtaClickStats,
   getCtaClicksLogs,
