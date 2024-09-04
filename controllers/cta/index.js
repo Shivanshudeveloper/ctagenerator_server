@@ -531,13 +531,19 @@ const updateCustomUrlSetting = async (req, res) => {
   const submitrequest = req.body;
 
   try {
-    const data = await Cta_Model.updateOne(
-      { ctaPublicId: submitrequest?.ctaPublicId },
-      { $set: { customUrl: submitrequest?.customUrl } }
-    )
-
-    return res.status(200).json({ status: true, data });
+    const totalCustomUrl = await Cta_Model.countDocuments({ customUrl: submitrequest?.customUrl });
+    console.log(totalCustomUrl);
+    if (totalCustomUrl === 0) {
+      const data = await Cta_Model.updateOne(
+        { ctaPublicId: submitrequest?.ctaPublicId },
+        { $set: { customUrl: submitrequest?.customUrl } }
+      )
+      return res.status(200).json({ status: true, data });
+    } else {
+      return res.status(201).json({ status: false, data: "Custom Url not availabe" });
+    }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ status: false, data: "Something went wrong" });
   }
 };
