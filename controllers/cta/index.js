@@ -524,6 +524,53 @@ const updateCtaTags = async (req, res) => {
   }
 };
 
+
+// Update CTA Custom URL
+const updateCustomUrlSetting = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const submitrequest = req.body;
+
+  try {
+    const data = await Cta_Model.updateOne(
+      { ctaPublicId: submitrequest?.ctaPublicId },
+      { $set: { customUrl: submitrequest?.customUrl } }
+    )
+
+    return res.status(200).json({ status: true, data });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+// Get CTA Custom Url
+const getCustomUrlUser = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId } = req.params;
+
+  const publicId = Number(ctaPublicId);
+
+  if (isNaN(publicId)) {
+    return res.status(400).json({ status: false, data: "Invalid ctaPublicId format" });
+  }
+
+  try {
+    // Find the document and select only the tags field
+    const result = await Cta_Model.findOne(
+      { ctaPublicId: publicId },
+      { customUrl: 1, _id: 0 } // 1 means include, 0 means exclude
+    );
+
+    if (!result) {
+      return res.status(200).json({ status: true, data: [] });
+    }
+
+    return res.status(200).json({ status: true, data: result?.customUrl || "" });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
+
 // Update CTA Feedback Setting
 const updateCtaFeedbackSetting = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -1255,62 +1302,76 @@ const viewCTA = async (req, res) => {
   const { u } = req.query;
   console.log(u);
 
+  try {
+    const referer = req.headers['referer'] || req.headers['referrer'];
+    const utm_source = req.query.utm_source;
+    const utm_medium = req.query.utm_medium;
 
-  const referer = req.headers['referer'] || req.headers['referrer'];
-  const utm_source = req.query.utm_source;
-  const utm_medium = req.query.utm_medium;
+    console.log(referer, ctaPublicId, utm_source, utm_medium);
 
-  console.log(referer, ctaPublicId, utm_source, utm_medium);
+    var data;
 
-  const data = await Cta_Model.findOne({ ctaPublicId });
-
-  if (utm_source && utm_medium === 'email') {
-    res.send(`Click from ${utm_source} email`);
-  } else if (referer) {
-    const domain = new URL(referer).hostname;
-    let referalDomain = "Unknown";
-
-    if (domain.includes('facebook.com')) {
-      referalDomain = "Facebook";
-    } else if (domain.includes('linkedin.com')) {
-      referalDomain = "LinkedIn";
-    } else if (domain.includes('twitter.com') || domain.includes('t.co')) {
-      referalDomain = "Twitter";
-    } else if (domain.includes('instagram.com')) {
-      referalDomain = "Instagram";
-    } else if (domain.includes('medium.com')) {
-      referalDomain = "Medium";
-    } else if (domain.includes('reddit.com')) {
-      referalDomain = "Reddit";
-    } else if (domain.includes('tumblr.com')) {
-      referalDomain = "Tumblr";
-    } else if (domain.includes('youtube.com')) {
-      referalDomain = "Youtube";
-    } else if (domain.includes('quora.com')) {
-      referalDomain = "Quora";
-    } else if (domain.includes('pinterest.com')) {
-      referalDomain = "Pinterest";
+    if (!isNaN(ctaPublicId) && ctaPublicId.trim() !== '') {
+      data = await Cta_Model.findOne({ ctaPublicId: ctaPublicId });
     } else {
-      // Unknown
-      referalDomain = "Direct";
+      data = await Cta_Model.findOne({ customUrl: ctaPublicId });
     }
 
-    if (u) {
-      console.log(u);
-      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}&u=${u}`);
-    } else {
-      console.log("No U");
-      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
-    }
+    
 
-  } else {
-    if (u) {
-      console.log(u);
-      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct&u=${u}`);
+    if (utm_source && utm_medium === 'email') {
+      res.send(`Click from ${utm_source} email`);
+    } else if (referer) {
+      const domain = new URL(referer).hostname;
+      let referalDomain = "Unknown";
+
+      if (domain.includes('facebook.com')) {
+        referalDomain = "Facebook";
+      } else if (domain.includes('linkedin.com')) {
+        referalDomain = "LinkedIn";
+      } else if (domain.includes('twitter.com') || domain.includes('t.co')) {
+        referalDomain = "Twitter";
+      } else if (domain.includes('instagram.com')) {
+        referalDomain = "Instagram";
+      } else if (domain.includes('medium.com')) {
+        referalDomain = "Medium";
+      } else if (domain.includes('reddit.com')) {
+        referalDomain = "Reddit";
+      } else if (domain.includes('tumblr.com')) {
+        referalDomain = "Tumblr";
+      } else if (domain.includes('youtube.com')) {
+        referalDomain = "Youtube";
+      } else if (domain.includes('quora.com')) {
+        referalDomain = "Quora";
+      } else if (domain.includes('pinterest.com')) {
+        referalDomain = "Pinterest";
+      } else {
+        // Unknown
+        referalDomain = "Direct";
+      }
+
+      if (u) {
+        console.log(u);
+        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}&u=${u}`);
+      } else {
+        console.log("No U");
+        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
+      }
+
     } else {
-      console.log("No U");
-      res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+      if (u) {
+        console.log(u);
+        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct&u=${u}`);
+      } else {
+        console.log("No U");
+        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+      }
     }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
   }
 }
 
@@ -2269,7 +2330,9 @@ const getAllCtaDataInTimeRange = async (req, res) => {
 
 module.exports = {
   viewCTA,
+  updateCustomUrlSetting,
   createCta,
+  getCustomUrlUser,
   getCtabyPublicId,
   deleteCta,
   getCtaforUser,

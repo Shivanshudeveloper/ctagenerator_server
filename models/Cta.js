@@ -13,6 +13,10 @@ const ctaSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
+    customUrl: {
+        type: String,
+        required: false,
+    },
     userEmail: {
         type: String,
         required: false,
