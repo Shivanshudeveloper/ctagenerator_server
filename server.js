@@ -18,6 +18,7 @@ const featureRoutes = require("./routes/feature-route");
 const freetrialRoutes = require("./routes/free-trial");
 const templateRoutes = require("./routes/template-route");
 const leadsRoutes = require("./routes/leads-route");
+const leadSerperRoutes = require("./routes/leadserper-route");
 const userStatsRoutes = require("./routes/user-stats-route");
 const linksTrackRoutes = require("./routes/link-track");
 const projectTimelineRoutes = require("./routes/projectTimelineRoutes");
@@ -50,6 +51,7 @@ app.use(express.urlencoded({ limit: "50mb" }));
 // Routing for API Service
 app.use("/api/v1/main", express.json({ limit: "50mb" }), mainRoutes);
 app.use("/api/v1/predictai", express.json({ limit: "50mb" }), aiRoutes);
+app.use("/api/v1/main/leadserper", express.json({ limit: "50mb" }), leadSerperRoutes);
 
 app.use("/api/v1/main/cta", express.json({ limit: "50mb" }), ctaRoutes);
 
