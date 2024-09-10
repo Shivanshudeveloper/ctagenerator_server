@@ -8,9 +8,30 @@ const searchLeads = async (req, res) => {
     var error = false;
     res.setHeader("Content-Type", "application/json");
     
-    const { niche, location, organizationId } = req.body;
+    const { niche, location, organizationId, selectLinkedIn,
+        selectTwitter,
+        selectFacebook,
+        selectInstagram } = req.body;
 
-    const searchResponse = await serpLeads(niche, location, organizationId);
+    var siteArr = [];
+
+    if (selectLinkedIn) {
+        siteArr.push("site:linkedin.com");
+    }
+
+    if (selectTwitter) {
+        siteArr.push("site:x.com");
+    }
+
+    if (selectFacebook) {
+        siteArr.push("site:facebook.com");
+    }
+
+    if (selectInstagram) {
+        siteArr.push("site:instagram.com");
+    }
+
+    const searchResponse = await serpLeads(siteArr, niche, location, organizationId);
 
     const getUserDeatilsResponse = await azureSearchGetDetails(searchResponse);
 
