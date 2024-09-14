@@ -131,11 +131,11 @@ const createRazorpayOrder = async (req, res) => {
     if (plan === "basic") {
         mainAmount = 4.99;
     } else if (plan === "starter"){
-        mainAmount = 9.99;
+        mainAmount = 19.99;
     } else if (plan === "premium"){
-        mainAmount = 11.99;
+        mainAmount = 49.99;
     } else {
-        mainAmount = 11.99;
+        mainAmount = 49.99;
     }
 
     try {
@@ -145,7 +145,7 @@ const createRazorpayOrder = async (req, res) => {
         });
 
         const options = {
-            amount: mainAmount * 100, // amount in smallest currency unit
+            amount: parseInt(mainAmount * 100), // amount in smallest currency unit
             currency: "USD",
             receipt: receipt,
         };
