@@ -1,7 +1,25 @@
 const { azureSearchGetDetails } = require('../../lib/azure_openai')
 const { serpLeads } = require('../../lib/leads_serper')
 
-
+function extractJsonObject(text) {
+    try {
+        // Try to parse the entire text as JSON first
+        return JSON.parse(text);
+    } catch (e) {
+        // If that fails, try to find and extract the JSON object
+        const match = text.match(/\{[\s\S]*\}/);
+        if (match) {
+            try {
+                return JSON.parse(match[0]);
+            } catch (e) {
+                console.error("Found a match, but it's not valid JSON:", e);
+            }
+        }
+        
+        // If no valid JSON object is found, throw an error
+        throw new Error("No valid JSON object found in the text");
+    }
+}
 
 // Add organization users
 const searchLeads = async (req, res) => {
@@ -35,9 +53,10 @@ const searchLeads = async (req, res) => {
 
     const getUserDeatilsResponse = await azureSearchGetDetails(searchResponse);
 
-    console.log(getUserDeatilsResponse);
-    res.status(200).json({ status: true, data: getUserDeatilsResponse });
+    const jsonObject = extractJsonObject(getUserDeatilsResponse);
 
+    console.log(jsonObject);
+    res.status(200).json({ status: true, data: jsonObject });
 }
 
 module.exports = {
