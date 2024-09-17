@@ -1305,81 +1305,71 @@ const getDevicesInfo = async (req, res) => {
 
 const viewCTA = async (req, res) => {
   const { ctaPublicId } = req.params;
-  const { u } = req.query;
-  console.log(u);
+  const { u, utm_source, utm_medium } = req.query;
+  const referer = req.headers['referer'] || req.headers['referrer'];
+
+  console.log('u:', u);
+  console.log('referer:', referer, 'ctaPublicId:', ctaPublicId, 'utm_source:', utm_source, 'utm_medium:', utm_medium);
 
   try {
-    const referer = req.headers['referer'] || req.headers['referrer'];
-    const utm_source = req.query.utm_source;
-    const utm_medium = req.query.utm_medium;
-
-    console.log(referer, ctaPublicId, utm_source, utm_medium);
-
-    var data;
-
+    let data;
     if (!isNaN(ctaPublicId) && ctaPublicId.trim() !== '') {
       data = await Cta_Model.findOne({ ctaPublicId: ctaPublicId });
     } else {
       data = await Cta_Model.findOne({ customUrl: ctaPublicId });
     }
 
-    
+    if (!data) {
+      return res.redirect(`${APP_URL}/404`);
+    }
 
     if (utm_source && utm_medium === 'email') {
-      res.send(`Click from ${utm_source} email`);
-    } else if (referer) {
+      return res.send(`Click from ${utm_source} email`);
+    }
+
+    let referalDomain = "Direct";
+    if (referer) {
       const domain = new URL(referer).hostname;
-      let referalDomain = "Unknown";
+      const domainMap = {
+        'facebook.com': 'Facebook',
+        'linkedin.com': 'LinkedIn',
+        'twitter.com': 'Twitter',
+        't.co': 'Twitter',
+        'instagram.com': 'Instagram',
+        'medium.com': 'Medium',
+        'reddit.com': 'Reddit',
+        'tumblr.com': 'Tumblr',
+        'youtube.com': 'Youtube',
+        'quora.com': 'Quora',
+        'pinterest.com': 'Pinterest',
+        'gmail.com': 'Gmail',  // Added Gmail
+        'mail.google.com': 'Gmail',  // Added Gmail (web interface)
+        'yahoo.com': 'Yahoo',  // Added Yahoo
+        'mail.yahoo.com': 'Yahoo',  // Added Yahoo Mail,
+        'x.com': 'Twitter',  // Added X (formerly Twitter)
+      };
 
-      if (domain.includes('facebook.com')) {
-        referalDomain = "Facebook";
-      } else if (domain.includes('linkedin.com')) {
-        referalDomain = "LinkedIn";
-      } else if (domain.includes('twitter.com') || domain.includes('t.co')) {
-        referalDomain = "Twitter";
-      } else if (domain.includes('instagram.com')) {
-        referalDomain = "Instagram";
-      } else if (domain.includes('medium.com')) {
-        referalDomain = "Medium";
-      } else if (domain.includes('reddit.com')) {
-        referalDomain = "Reddit";
-      } else if (domain.includes('tumblr.com')) {
-        referalDomain = "Tumblr";
-      } else if (domain.includes('youtube.com')) {
-        referalDomain = "Youtube";
-      } else if (domain.includes('quora.com')) {
-        referalDomain = "Quora";
-      } else if (domain.includes('pinterest.com')) {
-        referalDomain = "Pinterest";
-      } else {
-        // Unknown
-        referalDomain = "Direct";
-      }
-
-      if (u) {
-        console.log(u);
-        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}&u=${u}`);
-      } else {
-        console.log("No U");
-        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=${referalDomain}`);
-      }
-
-    } else {
-      if (u) {
-        console.log(u);
-        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct&u=${u}`);
-      } else {
-        console.log("No U");
-        res.redirect(`${APP_URL}/${data?.typecta}/${data?.ctaPublicId}?r=Direct`);
+      for (const [key, value] of Object.entries(domainMap)) {
+        if (domain.includes(key)) {
+          referalDomain = value;
+          break;
+        }
       }
     }
+
+    const redirectUrl = new URL(`${APP_URL}/${data.typecta}/${data.ctaPublicId}`);
+    redirectUrl.searchParams.append('r', referalDomain);
+    if (u) {
+      redirectUrl.searchParams.append('u', u);
+    }
+
+    return res.redirect(redirectUrl.toString());
+
   } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, data: "Something went wrong" });
+    console.error('Error in viewCTA:', error);
+    return res.status(500).json({ success: false, data: "Something went wrong" });
   }
-}
+};
 
 const getCtaViewsInDateRange = async (req, res) => {
   const { organizationId } = req.params;
