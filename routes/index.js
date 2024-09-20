@@ -27,6 +27,7 @@ router.post('/registeruser', userController.addRegisteredUser);
 router.get('/checkuser', validateApiKeyController, userController.checkUser);
 router.get('/getuser/:email', userController.getUserDetials);
 router.get('/getuserplandetails/:organizationId', userController.getUserPlanDetails);
+router.get('/getusercredits/:organizationId', userController.getUserLeadsCredits);
 
 
 

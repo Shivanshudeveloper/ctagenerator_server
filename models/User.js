@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  leadsCredit: {
+    type: Number,
+    required: false,
+  },
   accountStatus: {
     type: Number,
     required: false,

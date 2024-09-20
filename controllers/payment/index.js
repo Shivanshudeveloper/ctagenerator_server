@@ -181,8 +181,16 @@ const successRazorPay = async (req, res) => {
         console.log('Current date:', currentDate);
         console.log('One month ahead:', oneMonthAhead.toDateString());
 
+
+        const planCredits = {
+            starter: 10000,
+            premium: 25000,
+            default: 500
+          };
+        const leadsCredits = planCredits[plan] || planCredits.default;
+
         try {
-            User_Model.updateOne({ organizationId }, { $set: { plan: plan, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { plan: plan, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({
@@ -231,8 +239,15 @@ const successRazorPay2 = async (req, res) => {
         console.log('One month ahead:', oneMonthAhead.toDateString());
         console.log('Plan Renew', email, plan);
 
+        const planCredits = {
+            starter: 10000,
+            premium: 25000,
+            default: 500
+          };
+        const leadsCredits = planCredits[plan] || planCredits.default;
+
         try {
-            User_Model.updateOne({ organizationId }, { $set: { lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { lastPaymentMadeDate: currentDate, leadsCredit: leadsCredits, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({

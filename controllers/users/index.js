@@ -56,6 +56,24 @@ const getUserDetials = async (req, res) => {
 }
 
 // Get User Details
+const getUserLeadsCredits = async (req, res) => {
+    const { organizationId } = req.params;
+    console.log("Leads Credits", organizationId);
+    const result = await User_Model.findOne({ organizationId });
+
+    if (!result) {
+        return res.status(404).json({ status: false, error: "User not found" });
+    }
+
+    return res.json({ 
+        status: true, 
+        data: {
+            leadsCredit: result.leadsCredit || 0,
+        }
+    });
+}
+
+// Get User Details
 const getUserPlanDetails = async (req, res) => {
     const { organizationId } = req.params;
     console.log("organizationId : ", organizationId);
@@ -71,5 +89,6 @@ module.exports = {
     checkUser,
     addRegisteredUser,
     getUserDetials,
-    getUserPlanDetails
+    getUserPlanDetails,
+    getUserLeadsCredits
 }
