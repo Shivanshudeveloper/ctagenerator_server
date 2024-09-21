@@ -70,6 +70,14 @@ const clicksCtaSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    latitude:{
+        type: String,
+        required: false,
+    },
+    longitude:{
+        type: String,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

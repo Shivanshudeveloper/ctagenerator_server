@@ -737,7 +737,9 @@ const updateCtaCounts = async (req, res) => {
     linkName,
     timezone,
     prospectInfo,
-    clientDeviceDetect
+    clientDeviceDetect,
+    latitude,
+    longitude
   } = req.body;
 
   const data = await Cta_Model.updateOne(
@@ -777,6 +779,8 @@ const updateCtaCounts = async (req, res) => {
     prospectInfo,
     clientDeviceDetect,
     ctaClientEmail: currentCta.userEmail,
+    latitude,
+    longitude
   });
   const savedUserClicks = await newUserClicks.save();
 
