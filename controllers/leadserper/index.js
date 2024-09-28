@@ -1,5 +1,5 @@
-const { azureSearchGetDetails } = require('../../lib/azure_openai')
-const { serpLeads } = require('../../lib/leads_serper')
+const { azureSearchGetDetails, azureSearchGetDetailsNameLookup } = require('../../lib/azure_openai')
+const { serpLeads, serpLeadsNameLookup } = require('../../lib/leads_serper')
 const User_Model = require('../../models/User');
 
 function extractJsonObject(text) {
@@ -107,6 +107,11 @@ const searchLeads = async (req, res) => {
 
     const searchResponse = await serpLeads(siteArr, niche, location, organizationId);
 
+    // Check if searchResponse?.organic is empty
+    if (!searchResponse?.organic || searchResponse.organic.length === 0) {
+        return res.status(201).json({ status: true, data: [] });
+    }
+
     const getUserDeatilsResponse = await azureSearchGetDetails(searchResponse);
 
     const jsonObject = extractJsonObject(getUserDeatilsResponse);
@@ -119,6 +124,41 @@ const searchLeads = async (req, res) => {
     res.status(200).json({ status: true, data: jsonObject });
 }
 
+
+
+// Search Name Lookup
+const searchLeadsNameLookup = async (req, res) => {
+    var error = false;
+    res.setHeader("Content-Type", "application/json");
+    
+    const { niche, location, organizationId } = req.body;
+
+    var siteArr = ["site:contactout.com"];
+
+    const searchResponse = await serpLeadsNameLookup(siteArr, niche, location, organizationId);
+
+    // Check if searchResponse?.organic is empty
+    if (!searchResponse?.organic || searchResponse.organic.length === 0) {
+        return res.status(201).json({ status: true, data: [] });
+    }
+
+    const getUserDeatilsResponse = await azureSearchGetDetailsNameLookup(searchResponse);
+
+    const jsonObject = extractJsonObject(getUserDeatilsResponse);
+
+    console.log(jsonObject);
+
+    const stats = calculateEmailStats(jsonObject?.data);
+
+    console.log(stats);
+
+    await updateLeadsCredit(organizationId, stats?.validEmails);
+
+    res.status(200).json({ status: true, data: jsonObject });
+}
+
+
 module.exports = {
-    searchLeads
+    searchLeads,
+    searchLeadsNameLookup
 }

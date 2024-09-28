@@ -9,6 +9,7 @@ const leadSerperController = require('../controllers/leadserper');
 
 // Leads
 router.post('/findleadsserper', validateUserLeadsLimit, leadSerperController.searchLeads);
+router.post('/findleadsserpernamelookup', validateUserLeadsLimit, leadSerperController.searchLeadsNameLookup);
 
 
 module.exports = router;
