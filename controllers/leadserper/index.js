@@ -152,7 +152,7 @@ const searchLeadsNameLookup = async (req, res) => {
 
     console.log(stats);
 
-    await updateLeadsCredit(organizationId, stats?.validEmails);
+    // await updateLeadsCredit(organizationId, stats?.validEmails);
 
     res.status(200).json({ status: true, data: jsonObject });
 }
