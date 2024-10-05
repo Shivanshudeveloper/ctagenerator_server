@@ -70,6 +70,10 @@ const ctaSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
+    customMessage: {
+        type: Object,
+        required: false,
+    },
     linkClicksCount: {
         type: Number,
         required: false,

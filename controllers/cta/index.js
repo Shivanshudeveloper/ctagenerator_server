@@ -493,6 +493,44 @@ const speedDialSettingsUpdate = async (req, res) => {
   }
 };
 
+
+// Update Custom Message
+const updateCustomMessage = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { ctaPublicId, customMessageHide, message, highlightEffect, textCenter } = req.body;
+
+  var customMessage = {
+    customMessageHide,
+    message,
+    highlightEffect,
+    textCenter
+  }
+
+  // Ensure ctaPublicId is a number
+  const publicId = Number(ctaPublicId);
+
+  if (isNaN(publicId)) {
+    return res.status(400).json({ status: false, data: "Invalid ctaPublicId format" });
+  }
+
+  try {
+    // Update the document
+    const updatedCta = await Cta_Model.findOneAndUpdate(
+      { ctaPublicId: publicId },
+      { $set: { customMessage: customMessage } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCta) {
+      return res.status(404).json({ status: false, data: "CTA not found" });
+    }
+    
+    return res.status(200).json({ status: true, updatedCta });
+  } catch (error) {
+    return res.status(500).json({ status: false, data: "Something went wrong" });
+  }
+};
+
 // Update CTA Tags
 const updateCtaTags = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -2377,5 +2415,6 @@ module.exports = {
   getTotalLinksClicked,
   getAllCtaDataInTimeRange,
   updateCtaTags,
-  getAllUserTags
+  getAllUserTags,
+  updateCustomMessage
 };

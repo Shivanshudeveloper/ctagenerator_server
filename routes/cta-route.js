@@ -23,6 +23,7 @@ router.post('/create', validateUserLimit, ctaController.createCta);
 router.put('/updatectatags', ctaController.updateCtaTags);
 router.get('/getallusertags/:ctaPublicId', ctaController.getAllUserTags);
 router.put('/updatesettingsspeeddials', ctaController.speedDialSettingsUpdate);
+router.put('/custommessageupdate', ctaController.updateCustomMessage);
 router.put('/updateusercustomurl', ctaController.updateCustomUrlSetting);
 router.get('/getcustomurluser/:ctaPublicId', ctaController.getCustomUrlUser);
 
