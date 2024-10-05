@@ -10,6 +10,7 @@ const os = require('os');
 // Route Files
 const mainRoutes = require("./routes");
 const aiRoutes = require("./routes/ai-route");
+const domainRoutes = require("./routes/domain-route");
 const ctaRoutes = require("./routes/cta-route");
 const welcomeRoutes = require("./routes/welcome-route");
 const verificationRoutes = require("./routes/verification-route");
@@ -74,6 +75,7 @@ if (cluster.isMaster) {
   // Routing for API Service
   app.use("/api/v1/main", express.json({ limit: "50mb" }), mainRoutes);
   app.use("/api/v1/predictai", express.json({ limit: "50mb" }), aiRoutes);
+  app.use("/api/v1/domains", express.json({ limit: "50mb" }), domainRoutes);
   app.use("/api/v1/main/leadserper", express.json({ limit: "50mb" }), leadSerperRoutes);
   app.use("/api/v1/main/cta", express.json({ limit: "50mb" }), ctaRoutes);
   app.use("/ctaview", express.json({ limit: "50mb" }), ctaRoutes);
