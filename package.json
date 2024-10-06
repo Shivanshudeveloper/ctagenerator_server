@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/arm-appservice": "^15.0.0",
     "@azure/communication-email": "^1.0.0",
-    "@azure/identity": "^4.3.0",
+    "@azure/identity": "^4.4.1",
     "@azure/openai": "^1.0.0-beta.12",
     "axios": "^1.4.0",
     "bull": "^4.14.0",

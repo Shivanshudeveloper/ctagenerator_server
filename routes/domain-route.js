@@ -3,9 +3,10 @@ const router = express.Router();
 
 require('dotenv').config();
 
-const aiController = require('../controllers/ai');
+const domainController = require('../controllers/domain');
 
 
-router.post('/addcustomdomain', aiController.getScoreSalesPage);
+router.post('/addcustomdomain', domainController.addCustomDomain);
+router.get('/finduserdomains/:organizationId', domainController.getAllUserDomains);
 
 module.exports = router;
