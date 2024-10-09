@@ -6,20 +6,47 @@ function extractJsonObject(text) {
     try {
         // Try to parse the entire text as JSON first
         return JSON.parse(text);
-    } catch (e) {
-        // If that fails, try to find and extract the JSON object
-        const match = text.match(/\{[\s\S]*\}/);
-        if (match) {
-            try {
-                return JSON.parse(match[0]);
-            } catch (e) {
-                console.error("Found a match, but it's not valid JSON:", e);
-            }
-        }
+    } catch (firstError) {
+        console.log('Failed to parse entire text as JSON:', firstError.message);
         
-        // If no valid JSON object is found, throw an error
-        throw new Error("No valid JSON object found in the text");
+        try {
+            // Try to find and extract the JSON object
+            const match = text.match(/\{[\s\S]*\}/);
+            if (match) {
+                return JSON.parse(match[0]);
+            } else {
+                console.log('No JSON-like structure found in text');
+                return {};
+            }
+        } catch (secondError) {
+            console.log('Failed to parse extracted JSON:', secondError.message);
+            return {};
+        }
     }
+}
+
+// Utility function to check if object is empty
+function isEmptyObject(obj) {
+    // Check if obj is null or undefined
+    if (obj == null) {
+        console.log('Object is null or undefined');
+        return true;
+    }
+
+    // Check if obj is not an object
+    if (typeof obj !== 'object') {
+        console.log('Not an object type:', typeof obj);
+        return true;
+    }
+
+    // Check if it's an array
+    if (Array.isArray(obj)) {
+        console.log('Object is an array');
+        return obj.length === 0;
+    }
+
+    // For regular objects, check if it has any own properties
+    return Object.keys(obj).length === 0;
 }
 
 function calculateEmailStats(data) {
@@ -112,9 +139,15 @@ const searchLeads = async (req, res) => {
         return res.status(201).json({ status: true, data: [] });
     }
 
+    console.log("Azure Classification Inprogress...");
     const getUserDeatilsResponse = await azureSearchGetDetails(searchResponse);
 
     const jsonObject = extractJsonObject(getUserDeatilsResponse);
+
+    if (isEmptyObject(jsonObject)) {
+        console.log("No data was found!");
+        return res.status(201).json({ status: true, data: [] });
+    }
 
     console.log(jsonObject);
     const stats = calculateEmailStats(jsonObject?.data);
