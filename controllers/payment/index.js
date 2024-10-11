@@ -183,10 +183,10 @@ const successRazorPay = async (req, res) => {
 
 
         const planCredits = {
-            starter: 10000,
-            premium: 25000,
-            default: 500
-          };
+            starter: 800,
+            premium: 5000,
+            default: 400
+        };
         const leadsCredits = planCredits[plan] || planCredits.default;
 
         try {
@@ -240,10 +240,10 @@ const successRazorPay2 = async (req, res) => {
         console.log('Plan Renew', email, plan);
 
         const planCredits = {
-            starter: 10000,
-            premium: 25000,
-            default: 500
-          };
+            starter: 800,
+            premium: 5000,
+            default: 400
+        };
         const leadsCredits = planCredits[plan] || planCredits.default;
 
         try {
