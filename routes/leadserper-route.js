@@ -12,4 +12,7 @@ router.post('/findleadsserper', validateUserLeadsLimit, leadSerperController.sea
 router.post('/findleadsserpernamelookup', validateUserLeadsLimit, leadSerperController.searchLeadsNameLookup);
 
 
+// Phone Number
+router.post('/phonefindleadsserper', validateUserLeadsLimit, leadSerperController.searchLeadsPhone);
+
 module.exports = router;

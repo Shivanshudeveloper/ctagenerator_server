@@ -1,5 +1,5 @@
-const { azureSearchGetDetails, azureSearchGetDetailsNameLookup } = require('../../lib/azure_openai')
-const { serpLeads, serpLeadsNameLookup } = require('../../lib/leads_serper')
+const { azureSearchGetDetails, azureSearchGetDetailsNameLookup, azureSearchGetPhoneDetails } = require('../../lib/azure_openai')
+const { serpLeads, serpLeadsNameLookup, serpPhoneLeads } = require('../../lib/leads_serper')
 const User_Model = require('../../models/User');
 
 function extractJsonObject(text) {
@@ -70,6 +70,39 @@ function calculateEmailStats(data) {
     return {
         totalObjects,
         validEmails
+    };
+}
+
+function calculatePhoneStats(data) {
+    // Check if data is an array
+    if (!Array.isArray(data)) {
+        throw new Error("Input must be an array");
+    }
+  
+    const totalObjects = data.length;
+    let validPhones = 0;
+  
+    // Regular expression for phone number validation with extension support
+    const phoneRegex = /^(\+|00)?[\d\s\(\)-]{7,}((\s*(ext|x|ex)\s*\.?\s*|\s*#\s*)(\d{1,}))?\s*$/i;
+  
+    data.forEach(obj => {
+        if (obj.Phone_Number && typeof obj.Phone_Number === 'string') {
+            // Remove all non-alphanumeric characters except +
+            let cleanedNumber = obj.Phone_Number.replace(/[^0-9a-z+]/gi, '');
+            
+            // Extract digits only
+            let digitsOnly = cleanedNumber.replace(/\D/g, '');
+  
+            // Check if the number of digits is at least 10
+            if (digitsOnly.length >= 10 && phoneRegex.test(cleanedNumber)) {
+                validPhones++;
+            }
+        }
+    });
+  
+    return {
+        totalObjects,
+        validPhones
     };
 }
 
@@ -158,6 +191,60 @@ const searchLeads = async (req, res) => {
 }
 
 
+// Phone Number Leads Search
+const searchLeadsPhone = async (req, res) => {
+    var error = false;
+    res.setHeader("Content-Type", "application/json");
+    
+    const { niche, location, phoneExtention, organizationId, selectLinkedIn,
+        selectTwitter,
+        selectFacebook,
+        selectInstagram } = req.body;
+
+    var siteArr = [];
+
+    if (selectLinkedIn) {
+        siteArr.push("site:linkedin.com");
+    }
+
+    if (selectTwitter) {
+        siteArr.push("site:x.com");
+    }
+
+    if (selectFacebook) {
+        siteArr.push("site:facebook.com");
+    }
+
+    if (selectInstagram) {
+        siteArr.push("site:instagram.com");
+    }
+
+    const searchResponse = await serpPhoneLeads(siteArr, niche, location, organizationId, phoneExtention);
+
+    // Check if searchResponse?.organic is empty
+    if (!searchResponse?.organic || searchResponse.organic.length === 0) {
+        return res.status(201).json({ status: true, data: [] });
+    }
+
+    console.log("Azure Classification Inprogress...");
+    const getUserDeatilsResponse = await azureSearchGetPhoneDetails(searchResponse);
+
+    const jsonObject = extractJsonObject(getUserDeatilsResponse);
+
+    if (isEmptyObject(jsonObject)) {
+        console.log("No data was found!");
+        return res.status(201).json({ status: true, data: [] });
+    }
+
+    console.log(jsonObject);
+    const stats = calculatePhoneStats(jsonObject?.data);
+    console.log(stats);
+
+    await updateLeadsCredit(organizationId, stats?.validPhones);
+
+    res.status(200).json({ status: true, data: jsonObject });
+}
+
 
 // Search Name Lookup
 const searchLeadsNameLookup = async (req, res) => {
@@ -193,5 +280,6 @@ const searchLeadsNameLookup = async (req, res) => {
 
 module.exports = {
     searchLeads,
-    searchLeadsNameLookup
+    searchLeadsNameLookup,
+    searchLeadsPhone
 }
