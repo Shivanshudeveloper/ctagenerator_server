@@ -52,7 +52,9 @@ function isEmptyObject(obj) {
 function calculateEmailStats(data) {
     // Check if data is an array
     if (!Array.isArray(data)) {
-        throw new Error("Input must be an array");
+        console.log("Input must be an array", data);
+        return "Input must be an array"
+        // throw new Error("Input must be an array");
     }
   
     const totalObjects = data.length;
@@ -76,7 +78,9 @@ function calculateEmailStats(data) {
 function calculatePhoneStats(data) {
     // Check if data is an array
     if (!Array.isArray(data)) {
-        throw new Error("Input must be an array");
+        console.log("Input must be an array", data);
+        return "Input must be an array"
+        // throw new Error("Input must be an array");
     }
   
     const totalObjects = data.length;
@@ -145,7 +149,9 @@ const searchLeads = async (req, res) => {
     const { niche, location, organizationId, selectLinkedIn,
         selectTwitter,
         selectFacebook,
-        selectInstagram } = req.body;
+        selectInstagram,
+        searchPage
+    } = req.body;
 
     var siteArr = [];
 
@@ -165,7 +171,7 @@ const searchLeads = async (req, res) => {
         siteArr.push("site:instagram.com");
     }
 
-    const searchResponse = await serpLeads(siteArr, niche, location, organizationId);
+    const searchResponse = await serpLeads(siteArr, niche, location, organizationId, searchPage);
 
     // Check if searchResponse?.organic is empty
     if (!searchResponse?.organic || searchResponse.organic.length === 0) {
@@ -185,6 +191,10 @@ const searchLeads = async (req, res) => {
     console.log(jsonObject);
     const stats = calculateEmailStats(jsonObject?.data);
 
+    if (stats === "Input must be an array") {
+        return res.status(201).json({ status: true, data: [] });
+    }
+
     await updateLeadsCredit(organizationId, stats?.validEmails);
 
     res.status(200).json({ status: true, data: jsonObject });
@@ -199,7 +209,9 @@ const searchLeadsPhone = async (req, res) => {
     const { niche, location, phoneExtention, organizationId, selectLinkedIn,
         selectTwitter,
         selectFacebook,
-        selectInstagram } = req.body;
+        selectInstagram,
+        searchPage
+    } = req.body;
 
     var siteArr = [];
 
@@ -219,7 +231,7 @@ const searchLeadsPhone = async (req, res) => {
         siteArr.push("site:instagram.com");
     }
 
-    const searchResponse = await serpPhoneLeads(siteArr, niche, location, organizationId, phoneExtention);
+    const searchResponse = await serpPhoneLeads(siteArr, niche, location, organizationId, phoneExtention, searchPage);
 
     // Check if searchResponse?.organic is empty
     if (!searchResponse?.organic || searchResponse.organic.length === 0) {
@@ -239,6 +251,10 @@ const searchLeadsPhone = async (req, res) => {
     console.log(jsonObject);
     const stats = calculatePhoneStats(jsonObject?.data);
     console.log(stats);
+
+    if (stats === "Input must be an array") {
+        return res.status(201).json({ status: true, data: [] });
+    }
 
     await updateLeadsCredit(organizationId, stats?.validPhones);
 
@@ -268,9 +284,9 @@ const searchLeadsNameLookup = async (req, res) => {
 
     console.log(jsonObject);
 
-    const stats = calculateEmailStats(jsonObject?.data);
+    // const stats = calculateEmailStats(jsonObject?.data);
 
-    console.log(stats);
+    // console.log(stats);
 
     // await updateLeadsCredit(organizationId, stats?.validEmails);
 
