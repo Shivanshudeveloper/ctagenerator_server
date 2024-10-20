@@ -47,7 +47,7 @@ const addCustomDomain = async (req, res) => {
     }
 }
 
-// Get All CTA
+// Get All User Domains
 const getAllUserDomains = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const { organizationId } = req.params;
@@ -66,7 +66,7 @@ const getAllUserDomains = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ status: false, data: "Something went wrong" });
     }
-  };
+};
 
 module.exports = {
     addCustomDomain,
