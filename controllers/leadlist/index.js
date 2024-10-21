@@ -1,4 +1,5 @@
 const LeadLists_Model = require('../../models/LeadLists');
+const LeadListsData_Model = require('../../models/LeadListsData');
 
 
 
@@ -60,7 +61,50 @@ const getAllUserListsLeads = async (req, res) => {
     }
 };
 
+
+// Add Leads to List
+const addLeadsToList = async (req, res) => {
+    let { organizationId, leadsData, listName } = req.body;
+
+    try {
+        // Prepare the data for bulk insertion
+        const bulkData = leadsData.map(lead => ({
+            organizationId,
+            listName,
+            Email: lead?.Email,
+            Phone_Number: lead?.Phone_Number,
+            Location: lead?.Location,
+            Niche: lead?.Niche,
+            Link: lead?.Link,
+            Company_Name: lead?.Company_Name,
+            Company_Website: lead?.Company_Website
+        }));
+
+        // Perform bulk insertion
+        const result = await LeadListsData_Model.insertMany(bulkData);
+
+        if (result) {
+            return res.status(200).json({
+                message: 'Leads added to list successfully',
+                count: result.length
+            });
+        } else {
+            return res.status(400).json({
+                error: 'Failed to add leads to list'
+            });
+        }
+
+    } catch (error) {
+        console.error('Error adding List:', error);
+        res.status(500).json({ 
+            error: 'Failed to add List',
+            details: error.message 
+        });
+    }
+}
+
 module.exports = {
     addNewUserList,
-    getAllUserListsLeads
+    getAllUserListsLeads,
+    addLeadsToList
 }
