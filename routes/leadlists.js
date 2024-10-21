@@ -11,5 +11,4 @@ router.post('/addleadstolistuser', leadlistController.addLeadsToList);
 router.get('/getuserleadlists/:organizationId', leadlistController.getAllUserListsLeads);
 
 
-
 module.exports = router;
