@@ -9,6 +9,6 @@ const leadlistController = require('../controllers/leadlist');
 router.post('/submitnewlistuser', leadlistController.addNewUserList);
 router.post('/addleadstolistuser', leadlistController.addLeadsToList);
 router.get('/getuserleadlists/:organizationId', leadlistController.getAllUserListsLeads);
-
+router.get('/getleadsinlist/:listName/:organizationId', leadlistController.getLeadsInList);
 
 module.exports = router;

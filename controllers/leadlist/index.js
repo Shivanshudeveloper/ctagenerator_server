@@ -103,8 +103,29 @@ const addLeadsToList = async (req, res) => {
     }
 }
 
+// Get Leads in List
+const getLeadsInList = async (req, res) => {
+    let { listName, organizationId } = req.params;
+    
+    try {
+        // Find the document and select only the tags field
+        const result = await LeadListsData_Model.find(
+          { listName, organizationId },
+        ).sort({ createdAt: -1 });
+    
+        if (!result) {
+          return res.status(200).json({ status: true, data: [] });
+        }
+    
+        return res.status(200).json({ status: true, data: result || [] });
+    } catch (error) {
+        return res.status(500).json({ status: false, data: "Something went wrong" });
+    }
+}
+
 module.exports = {
     addNewUserList,
     getAllUserListsLeads,
-    addLeadsToList
+    addLeadsToList,
+    getLeadsInList
 }
