@@ -80,7 +80,7 @@ const getUserPlanDetails = async (req, res) => {
     User_Model.findOne({ organizationId }).sort({ createdAt: -1 })
         .then((data) => {
             console.log("user Found : ", data);
-            res.status(200).json({ status: true, planSubscribed: data?.plan });
+            res.status(200).json({ status: true, planSubscribed: data?.plan, priceType: data?.priceType || "No Plan" });
         })
         .catch((err) => console.log(err));
 }

@@ -130,9 +130,9 @@ const createRazorpayOrder = async (req, res) => {
 
     if (priceType === "monthly") {
         if (plan === "basic") {
-            mainAmount = 4.99;
+            mainAmount = 9.99;
         } else if (plan === "starter"){
-            mainAmount = 19.99;
+            mainAmount = 29.99;
         } else if (plan === "premium"){
             mainAmount = 49.99;
         } else {
@@ -259,7 +259,7 @@ const successRazorPay2 = async (req, res) => {
         const leadsCredits = planCredits[plan] || planCredits.default;
 
         try {
-            User_Model.updateOne({ organizationId }, { $set: { lastPaymentMadeDate: currentDate, leadsCredit: leadsCredits, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { priceType: "monthly", lastPaymentMadeDate: currentDate, leadsCredit: leadsCredits, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({
@@ -268,6 +268,7 @@ const successRazorPay2 = async (req, res) => {
                         plan,
                         channel: "PayPal",
                         paymentType: "Plan Renew",
+                        priceType: "monthly",
                         paymentInformation: {
                             orderCreationId,
                             razorpayPaymentId,
