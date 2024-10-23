@@ -13,6 +13,10 @@ const userTransactionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  priceType: {
+    type: String,
+    required: false,
+  },
   plan: {
     type: String,
     required: true,

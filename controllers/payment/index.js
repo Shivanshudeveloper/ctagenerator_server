@@ -118,7 +118,7 @@ const alertSeen = async (req, res) => {
 
 // Create User Checkout Session
 const createRazorpayOrder = async (req, res) => {
-    const { amount, plan, userEmail } = req.body;
+    const { amount, plan, userEmail, priceType } = req.body;
 
     let receipt = `RECIPT_${Date.now()}_${uuidv4()}`;
 
@@ -128,16 +128,26 @@ const createRazorpayOrder = async (req, res) => {
 
     let mainAmount = 0;
 
-    if (plan === "basic") {
-        mainAmount = 4.99;
-    } else if (plan === "starter"){
-        mainAmount = 19.99;
-    } else if (plan === "premium"){
-        mainAmount = 49.99;
+    if (priceType === "monthly") {
+        if (plan === "basic") {
+            mainAmount = 4.99;
+        } else if (plan === "starter"){
+            mainAmount = 19.99;
+        } else if (plan === "premium"){
+            mainAmount = 49.99;
+        } else {
+            mainAmount = 49.99;
+        }
     } else {
-        mainAmount = 49.99;
+        if (plan === "basic") {
+            mainAmount = 99.99;
+        } else if (plan === "starter"){
+            mainAmount = 249.99;
+        } else if (plan === "premium"){
+            mainAmount = 499.99;
+        }
     }
-
+    
     try {
         const instance = new Razorpay({
             key_id: `${keyId.toString()}`,
@@ -172,7 +182,8 @@ const successRazorPay = async (req, res) => {
             orderCreationId,
             razorpayPaymentId,
             razorpayOrderId,
-            razorpaySignature
+            razorpaySignature,
+            priceType
         } = req.body;
 
         var  currentDate = Date.now();
@@ -190,7 +201,7 @@ const successRazorPay = async (req, res) => {
         const leadsCredits = planCredits[plan] || planCredits.default;
 
         try {
-            User_Model.updateOne({ organizationId }, { $set: { plan: plan, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { priceType: priceType, plan: plan, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({
@@ -199,6 +210,7 @@ const successRazorPay = async (req, res) => {
                         plan,
                         channel: "PayPal",
                         paymentType: "Plan Subscribed",
+                        priceType,
                         paymentInformation: {
                             orderCreationId,
                             razorpayPaymentId,
