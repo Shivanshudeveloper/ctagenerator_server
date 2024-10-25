@@ -6,7 +6,8 @@ require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const { APP_URL } = require("../../config/config");
-const sendEmailResend = require("../../lib/resend_email").default.sendEmail;
+const sendEmailResend = require("../../lib/resend_email").default.sendEmailPlanSubscription;
+const sendEmailResendRenewal = require("../../lib/resend_email").default.sendEmailPlanSubscriptionRenewal;
 
 const Razorpay = require('razorpay');
 const { v4: uuidv4 } = require('uuid');
@@ -194,9 +195,9 @@ const successRazorPay = async (req, res) => {
 
 
         const planCredits = {
-            starter: 800,
-            premium: 5000,
-            default: 400
+            starter: 200,
+            premium: 800,
+            default: 2000
         };
         const leadsCredits = planCredits[plan] || planCredits.default;
 
@@ -219,7 +220,8 @@ const successRazorPay = async (req, res) => {
                         }
                     });
                     const userres = await newUserTransaction.save();
-                    // sendEmailResend(fullName, email, packagePlan, userres?._id);
+
+                    sendEmailResend(email, plan);
                     return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
                 })
                 .catch((err) => console.log(err));
@@ -252,9 +254,9 @@ const successRazorPay2 = async (req, res) => {
         console.log('Plan Renew', email, plan);
 
         const planCredits = {
-            starter: 800,
-            premium: 5000,
-            default: 400
+            starter: 200,
+            premium: 800,
+            default: 2000
         };
         const leadsCredits = planCredits[plan] || planCredits.default;
 
@@ -277,7 +279,8 @@ const successRazorPay2 = async (req, res) => {
                         }
                     });
                     const userres = await newUserTransaction.save();
-                    // sendEmailResend(fullName, email, packagePlan, userres?._id);
+
+                    sendEmailResendRenewal(email, plan);
                     return res.status(200).json({ status: true, msg: 'success', orderId: razorpayOrderId, paymentId: razorpayPaymentId, userId: userres?._id });
                 })
                 .catch((err) => console.log(err));

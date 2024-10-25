@@ -1,5 +1,6 @@
 // const APP_URL = "http://localhost:3030/action";
 const APP_URL = "https://app.ctagenerator.com/action";
+const APP_MAIN_URL = "https://app.ctagenerator.com";
 
 const USER_PLANS = [
     {
@@ -22,5 +23,6 @@ const USER_PLANS = [
 
 module.exports = {
     APP_URL,
-    USER_PLANS
+    USER_PLANS,
+    APP_MAIN_URL
 }

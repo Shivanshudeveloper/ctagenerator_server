@@ -1231,7 +1231,7 @@ const getAllContacts = async (req, res) => {
         },
       }
     ]);
-    console.log(allContacts);
+    // console.log(allContacts);
     return res.status(200).json({ success: true, data: allContacts, map: titleMap });
   } catch (error) {
     console.log(error);
