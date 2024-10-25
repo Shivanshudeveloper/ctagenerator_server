@@ -2045,28 +2045,28 @@ const sendMailToContacts = async (req, res) => {
   const { ctaPublicId } = req.params;
   console.log(ctaPublicId);
   try {
-    const contacts = await CtaContacts_Model.aggregate([
-      {
-        $match: {
-          ctaPublicId: ctaPublicId,
-          notify_status: 'To be Notified'
-        }
-      }
-    ])
-    // await CtaContacts_Model.deleteMany({ ctaPublicId: ctaPublicId });
-    // console.log(contacts);
-    const ctaType = await Cta_Model.findOne({ ctaPublicId }).select('typecta');
-    console.log(ctaType?.typecta);
-    console.log(ctaPublicId)
+    // const contacts = await CtaContacts_Model.aggregate([
+    //   {
+    //     $match: {
+    //       ctaPublicId: ctaPublicId,
+    //       notify_status: 'To be Notified'
+    //     }
+    //   }
+    // ])
+    // // await CtaContacts_Model.deleteMany({ ctaPublicId: ctaPublicId });
+    // // console.log(contacts);
+    // const ctaType = await Cta_Model.findOne({ ctaPublicId }).select('typecta');
+    // console.log(ctaType?.typecta);
+    // console.log(ctaPublicId)
 
-    // return;
-    contacts.forEach(async (contact, i) => {
-      const emailResponse = await sendEmail(`${contact.firstName} ${contact.lastName}`, contact.email, ctaPublicId, ctaType?.typecta);
-      console.log(emailResponse);
-      if (emailResponse.success) {
-        await CtaContacts_Model.findByIdAndUpdate(contact._id, { notify_status: "Notified" });
-      }
-    })
+    // // return;
+    // contacts.forEach(async (contact, i) => {
+    //   const emailResponse = await sendEmail(`${contact.firstName} ${contact.lastName}`, contact.email, ctaPublicId, ctaType?.typecta);
+    //   console.log(emailResponse);
+    //   if (emailResponse.success) {
+    //     await CtaContacts_Model.findByIdAndUpdate(contact._id, { notify_status: "Notified" });
+    //   }
+    // })
 
     return res.status(200).json({ success: true });
   } catch (error) {
