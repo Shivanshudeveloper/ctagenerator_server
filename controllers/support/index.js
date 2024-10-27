@@ -11,7 +11,7 @@ const createSupportTicket = async (req, res) => {
 
         const { data, error } = await resend.emails.send({
             from: resendFromEmail,
-            to: "shivanshu981@gmail.com",
+            to: "seenfunnel@outlook.com",
             subject: `Support Ticket from ${contactEmail}`,
             html: `
                 <h5>Support Ticket</h5>
