@@ -6,6 +6,7 @@ const colors = require("colors");
 const cors = require("cors");
 const cluster = require('cluster');
 const os = require('os');
+const router = express.Router();
 
 // Route Files
 const mainRoutes = require("./routes");
@@ -90,8 +91,7 @@ if (cluster.isMaster) {
   
   app.use("/ctaview", express.json({ limit: "50mb" }), ctaRoutes);
 
-  app.use("/:ctaPublicId", express.json({ limit: "50mb" }), ctaController.viewCTA);
-
+  app.use("", express.json({ limit: "50mb" }), ctaRoutes);
 
   app.use("/api/v1/main/leads", express.json({ limit: "50mb" }), leadsRoutes);
   app.use("/api/v1/main/userstats", express.json({ limit: "50mb" }), userStatsRoutes);

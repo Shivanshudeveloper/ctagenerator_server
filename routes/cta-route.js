@@ -18,7 +18,6 @@ router.get('/ctaview', ctaController.viewCTA);
 
 router.get('/:ctaPublicId', ctaController.viewCTA);
 
-
 router.post('/create', validateUserLimit, ctaController.createCta);
 router.put('/updatectatags', ctaController.updateCtaTags);
 router.get('/getallusertags/:ctaPublicId', ctaController.getAllUserTags);
