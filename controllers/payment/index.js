@@ -195,11 +195,16 @@ const successRazorPay = async (req, res) => {
 
 
         const planCredits = {
-            starter: 200,
-            premium: 800,
+            basic: 200,
+            starter: 800,
             default: 2000
         };
+
+        console.log(plan);
+
         const leadsCredits = planCredits[plan] || planCredits.default;
+
+        console.log(leadsCredits);
 
         try {
             User_Model.updateOne({ organizationId }, { $set: { priceType: priceType, plan: plan, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
@@ -254,8 +259,8 @@ const successRazorPay2 = async (req, res) => {
         console.log('Plan Renew', email, plan);
 
         const planCredits = {
-            starter: 200,
-            premium: 800,
+            basic: 200,
+            starter: 800,
             default: 2000
         };
         const leadsCredits = planCredits[plan] || planCredits.default;
