@@ -28,6 +28,10 @@ const userStatsRoutes = require("./routes/user-stats-route");
 const linksTrackRoutes = require("./routes/link-track");
 const projectTimelineRoutes = require("./routes/projectTimelineRoutes");
 
+// CTA Controller
+const ctaController = require('./controllers/cta');
+
+
 // DB Connection
 const db = process.env.MONGODB_URI;
 
@@ -83,7 +87,12 @@ if (cluster.isMaster) {
   app.use("/api/v1/domains", express.json({ limit: "50mb" }), domainRoutes);
   app.use("/api/v1/main/leadserper", express.json({ limit: "50mb" }), leadSerperRoutes);
   app.use("/api/v1/main/cta", express.json({ limit: "50mb" }), ctaRoutes);
+  
   app.use("/ctaview", express.json({ limit: "50mb" }), ctaRoutes);
+
+  app.use("/:ctaPublicId", express.json({ limit: "50mb" }), ctaController.viewCTA);
+
+
   app.use("/api/v1/main/leads", express.json({ limit: "50mb" }), leadsRoutes);
   app.use("/api/v1/main/userstats", express.json({ limit: "50mb" }), userStatsRoutes);
   app.use("/verificationapp", express.json({ limit: "50mb" }), linksTrackRoutes);
