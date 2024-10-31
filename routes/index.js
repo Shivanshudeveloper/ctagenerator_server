@@ -29,8 +29,7 @@ router.get('/getuser/:email', userController.getUserDetials);
 router.get('/getuserplandetails/:organizationId', userController.getUserPlanDetails);
 router.get('/getusercredits/:organizationId', userController.getUserLeadsCredits);
 
-
-
+router.post('/sendonboardingemail', userController.sendOnboardingEmail);
 
 
 module.exports = router;

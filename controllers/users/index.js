@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+const sendOnboardingEmailResend = require("../../lib/resend_email").default.sendOnboardingEmailResend;
 
 const checkUser = async (req, res) => {
     res.status(200).json({ status: true, data: true });
@@ -85,10 +86,20 @@ const getUserPlanDetails = async (req, res) => {
         .catch((err) => console.log(err));
 }
 
+
+const sendOnboardingEmail = async (req, res) => {
+    const { fullName, email } = req.body;
+    console.log("Sending Onboarding Email : ", fullName, email);
+
+    const result = await sendOnboardingEmailResend(fullName, email);
+    return res.status(200).json({ status: true, data: result });
+}
+
 module.exports = {
     checkUser,
     addRegisteredUser,
     getUserDetials,
     getUserPlanDetails,
-    getUserLeadsCredits
+    getUserLeadsCredits,
+    sendOnboardingEmail
 }
