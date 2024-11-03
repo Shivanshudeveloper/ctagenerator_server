@@ -28,6 +28,7 @@ const leadSerperRoutes = require("./routes/leadserper-route");
 const userStatsRoutes = require("./routes/user-stats-route");
 const linksTrackRoutes = require("./routes/link-track");
 const projectTimelineRoutes = require("./routes/projectTimelineRoutes");
+const otherServicesRoutes = require("./routes/other-service");
 
 // CTA Controller
 const ctaController = require('./controllers/cta');
@@ -83,6 +84,9 @@ if (cluster.isMaster) {
   app.use("/api/v1/main", express.json({ limit: "50mb" }), mainRoutes);
   app.use("/api/v1/leadlists", express.json({ limit: "50mb" }), leadListRoutes);
   app.use("/api/v1/support", express.json({ limit: "50mb" }), supportRoutes);
+
+  app.use("/api/v1/otherservices", express.json({ limit: "50mb" }), otherServicesRoutes);
+
 
   app.use("/api/v1/predictai", express.json({ limit: "50mb" }), aiRoutes);
   app.use("/api/v1/domains", express.json({ limit: "50mb" }), domainRoutes);
