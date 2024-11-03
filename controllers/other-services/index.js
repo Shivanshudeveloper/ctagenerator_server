@@ -7,7 +7,7 @@ const generateEmail = async (req, res) => {
     const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength } = req.body;
 
     try {
-        var response = await axios.post(`http://localhost:5050/api/v1/enrich/createcoldemail`, {
+        var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcoldemail`, {
             linkedinUrl: linkedInUrl,
             prospectName,
             prospectTitle,
