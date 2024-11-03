@@ -107,9 +107,31 @@ const authenticateUserLeadsCreditLimit = async (req, res, next) => {
   }
 };
 
+
+// Middleware for total Leads Credit limit
+const authenticateUserEngagementCreditLimit = async (req, res, next) => {
+  const submitrequest = req.body;
+
+  try {
+    User_Model.findOne({ organizationId: submitrequest?.organizationId })
+        .then(async (data) => {
+
+            if ( data?.leadsCredit >  0 ) {
+              next();
+            } else {
+              return res.status(403).json({ error: 'Please upgrade your plan or contact customer support' });
+            }
+        })
+        .catch((err) => console.log(err));
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
     validateToken,
     authenticateApiKey,
     authenticateUserLimit,
-    authenticateUserLeadsCreditLimit
+    authenticateUserLeadsCreditLimit,
+    authenticateUserEngagementCreditLimit
 }
