@@ -4,7 +4,7 @@ const { OTHER_SERVICE_URL } = require("../../config/config");
 
 // Generate Cold Email
 const generateEmail = async (req, res) => {
-    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength } = req.body;
+    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone } = req.body;
 
     try {
         var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcoldemail`, {
@@ -16,7 +16,8 @@ const generateEmail = async (req, res) => {
             productDescription,
             gptPrompt,
             modelName: aiModel,
-            wordLength
+            wordLength,
+            emailTone
         })
 
         console.log(response?.data);
