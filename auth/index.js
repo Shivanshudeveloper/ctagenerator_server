@@ -116,7 +116,7 @@ const authenticateUserEngagementCreditLimit = async (req, res, next) => {
     User_Model.findOne({ organizationId: submitrequest?.organizationId })
         .then(async (data) => {
 
-            if ( data?.leadsCredit >  0 ) {
+            if ( data?.engageCredit >  0 ) {
               next();
             } else {
               return res.status(403).json({ error: 'Please upgrade your plan or contact customer support' });

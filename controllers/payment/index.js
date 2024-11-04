@@ -200,14 +200,21 @@ const successRazorPay = async (req, res) => {
             default: 2000
         };
 
+        const engageUserCredits = {
+            basic: 800,
+            starter: 1200,
+            default: 2500
+        };
+
         console.log(plan);
 
         const leadsCredits = planCredits[plan] || planCredits.default;
+        const engageCredit = engageUserCredits[plan] || engageUserCredits.default;
 
-        console.log(leadsCredits);
+        console.log(leadsCredits, engageCredit);
 
         try {
-            User_Model.updateOne({ organizationId }, { $set: { priceType: priceType, plan: plan, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { priceType: priceType, plan: plan, engageCredit: engageCredit, leadsCredit: leadsCredits, planPurchaseDate: currentDate, lastPaymentMadeDate: currentDate, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({
@@ -263,10 +270,20 @@ const successRazorPay2 = async (req, res) => {
             starter: 800,
             default: 2000
         };
+
+        const engageUserCredits = {
+            basic: 800,
+            starter: 1200,
+            default: 2500
+        };
+
         const leadsCredits = planCredits[plan] || planCredits.default;
+        const engageCredit = engageUserCredits[plan] || engageUserCredits.default;
+
+        console.log(leadsCredits, engageCredit);
 
         try {
-            User_Model.updateOne({ organizationId }, { $set: { priceType: "monthly", lastPaymentMadeDate: currentDate, leadsCredit: leadsCredits, nextPaymentDate: oneMonthAhead, 
+            User_Model.updateOne({ organizationId }, { $set: { priceType: "monthly", lastPaymentMadeDate: currentDate, engageCredit: engageCredit, leadsCredit: leadsCredits, nextPaymentDate: oneMonthAhead, 
                 accountStatus: 1 }})
                 .then(async (data) => {
                     const newUserTransaction = new UserTransactions_Model({

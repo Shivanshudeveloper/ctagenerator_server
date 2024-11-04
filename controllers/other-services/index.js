@@ -1,6 +1,39 @@
 const axios = require("axios");
 const { OTHER_SERVICE_URL } = require("../../config/config");
+const User_Model = require('../../models/User');
 
+
+// Substact Credit of User
+async function updateEngageCredit(organizationId, creditToSubtract) {
+    try {
+      const result = await User_Model.findOneAndUpdate(
+        { organizationId: organizationId },
+        [
+          {
+            $set: {
+              engageCredit: {
+                $max: [
+                  { $subtract: [{ $ifNull: ['$engageCredit', 0] }, creditToSubtract] },
+                  0
+                ]
+              }
+            }
+          }
+        ],
+        { new: true, runValidators: true }
+      );
+  
+      if (!result) {
+        throw new Error('User not found');
+      }
+  
+      console.log('Updated user:', result);
+      return result;
+    } catch (error) {
+      console.error('Error updating leads credit:', error);
+      throw error;
+    }
+}
 
 // Generate Cold Email
 const generateEmail = async (req, res) => {
@@ -21,6 +54,8 @@ const generateEmail = async (req, res) => {
         })
 
         console.log(response?.data);
+
+        await updateEngageCredit(organizationId, 1);
 
         res.status(200).json({ message: "Email generated successfully", data: response?.data });
     } catch (error) {

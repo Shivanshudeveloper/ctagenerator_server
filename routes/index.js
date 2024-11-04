@@ -28,6 +28,7 @@ router.get('/checkuser', validateApiKeyController, userController.checkUser);
 router.get('/getuser/:email', userController.getUserDetials);
 router.get('/getuserplandetails/:organizationId', userController.getUserPlanDetails);
 router.get('/getusercredits/:organizationId', userController.getUserLeadsCredits);
+router.get('/getuserengagecredits/:organizationId', userController.getUserEngageCredits);
 
 router.post('/sendonboardingemail', userController.sendOnboardingEmail);
 

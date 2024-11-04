@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  engageCredit: {
+    type: Number,
+    required: false,
+  },
   accountStatus: {
     type: Number,
     required: false,
