@@ -9,4 +9,6 @@ const validateUserEngagementLimit = require('../auth').authenticateUserEngagemen
 
 router.post('/generateemail', validateUserEngagementLimit, otherServicesController.generateEmail);
 
+router.post('/generatecolddms', validateUserEngagementLimit, otherServicesController.generateColdDm);
+
 module.exports = router;
