@@ -27,7 +27,7 @@ const addRegisteredUser = async (req, res) => {
                 fullName: submitrequest?.fullName,
                 organizationId,
                 email: submitrequest?.email,
-                companyName: submitrequest?.email
+                companyName: submitrequest?.companyName
             });
     
             const userres = await newUser.save();
