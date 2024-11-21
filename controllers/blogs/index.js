@@ -14,7 +14,7 @@ const submitBlog = async (req, res) => {
 
       if (existingBlog) {
         const data = await Blogs_Model.updateOne(
-            { blogPublicId },
+            { title },
             { $set: { title, content, author, plainContent, status }}
         )
         return res.status(200).json({ status: true, data });
