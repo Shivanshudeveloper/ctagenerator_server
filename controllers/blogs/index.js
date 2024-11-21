@@ -6,30 +6,40 @@ const { v4: uuidv4 } = require("uuid");
 
 const submitBlog = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    const { title, content, author, status  } = req.body;
-    const blogUid = `${Date.now()}_${uuidv4()}_BLOG`;
-  
-    const counter = await BlogCounter_Model.findByIdAndUpdate(
-      "blogUid",
-      { $inc: { sequence_value: 1 } },
-      { new: true, upsert: true }
-    );
-
-    console.log(counter);
+    const { title, content, author, plainContent, status  } = req.body;
   
     try {
-      const newBlog = new Blogs_Model({
-        blogUid,
-        blogPublicId: Number(counter?.sequence_value),
-        title,
-        content,
-        author,
-        status
-      });
-  
-      const resdata = await newBlog.save();
-      console.log(resdata);
-      return res.status(200).json({ status: true, data: resdata });
+      // Find an existing blog by title
+      let existingBlog = await Blogs_Model.findOne({ title });
+
+      if (existingBlog) {
+        const data = await Blogs_Model.updateOne(
+            { blogPublicId },
+            { $set: { title, content, author, plainContent, status }}
+        )
+        return res.status(200).json({ status: true, data });
+      } else {
+        const blogUid = `${Date.now()}_${uuidv4()}_BLOG`;
+
+        const counter = await BlogCounter_Model.findByIdAndUpdate(
+          "blogUid",
+          { $inc: { sequence_value: 1 } },
+          { new: true, upsert: true }
+        );
+
+        const newBlog = new Blogs_Model({
+          blogUid,
+          blogPublicId: Number(counter?.sequence_value),
+          title,
+          content,
+          author,
+          plainContent,
+          status
+        });
+        const resdata = await newBlog.save();
+        console.log(resdata);
+        return res.status(200).json({ status: true, data: resdata });
+      }
     } catch (error) {
       console.error(error);
       return res
@@ -73,13 +83,13 @@ const getParticularBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const { blogPublicId } = req.params;
-    const { title, content, author, status } = req.body;
+    const { title, content, author, plainContent, status } = req.body;
     console.log("hi updateCtaDetails");
 
     try {
         const data = await Blogs_Model.updateOne(
             { blogPublicId },
-            { $set: { title, content, author, status }}
+            { $set: { title, content, author, plainContent, status }}
         )
 
         return res.status(200).json({ status: true, data });

@@ -22,6 +22,10 @@ const blogsSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    plainContent: {
+        type: String,
+        required: false,
+    },
     status: {
         type: String,
         required: false,
