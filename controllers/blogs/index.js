@@ -50,10 +50,22 @@ const submitBlog = async (req, res) => {
 
 // Get all blogs
 const getAllBlogs = async (req, res) => {
+    const { status } = req.params;
+
     try {
-        const allBlogs = await Blogs_Model.find({ status: "PUBLISH" }).sort({
-          createdAt: -1,
-        });
+        var allBlogs;
+
+        if (status === "ALL") {
+          allBlogs = await Blogs_Model.find({  }).sort({
+            createdAt: -1,
+          });
+        } else {
+          allBlogs = await Blogs_Model.find({ status }).sort({
+            createdAt: -1,
+          });
+        }
+
+
         return res.status(200).json({ success: true, data: allBlogs });
     } catch (error) {
         console.log(error);

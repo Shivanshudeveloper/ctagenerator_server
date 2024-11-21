@@ -7,7 +7,7 @@ const blogsController = require('../controllers/blogs');
 
 
 router.post('/submitnewblog', blogsController.submitBlog);
-router.get('/getallpublishedblogs', blogsController.getAllBlogs);
+router.get('/getallpublishedblogs/:status', blogsController.getAllBlogs);
 router.get('/getblog/:blogPublicId', blogsController.getParticularBlog);
 router.put('/updateblog/:blogPublicId', blogsController.updateBlog);
 
