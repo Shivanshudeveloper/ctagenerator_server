@@ -71,8 +71,33 @@ const updateChromeToken = async (req, res) => {
 };
 
 
+// Validate Chrome Token
+const validateChromeToken = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { chromeToken  } = req.params;
+
+  try {
+    // Find an existing token by title
+    let existingToken = await Chrome_Extention_Token_Model.findOne({ chromeToken });
+
+    if (existingToken) {
+      return res.status(200).json({ status: true, data: "Token exist" });
+    } else {
+      return res.status(201).json({ status: true, data: "Token do not exist" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ status: false, data: "Error while finding token" });
+  }
+};
+
+
+
 module.exports = {
     createChromeToken,
     getUserToken,
-    updateChromeToken
+    updateChromeToken,
+    validateChromeToken
 }
