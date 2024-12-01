@@ -1,4 +1,5 @@
 const Chrome_Extention_Token_Model = require("../../models/ChromeToken");
+const LeadLists_Model = require('../../models/LeadLists');
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -94,10 +95,47 @@ const validateChromeToken = async (req, res) => {
 };
 
 
+// Get Lead List and Token details
+const getDetailsChromeToken = async (req, res) => {
+  try {
+    const { chromeToken } = req.params;
+
+    const tokenDetails = await Chrome_Extention_Token_Model.findOne({ chromeToken });
+    const { organizationId, userEmail } = tokenDetails;
+
+    const result = await LeadLists_Model.find(
+      { organizationId },
+    ).sort({ createdAt: -1 });
+
+    if (!result) {
+      var sendData = {
+        leadLists: [],
+        organizationId,
+        userEmail
+      }
+      return res.status(200).json({ status: true, data: sendData });
+    }
+
+    var sendData = {
+      leadLists: result,
+      organizationId,
+      userEmail
+    }
+
+    return res.status(200).json({ status: true, data: sendData || [] });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+}
+
 
 module.exports = {
     createChromeToken,
     getUserToken,
     updateChromeToken,
-    validateChromeToken
+    validateChromeToken,
+    getDetailsChromeToken
 }
