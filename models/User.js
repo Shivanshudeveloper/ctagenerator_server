@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  chromeExtentionCredit: {
+    type: Number,
+    required: false,
+  },
   accountStatus: {
     type: Number,
     required: false,

@@ -1,5 +1,4 @@
 const User_Model = require('../../models/User');
-const RegisteredUsers_Model = require('../../models/RegisteredUsers');
 const UserTransactions_Model = require('../../models/UserTransactions');
 
 require('dotenv').config();

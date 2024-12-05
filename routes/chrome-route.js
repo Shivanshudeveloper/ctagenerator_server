@@ -11,6 +11,7 @@ router.get('/getuseralltoken/:organizationId', chromeController.getUserToken);
 router.put('/updateuserchrometoken/:chromeId', chromeController.updateChromeToken);
 router.get('/validatechrometoken/:chromeToken', chromeController.validateChromeToken);
 router.get('/getchrometokendetails/:chromeToken', chromeController.getDetailsChromeToken);
+router.post('/purchasechromecredits', chromeController.purchaseChromeCredits);
 
 
 module.exports = router;

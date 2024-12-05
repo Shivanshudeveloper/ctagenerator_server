@@ -1,3 +1,4 @@
+const User_Model = require('../../models/User');
 const Chrome_Extention_Token_Model = require("../../models/ChromeToken");
 const LeadLists_Model = require('../../models/LeadLists');
 
@@ -132,10 +133,38 @@ const getDetailsChromeToken = async (req, res) => {
 }
 
 
+// Purchase Chrome Credits
+const purchaseChromeCredits = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { organizationId, plan  } = req.body;
+
+  try {
+    var creditsPlan = 500;
+
+    if (plan === "pro") {
+      creditsPlan = 1200;
+    }
+    
+    const data = await User_Model.updateOne(
+        { organizationId },
+        { $set: { chromeExtentionCredit: creditsPlan }}
+    )
+
+    return res.status(200).json({ status: true, data });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ status: false, data: "Error while creating new token" });
+  }
+};
+
+
 module.exports = {
     createChromeToken,
     getUserToken,
     updateChromeToken,
     validateChromeToken,
-    getDetailsChromeToken
+    getDetailsChromeToken,
+    purchaseChromeCredits
 }
