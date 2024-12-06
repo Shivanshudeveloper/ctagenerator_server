@@ -16,6 +16,7 @@ router.get('/gettransactionuserdetail/:organizationId', paymentController.getUse
 
 // Razor Pay Payment
 router.post('/order', paymentController.createRazorpayOrder);
+router.post('/chrometokenorder', paymentController.createChromeTokenOrder);
 router.post('/success', paymentController.successRazorPay);
 router.post('/success2', paymentController.successRazorPay2);
 

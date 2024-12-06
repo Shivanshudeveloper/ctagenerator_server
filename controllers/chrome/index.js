@@ -1,6 +1,7 @@
 const User_Model = require('../../models/User');
 const Chrome_Extention_Token_Model = require("../../models/ChromeToken");
 const LeadLists_Model = require('../../models/LeadLists');
+const UserTransactions_Model = require('../../models/UserTransactions');
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -136,7 +137,16 @@ const getDetailsChromeToken = async (req, res) => {
 // Purchase Chrome Credits
 const purchaseChromeCredits = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
-  const { organizationId, plan  } = req.body;
+  const {
+      plan,
+      email,
+      organizationId,
+      orderCreationId,
+      razorpayPaymentId,
+      razorpayOrderId,
+      razorpaySignature,
+      priceType
+  } = req.body;
 
   try {
     var creditsPlan = 500;
@@ -144,13 +154,38 @@ const purchaseChromeCredits = async (req, res) => {
     if (plan === "pro") {
       creditsPlan = 1200;
     }
+
+    const chromeCredits = await User_Model.findOne({ organizationId }).sort({
+      createdAt: -1,
+    });
+
+    if (chromeCredits) {
+      creditsPlan = creditsPlan + chromeCredits?.chromeExtentionCredit;
+    }
     
-    const data = await User_Model.updateOne(
+    await User_Model.updateOne(
         { organizationId },
         { $set: { chromeExtentionCredit: creditsPlan }}
     )
 
-    return res.status(200).json({ status: true, data });
+    const newUserTransaction = new UserTransactions_Model({
+        email,
+        organizationId,
+        plan,
+        channel: "PayPal",
+        paymentType: "Extention Credits",
+        priceType,
+        paymentInformation: {
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature
+        }
+    });
+
+    const userres = await newUserTransaction.save();
+
+    return res.status(200).json({ status: true, data: userres });
   } catch (error) {
     console.error(error);
     return res
@@ -159,6 +194,29 @@ const purchaseChromeCredits = async (req, res) => {
   }
 };
 
+// Get User Chrome Credits
+const getUserChromeCredits = async (req, res) => {
+  try {
+    const { organizationId } = req.params;
+
+    const chromeCredits = await User_Model.findOne({ organizationId }).sort({
+      createdAt: -1,
+    });
+
+    if (!chromeCredits) {
+      return res.status(200).json({ success: true, data: 0 });
+    }
+
+    return res.status(200).json({ success: true, data: chromeCredits?.chromeExtentionCredit });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, data: "Something went wrong" });
+  }
+};
+
+
 
 module.exports = {
     createChromeToken,
@@ -166,5 +224,6 @@ module.exports = {
     updateChromeToken,
     validateChromeToken,
     getDetailsChromeToken,
-    purchaseChromeCredits
+    purchaseChromeCredits,
+    getUserChromeCredits
 }

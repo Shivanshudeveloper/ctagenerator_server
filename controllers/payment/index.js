@@ -172,6 +172,46 @@ const createRazorpayOrder = async (req, res) => {
     }
 }
 
+// Chrome Token Order
+const createChromeTokenOrder = async (req, res) => {
+    const { plan, userEmail } = req.body;
+
+    let receipt = `RECIPT_CHROME_${Date.now()}_${uuidv4()}`;
+
+    receipt = receipt.slice(0, 40);
+
+    console.log(`Payment Chrome Token for User ${userEmail} of Plan ${plan}. RECIPT: ${receipt}`);
+
+    let mainAmount = 4.99;
+
+    if (plan === "pro") {
+        mainAmount = 9.99;
+    }
+    
+    try {
+        const instance = new Razorpay({
+            key_id: `${keyId.toString()}`,
+            key_secret: `${keySecret.toString()}`,
+        });
+
+        const options = {
+            amount: parseInt(mainAmount * 100), // amount in smallest currency unit
+            currency: "USD",
+            receipt: receipt,
+        };
+
+        const order = await instance.orders.create(options);
+
+        if (!order) return res.status(500).send("Some error occured");
+
+        res.json(order);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
 const successRazorPay = async (req, res) => {
     try {
         // getting the details back from our font-end
@@ -379,5 +419,6 @@ module.exports = {
     successRazorPay,
     getUserAccountStatus,
     successRazorPay2,
-    getUserHistoryTransaction
+    getUserHistoryTransaction,
+    createChromeTokenOrder
 }
