@@ -135,7 +135,8 @@ const saveLeadsFilters = async (req, res) => {
             listName,
             query,
             skip,
-            leadsQty
+            leadsQty,
+            leadsQtyLeft: leadsQty
         });
 
         await newListFilters.save();

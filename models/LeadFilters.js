@@ -26,6 +26,10 @@ const leadFiltersSchema = new mongoose.Schema({
         default: 0,
         required: false
     },
+    leadsQtyLeft: {
+        type: Number,
+        required: true
+    },
     timestamp: {
         type: Date,
         default: Date.now,
