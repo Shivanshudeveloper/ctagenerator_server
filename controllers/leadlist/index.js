@@ -1,4 +1,5 @@
 const LeadLists_Model = require('../../models/LeadLists');
+const LeadFilters_Model = require('../../models/LeadFilters');
 const LeadListsData_Model = require('../../models/LeadListsData');
 
 
@@ -123,9 +124,39 @@ const getLeadsInList = async (req, res) => {
     }
 }
 
+// Save Leads Filters
+const saveLeadsFilters = async (req, res) => {
+    let { organizationId, listName, query, skip, leadsQty } = req.body;
+
+    try {
+        // Create new domain record
+        const newListFilters = new LeadFilters_Model({
+            organizationId,
+            listName,
+            query,
+            skip,
+            leadsQty
+        });
+
+        await newListFilters.save();
+
+        return res.status(200).json({
+            data: 'List Filters added successfully',
+        });
+
+    } catch (error) {
+        console.error('Error adding List:', error);
+        res.status(500).json({ 
+            error: 'Failed to add List',
+            details: error.message 
+        });
+    }
+}
+
 module.exports = {
     addNewUserList,
     getAllUserListsLeads,
     addLeadsToList,
-    getLeadsInList
+    getLeadsInList,
+    saveLeadsFilters
 }
