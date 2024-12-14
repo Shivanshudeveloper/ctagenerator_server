@@ -1,5 +1,6 @@
 const { azureSearchGetDetails, azureSearchGetDetailsNameLookup, azureSearchGetPhoneDetails } = require('../../lib/azure_openai')
-const { serpLeads, serpLeadsNameLookup, serpPhoneLeads } = require('../../lib/leads_serper')
+const { serpLeads, serpLeadsNameLookup, serpPhoneLeads } = require('../../lib/leads_serper');
+const { findPersonByFullName } = require('../../lib/other_services');
 const User_Model = require('../../models/User');
 
 function extractJsonObject(text) {
@@ -269,29 +270,60 @@ const searchLeadsNameLookup = async (req, res) => {
     
     const { niche, location, organizationId } = req.body;
 
+    // This array appears valid. Just make sure `serpLeadsNameLookup` expects this format.
     var siteArr = ["site:contactout.com"];
 
+    // Make sure `serpLeadsNameLookup` returns a well-defined object
     const searchResponse = await serpLeadsNameLookup(siteArr, niche, location, organizationId);
 
+    // `findPersonByFullName` should return either an object or null/undefined if not found.
+    const peopleDbResponse = await findPersonByFullName(niche, location);
+
     // Check if searchResponse?.organic is empty
+    // If `searchResponse` is null or undefined, the `?.` operator prevents an error.
     if (!searchResponse?.organic || searchResponse.organic.length === 0) {
+        // Returns an empty data array if no leads are found
         return res.status(201).json({ status: true, data: [] });
     }
 
+    // Make sure `azureSearchGetDetailsNameLookup` returns data that `extractJsonObject` can handle
     const getUserDeatilsResponse = await azureSearchGetDetailsNameLookup(searchResponse);
 
-    const jsonObject = extractJsonObject(getUserDeatilsResponse);
+    // If `extractJsonObject` is well-defined, it should return an object or null/undefined if no JSON is found.
+    const jsonObject = extractJsonObject(getUserDeatilsResponse) || { data: [] };
 
-    console.log(jsonObject);
+    // Logging is fine for debugging
+    console.log(peopleDbResponse, jsonObject);
 
+    var peopleData;
+    var peopleDataArr = [];
+
+    // Safely handle the case when `peopleDbResponse` is empty or null
+    if (peopleDbResponse) {
+        peopleData = {
+            Name: `${peopleDbResponse?.First_Name || ''} ${peopleDbResponse?.Last_Name || ''}`.trim(),
+            Phone_Number: peopleDbResponse?.Primary_Phone || null,
+            Email: peopleDbResponse?.Email || null,
+            Link: peopleDbResponse?.Person_Linkedin_Url || null
+        };
+        peopleDataArr.push(peopleData);
+    } else {
+        peopleData = {};
+    }
+
+    // The following lines are commented out, but if you use them, ensure `jsonObject.data` is always defined.
     // const stats = calculateEmailStats(jsonObject?.data);
-
-    // console.log(stats);
-
     // await updateLeadsCredit(organizationId, stats?.validEmails);
 
-    res.status(200).json({ status: true, data: jsonObject });
-}
+    // Return the results
+    // `jsonObject` and `peopleDataArr` are guaranteed defined. `jsonObject` was set to at least `{ data: [] }` if null.
+    return res.status(200).json({
+        status: true,
+        data: jsonObject,
+        peopleDataArr
+    });
+};
+
 
 
 module.exports = {
