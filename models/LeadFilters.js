@@ -34,6 +34,10 @@ const leadFiltersSchema = new mongoose.Schema({
         type: Date,
         required: false
     },
+    status: {
+        type: Number,
+        required: false
+    },
     timestamp: {
         type: Date,
         default: Date.now,
