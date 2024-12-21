@@ -1,122 +1,155 @@
 const AICampagins_Model = require('../../models/AICampagins');
+const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+const LeadListsData_Model = require('../../models/LeadListsData');
 
 const { v4: uuidv4 } = require("uuid");
 
 // Create new AI Agent
 const createNewAiCampagin = async (req, res) => {
-    const { organizationId, userEmail, name, trainingData } = req.body;
+    const { 
+        organizationId, 
+        userEmail, 
+        aiAgentUid, 
+        name, 
+        listName, 
+        phoneNumbers
+    } = req.body;
 
     try {
         // Find an existing token by title
-        let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+        let existingAICampagin = await AICampagins_Model.findOne({ name, organizationId });
 
-        if (existingAIAgent) {
-            return res.status(200).json({ status: true, data: "AI Agent name already exist" });
+        if (existingAICampagin) {
+            return res.status(200).json({ status: true, data: "AI Campagin name already exist" });
         } 
 
-        const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+        // Create campaign
+        const campaignUid = `CAMPAIGN_${Date.now()}_${uuidv4()}`;
 
-        const newAiAgent = new AIAgents_Model({
+        const newCampaign = new AICampagins_Model({
             organizationId,
             userEmail,
+            campaginUid: campaignUid,
             aiAgentUid,
             name,
-            trainingData,
-            status: "Live"
+            listName,
+            phoneNumbers,
+            status: 'active'
         });
 
-        const resdata = await newAiAgent.save();
+        const resdata = await newCampaign.save();
 
-        console.log("New Ageent Created:" ,resdata);
+        console.log("New Campagin Created:" ,resdata);
 
-        return res.status(200).json({ status: true, data: resdata });
+        // Find all leads for the list
+        const leads = await LeadListsData_Model.find({ 
+            organizationId, 
+            listName 
+        }).select('_id').lean();
 
+
+        // Prepare bulk campaign leads mapping
+        const campaignLeadsMappings = leads.map(lead => ({
+            organizationId,
+            campaignUid,
+            leadId: lead._id,
+            status: 'pending'
+        }));
+
+        // Use bulk insert for better performance
+        if (campaignLeadsMappings?.length > 0) {
+            await AICampaginLeads_Model.insertMany(campaignLeadsMappings);
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                campaign: newCampaign,
+                leadsCount: campaignLeadsMappings.length
+            }
+        });
 
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ success: false, data: "Something went wrong" });
+        console.error('Campaign creation error:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to create campaign'
+        });
     }
 }
 
-// Delete AI Agent by ID
-const deleteAiAgent = async (req, res) => {
-    const { _id } = req.params;
-
+// Get campaign leads with pagination
+const getCampaignLeads = async (req, res) => {
     try {
-        const deletedAgent = await AIAgents_Model.findByIdAndDelete({ _id });
+        const { campaignUid } = req.params;
+        const { page = 1, limit = 50, status } = req.query;
 
-        if (!deletedAgent) {
-            return res.status(404).json({ success: false, data: "AI Agent not found" });
-        }
+        const query = { campaignUid };
+        if (status) query.status = status;
 
-        return res.status(200).json({ success: true, data: "AI Agent deleted successfully" });
+        const leads = await AICampaginLeads_Model.find(query)
+            .populate('leadId')
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 });
+
+        const total = await AICampaginLeads_Model.countDocuments(query);
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                leads,
+                total,
+                pages: Math.ceil(total / limit),
+                currentPage: page
+            }
+        });
+
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
     }
 };
 
 
-// Update AI Agent
-const updateAiAgent = async (req, res) => {
-    const { _id } = req.params;
-    const updateData = req.body;
-
+// Update campaign lead status
+const updateCampaignLeadStatus = async (req, res) => {
     try {
-        const updatedAgent = await AIAgents_Model.findByIdAndUpdate(
-            _id,
-            { $set: updateData },
-            { new: true, runValidators: true }
+        const { leadId, campaignUid } = req.params;
+        const { status } = req.body;
+
+        const updatedLead = await AICampaginLeads_Model.findOneAndUpdate(
+            { leadId, campaignUid },
+            {
+                $set: { 
+                    status,
+                    lastContactAttempt: new Date()
+                },
+                $inc: { attempts: 1 }
+            },
+            { new: true }
         );
 
-        if (!updatedAgent) {
-            return res.status(404).json({ success: false, data: "AI Agent not found" });
-        }
-
-        return res.status(200).json({ success: true, data: updatedAgent });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
-    }
-};
-
-// Find One AI Agent by ID
-const findOneAiAgent = async (req, res) => {
-    const { _id } = req.params;
-
-    try {
-        const agent = await AIAgents_Model.findById({ _id });
-
-        if (!agent) {
-            return res.status(404).json({ success: false, data: "AI Agent not found" });
-        }
-
-        return res.status(200).json({ success: true, data: agent });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
-    }
-};
-
-// Find All AI Agents by OrganizationID
-const findAllAiAgentsByOrg = async (req, res) => {
-    const { organizationId } = req.params;
-
-    try {
-        const agents = await AIAgents_Model.find({ organizationId })
-            .sort({ createdAt: -1 }); // Sort by creation date, newest first
-
-        return res.status(200).json({ 
-            success: true, 
-            data: agents,
-            count: agents.length 
+        return res.status(200).json({
+            success: true,
+            data: updatedLead
         });
+
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
+        console.error('Error updating campaign lead:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to update campaign lead'
+        });
     }
 };
+
 
 module.exports = {
-    createNewAiCampagin
+    createNewAiCampagin,
+    getCampaignLeads,
+    updateCampaignLeadStatus
 };
