@@ -31,6 +31,7 @@ const projectTimelineRoutes = require("./routes/projectTimelineRoutes");
 const otherServicesRoutes = require("./routes/other-service");
 const blogsRoutes = require("./routes/blogs-route");
 const chromeRoutes = require("./routes/chrome-route");
+const aiAgentsRoutes = require("./routes/aiagents-route");
 
 // CTA Controller
 const ctaController = require('./controllers/cta');
@@ -87,6 +88,9 @@ if (cluster.isMaster) {
   app.use("/api/v1/leadlists", express.json({ limit: "50mb" }), leadListRoutes);
   app.use("/api/v1/support", express.json({ limit: "50mb" }), supportRoutes);
   app.use("/api/v1/chrome", express.json({ limit: "50mb" }), chromeRoutes);
+
+  // AI Agents
+  app.use("/api/v1/aiagents", express.json({ limit: "50mb" }), aiAgentsRoutes);
   
   // Blogs
   app.use("/api/v1/main/blogsmanage", express.json({ limit: "50mb" }), blogsRoutes);
