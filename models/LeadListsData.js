@@ -37,6 +37,30 @@ const leadlistsDataSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    First_Name:{
+        type: String,
+        required: false
+    },
+    Last_Name:{
+        type: String,
+        required: false
+    },
+    Title:{
+        type: String,
+        required: false
+    },
+    State:{
+        type: String,
+        required: false
+    },
+    City:{
+        type: String,
+        required: false
+    },
+    Industry:{
+        type: String,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

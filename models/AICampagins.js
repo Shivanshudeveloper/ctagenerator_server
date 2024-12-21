@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
-const aiAgentsSchema = new mongoose.Schema({
+const aiCampaginsSchema = new mongoose.Schema({
     organizationId: {
         type: String,
         required: true,
     },
     userEmail: {
+        type: String,
+        required: true,
+    },
+    campaginUid: {
         type: String,
         required: true,
     },
@@ -17,16 +21,16 @@ const aiAgentsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    trainingData: {
-        type: Object,
+    listName: {
+        type: String,
+        required: false,
+    },
+    phoneNumbers: {
+        type: Array,
         required: false,
     },
     status: {
         type: String,
-        required: false,
-    },
-    campaginId: {
-        type: Array,
         required: false,
     },
     createdAt: {
@@ -35,5 +39,5 @@ const aiAgentsSchema = new mongoose.Schema({
     }
 });
 
-const aiagents = mongoose.model('aiagents', aiAgentsSchema);
-module.exports = aiagents;
+const aicampagins = mongoose.model('aicampagins', aiCampaginsSchema);
+module.exports = aicampagins;
