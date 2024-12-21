@@ -9,7 +9,7 @@ const aiCampaginsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    campaginUid: {
+    campaignUid: {
         type: String,
         required: true,
     },

@@ -29,7 +29,7 @@ const createNewAiCampagin = async (req, res) => {
         const newCampaign = new AICampagins_Model({
             organizationId,
             userEmail,
-            campaginUid: campaignUid,
+            campaignUid,
             aiAgentUid,
             name,
             listName,
