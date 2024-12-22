@@ -12,7 +12,7 @@ const createNewAiAgent = async (req, res) => {
         let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
 
         if (existingAIAgent) {
-            return res.status(200).json({ status: true, data: "AI Agent name already exist" });
+            return res.status(201).json({ status: true, data: "AI Agent name already exist" });
         } 
 
         const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
