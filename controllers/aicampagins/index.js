@@ -163,9 +163,28 @@ const getCampaignDetails = async (req, res) => {
     }
 };
 
+// Get one All User AI Campagin Details
+const getAllUserCampaignDetails = async (req, res) => {
+    const { organizationId } = req.params;
+
+    try {
+        const campaign = await AICampagins_Model.find({ organizationId });
+
+        if (!campaign) {
+            return res.status(404).json({ success: false, data: [] });
+        }
+
+        return res.status(200).json({ success: true, data: campaign });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
+
 module.exports = {
     createNewAiCampagin,
     getCampaignLeads,
     updateCampaignLeadStatus,
-    getCampaignDetails
+    getCampaignDetails,
+    getAllUserCampaignDetails
 };
