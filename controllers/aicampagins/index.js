@@ -19,7 +19,7 @@ const createNewAiCampagin = async (req, res) => {
         let existingAICampagin = await AICampagins_Model.findOne({ name, organizationId });
 
         if (existingAICampagin) {
-            return res.status(200).json({ status: true, data: "AI Campagin name already exist" });
+            return res.status(201).json({ status: true, data: "AI Campagin name already exist" });
         } 
 
         // Create campaign
