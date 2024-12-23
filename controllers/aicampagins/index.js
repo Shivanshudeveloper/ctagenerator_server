@@ -145,9 +145,27 @@ const updateCampaignLeadStatus = async (req, res) => {
     }
 };
 
+// Get one AI Campagin Details
+const getCampaignDetails = async (req, res) => {
+    const { _id } = req.params;
+
+    try {
+        const campaign = await AICampagins_Model.findById({ _id });
+
+        if (!campaign) {
+            return res.status(404).json({ success: false, data: {} });
+        }
+
+        return res.status(200).json({ success: true, data: campaign });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
 
 module.exports = {
     createNewAiCampagin,
     getCampaignLeads,
-    updateCampaignLeadStatus
+    updateCampaignLeadStatus,
+    getCampaignDetails
 };
