@@ -15,11 +15,11 @@ const aiCampaginsSchema = new mongoose.Schema({
     },
     aiAgentUid: {
         type: String,
-        required: true,
+        required: false,
     },
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     listName: {
         type: String,

@@ -12,7 +12,6 @@ const createNewAiCampagin = async (req, res) => {
         aiAgentUid, 
         name, 
         listName, 
-        phoneNumbers
     } = req.body;
 
     try {
@@ -33,7 +32,6 @@ const createNewAiCampagin = async (req, res) => {
             aiAgentUid,
             name,
             listName,
-            phoneNumbers,
             status: 'active'
         });
 
