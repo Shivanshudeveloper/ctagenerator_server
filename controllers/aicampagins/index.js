@@ -209,43 +209,79 @@ const makeTestCallCampaign = async (req, res) => {
         let existingAICampagin = await AICampagins_Model.findOne({ campaignUid });
         let existingAigent = await AIAgents_Model.findOne({ aiAgentUid: existingAICampagin?.aiAgentUid });
 
+        var callingData;
 
         var initialGreeting = `Hi, ${prospectFirstName} I am ${existingAigent?.name} from ${existingAigent?.trainingData.company} is this a good time to chat with you?`;
         var productDescription = existingAigent?.trainingData.productDescription;
 
-        var callingData = {
-            targetPhoneNumber,
-            sourcePhoneNumber: existingPhoneNumber?.phoneNumber,
-            campaignUid: campaignUid,
-            initialGreeting,
-            timeoutPrompt: "I apologize, but I didn't hear anything. Could you please repeat that?",
-            goodbyePrompt: "Thank you for your time. Have a great day!",
-            systemPrompt: `I want you to forget everything from the past, now you are a sales agent who is doing cold callings to users. Here is the Product Description: ${productDescription}. I have already started the conversation with the user and this is what I said, [${initialGreeting}] From here you need to talk with the user and answer his doubts. Make sure you continue the conversation with the prospect by telling him why you have called and based on his answers response to him. IMPORTANT: Keep your responses concise and under 100 words. Be friendly and conversational, focusing on key points only. Also, you need to try to convert the user into a hot. Do not answer anything off the topics that the user asks if you don't know the answer simply say 'I am not aware of this I'll ask someone to help you with it.'`,
-            ssmlConfig: {
-                voiceName: "en-US-JennyNeural",
-                styleDegree: "2",
-                style: existingAigent?.trainingData.style,
-                rate: "0.9",
-                pitch: "+0.1st",
-                role: existingAigent?.trainingData.voiceType
+        if (existingAigent?.trainingData.agentType === "Conversational") {
+            
+            callingData = {
+                targetPhoneNumber,
+                sourcePhoneNumber: existingPhoneNumber?.phoneNumber,
+                campaignUid: campaignUid,
+                initialGreeting,
+                timeoutPrompt: "I apologize, but I didn't hear anything. Could you please repeat that?",
+                goodbyePrompt: "Thank you for your time. Have a great day!",
+                systemPrompt: `I want you to forget everything from the past, now you are a sales agent who is doing cold callings to users. Here is the Product Description: ${productDescription}. I have already started the conversation with the user and this is what I said, [${initialGreeting}] From here you need to talk with the user and answer his doubts. Make sure you continue the conversation with the prospect by telling him why you have called and based on his answers response to him. IMPORTANT: Keep your responses concise and under 100 words. Be friendly and conversational, focusing on key points only. Also, you need to try to convert the user into a hot. Do not answer anything off the topics that the user asks if you don't know the answer simply say 'I am not aware of this I'll ask someone to help you with it.'`,
+                ssmlConfig: {
+                    voiceName: "en-US-JennyNeural",
+                    styleDegree: "2",
+                    style: existingAigent?.trainingData.style,
+                    rate: "0.9",
+                    pitch: "+0.1st",
+                    role: existingAigent?.trainingData.voiceType
+                }
             }
+            console.log(callingData);
+
+            // Make the POST request using axios
+            const response = await axios.post(`${CALLING_SERVICE_URL}/outboundCall`, callingData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    serviceResponse: response?.data
+                }
+            });
+        } else {
+            callingData = {
+                targetPhoneNumber,
+                sourcePhoneNumber: existingPhoneNumber?.phoneNumber,
+                campaignUid: campaignUid,
+                mainMenu: `${productDescription}. Please say Confirm to confirm it or say Cancel to cancel it.`,
+                confirmText: "Thank you, it's confirmed!",
+                cancelText: "Sure, we've canceled it!",
+                customerQueryTimeout: "I’m sorry I didn’t receive a response, please try again.",
+                noResponse: "I didn't receive an input, we will go ahead and confirm your appointment. Goodbye",
+                invalidAudio: "I’m sorry, I didn’t understand your response, please try again."
+            }
+
+            console.log(callingData);
+
+            // Make the POST request using axios
+            const response = await axios.post(`${CALLING_SERVICE_URL}/appointmentCall`, callingData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    serviceResponse: response?.data
+                }
+            });
         }
 
-        console.log(callingData);
 
-        // Make the POST request using axios
-        const response = await axios.post(`${CALLING_SERVICE_URL}/outboundCall`, callingData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
+        
 
-        return res.status(200).json({
-            success: true,
-            data: {
-                serviceResponse: response?.data
-            }
-        });
+        
         
     } catch (error) {
         console.error('Campaign creation error:', error);
