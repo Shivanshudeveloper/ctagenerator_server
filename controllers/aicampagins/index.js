@@ -215,7 +215,7 @@ const makeTestCallCampaign = async (req, res) => {
         var productDescription = existingAigent?.trainingData.productDescription;
         var gptPrompt = existingAigent?.trainingData.gptPrompt || "";
 
-        var systemPromptGpt = `${gptPrompt}. Your prospect name to whom you are talking is ${prospectFirstName}. IMPORTANT: Keep your responses concise and under 100 words. Be friendly and conversational, focusing on key points only. Also, you need to try to convert the user into a hot. Do not answer anything off the topics that the user asks if you don't know the answer simply say 'I am not aware of this I'll ask someone to help you with it.`
+        var systemPromptGpt = `${gptPrompt}. Your prospect name to whom you are talking is ${prospectFirstName}. IMPORTANT: Keep your responses concise and under 60 words and don't introduce yourself. Be friendly and conversational, focusing on key points only. Make sure not to introduce yourself or say things like Hope you are doing well. Just tell about the product and try to convert the lead.`
 
         console.log(systemPromptGpt);
         
