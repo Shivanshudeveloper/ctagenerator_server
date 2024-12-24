@@ -189,7 +189,7 @@ const getAllUserCampaignDetails = async (req, res) => {
 
 // Make a test call
 const makeTestCallCampaign = async (req, res) => {
-    const { 
+    const {
         organizationId, 
         campaignUid,
         targetPhoneNumber,
@@ -213,7 +213,12 @@ const makeTestCallCampaign = async (req, res) => {
 
         var initialGreeting = `Hi, ${prospectFirstName} I am ${existingAigent?.name} from ${existingAigent?.trainingData.company} is this a good time to chat with you?`;
         var productDescription = existingAigent?.trainingData.productDescription;
+        var gptPrompt = existingAigent?.trainingData.gptPrompt || "";
 
+        var systemPromptGpt = `${gptPrompt}. IMPORTANT: Keep your responses concise and under 100 words. Be friendly and conversational, focusing on key points only. Also, you need to try to convert the user into a hot. Do not answer anything off the topics that the user asks if you don't know the answer simply say 'I am not aware of this I'll ask someone to help you with it.`
+
+        console.log(systemPromptGpt);
+        
         if (existingAigent?.trainingData.agentType === "Conversational") {
             
             callingData = {
@@ -223,7 +228,7 @@ const makeTestCallCampaign = async (req, res) => {
                 initialGreeting,
                 timeoutPrompt: "I apologize, but I didn't hear anything. Could you please repeat that?",
                 goodbyePrompt: "Thank you for your time. Have a great day!",
-                systemPrompt: `I want you to forget everything from the past, now you are a sales agent who is doing cold callings to users. Here is the Product Description: ${productDescription}. I have already started the conversation with the user and this is what I said, [${initialGreeting}] From here you need to talk with the user and answer his doubts. Make sure you continue the conversation with the prospect by telling him why you have called and based on his answers response to him. IMPORTANT: Keep your responses concise and under 100 words. Be friendly and conversational, focusing on key points only. Also, you need to try to convert the user into a hot. Do not answer anything off the topics that the user asks if you don't know the answer simply say 'I am not aware of this I'll ask someone to help you with it.'`,
+                systemPrompt: systemPromptGpt,
                 ssmlConfig: {
                     voiceName: "en-US-JennyNeural",
                     styleDegree: "2",
