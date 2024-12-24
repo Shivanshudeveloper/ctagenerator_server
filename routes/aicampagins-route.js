@@ -13,5 +13,9 @@ router.get('/getcampaginleads/:campaignUid', aiCampaginsController.getCampaignLe
 router.get('/getcampagindetails/:_id', aiCampaginsController.getCampaignDetails);
 router.put('/updatethestatuscampaginlead/:leadId/:campaignUid', aiCampaginsController.updateCampaignLeadStatus);
 
+// Make a Live Call
+router.post('/makeatestlivecall', aiCampaginsController.makeTestCallCampaign);
+
+
 
 module.exports = router;
