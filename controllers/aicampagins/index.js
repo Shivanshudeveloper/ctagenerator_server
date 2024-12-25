@@ -297,11 +297,35 @@ const makeTestCallCampaign = async (req, res) => {
     }
 }
 
+// Update AI Campaign
+const updateAiCampagin = async (req, res) => {
+    const { _id } = req.params;
+    const updateData = req.body;
+
+    try {
+        const updatedAgent = await AICampagins_Model.findByIdAndUpdate(
+            _id,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedAgent) {
+            return res.status(404).json({ success: false, data: "AI Campagin Successfully Updated!" });
+        }
+
+        return res.status(200).json({ success: true, data: updatedAgent });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
+
 module.exports = {
     createNewAiCampagin,
     getCampaignLeads,
     updateCampaignLeadStatus,
     getCampaignDetails,
     getAllUserCampaignDetails,
-    makeTestCallCampaign
+    makeTestCallCampaign,
+    updateAiCampagin
 };
