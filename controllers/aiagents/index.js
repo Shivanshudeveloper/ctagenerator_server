@@ -86,7 +86,7 @@ const findOneAiAgent = async (req, res) => {
     const { aiAgentUid } = req.params;
 
     try {
-        const agent = await AIAgents_Model.findById({ aiAgentUid });
+        const agent = await AIAgents_Model.findOne({ aiAgentUid });
 
         if (!agent) {
             return res.status(404).json({ success: false, data: "AI Agent not found" });
