@@ -174,7 +174,7 @@ const getAllUserCampaignDetails = async (req, res) => {
     const { organizationId } = req.params;
 
     try {
-        const campaign = await AICampagins_Model.find({ organizationId });
+        const campaign = await AICampagins_Model.find({ organizationId }).sort({ createdAt: -1 });
 
         if (!campaign) {
             return res.status(404).json({ success: false, data: [] });
