@@ -253,7 +253,7 @@ const makeTestCallCampaign = async (req, res) => {
                     serviceResponse: response?.data
                 }
             });
-        } else {
+        } else if (existingAigent?.trainingData.agentType === "Yes or No") {
             callingData = {
                 targetPhoneNumber,
                 sourcePhoneNumber: existingPhoneNumber?.phoneNumber,
@@ -270,6 +270,29 @@ const makeTestCallCampaign = async (req, res) => {
 
             // Make the POST request using axios
             const response = await axios.post(`${CALLING_SERVICE_URL}/appointmentCall`, callingData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    serviceResponse: response?.data
+                }
+            });
+        } else {
+            callingData = {
+                targetPhoneNumber,
+                sourcePhoneNumber: existingPhoneNumber?.phoneNumber,
+                campaignUid: campaignUid,
+                message: `${productDescription}`,
+            }
+
+            console.log(callingData);
+
+            // Make the POST request using axios
+            const response = await axios.post(`${CALLING_SERVICE_URL}/directMessageCall`, callingData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
