@@ -1,4 +1,5 @@
 const AIAgents_Model = require('../../models/AIAgents');
+const AICampagins_Model = require('../../models/AICampagins');
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -41,21 +42,27 @@ const createNewAiAgent = async (req, res) => {
 
 // Delete AI Agent by ID
 const deleteAiAgent = async (req, res) => {
-    const { _id } = req.params;
-
+    const { aiAgentUid } = req.params;
+ 
     try {
-        const deletedAgent = await AIAgents_Model.findByIdAndDelete({ _id });
-
-        if (!deletedAgent) {
+        const aiAgentCampaignCheck = await AICampagins_Model.findOne({ aiAgentUid, status: "active" });
+ 
+        if (aiAgentCampaignCheck) {
+            return res.status(409).json({ success: false, data: "AI Agent is in use" });
+        }
+        
+        const deletedAgent = await AIAgents_Model.deleteOne({ aiAgentUid });
+ 
+        if (deletedAgent.deletedCount === 0) {
             return res.status(404).json({ success: false, data: "AI Agent not found" });
         }
-
+ 
         return res.status(200).json({ success: true, data: "AI Agent deleted successfully" });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ success: false, data: "Something went wrong" });
     }
-};
+ };
 
 
 // Update AI Agent
