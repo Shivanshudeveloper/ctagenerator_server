@@ -232,10 +232,10 @@ const makeTestCallCampaign = async (req, res) => {
                 ssmlConfig: {
                     voiceName: "en-US-JennyNeural",
                     styleDegree: "2",
-                    style: existingAigent?.trainingData.style,
-                    rate: "0.9",
-                    pitch: "+0.1st",
-                    role: existingAigent?.trainingData.voiceType
+                    style: existingAigent?.trainingData.style || "cheerful",
+                    rate: existingAigent?.trainingData.rate || "0.9",
+                    pitch: existingAigent?.trainingData.pitch || "+0.1st",
+                    role: existingAigent?.trainingData.voiceType || "YoungAdultFemale"
                 }
             }
             console.log(callingData);
