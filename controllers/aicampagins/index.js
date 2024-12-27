@@ -238,6 +238,7 @@ const makeTestCallCampaign = async (req, res) => {
                     role: existingAigent?.trainingData.voiceType || "YoungAdultFemale"
                 }
             }
+            
             console.log(callingData);
 
             // Make the POST request using axios
@@ -343,6 +344,30 @@ const updateAiCampagin = async (req, res) => {
     }
 };
 
+// Update AI Campaign
+const deleteAiCampagin = async (req, res) => {
+    const { campaignUid } = req.params;
+
+    try {
+        
+        const aiCampaign = await AICampagins_Model.findOne({ campaignUid });
+ 
+        if (aiCampaign?.status === "active") {
+            return res.status(409).json({ success: false, data: "AI Campaign is active please pause it and then remove it." });
+        }
+
+        await Promise.all([
+            AICampagins_Model.deleteOne({ campaignUid }),
+            AICampaginLeads_Model.deleteMany({ campaignUid })
+        ]);
+
+        return res.status(200).json({ success: true, data: "AI Campaign deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
+
 module.exports = {
     createNewAiCampagin,
     getCampaignLeads,
@@ -350,5 +375,6 @@ module.exports = {
     getCampaignDetails,
     getAllUserCampaignDetails,
     makeTestCallCampaign,
-    updateAiCampagin
+    updateAiCampagin,
+    deleteAiCampagin
 };
