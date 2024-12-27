@@ -231,7 +231,7 @@ const makeTestCallCampaign = async (req, res) => {
                 systemPrompt: systemPromptGpt,
                 ssmlConfig: {
                     voiceName: "en-US-JennyNeural",
-                    styleDegree: "2",
+                    styleDegree: existingAigent?.trainingData.styleDegree || "2",
                     style: existingAigent?.trainingData.style || "cheerful",
                     rate: existingAigent?.trainingData.rate || "0.9",
                     pitch: existingAigent?.trainingData.pitch || "+0.1st",
