@@ -12,5 +12,6 @@ router.put('/updateaiagent/:_id', aiAgentController.updateAiAgent);
 router.get('/findoneaiagentdetail/:aiAgentUid', aiAgentController.findOneAiAgent);
 router.get('/findorganizationaiagentdetail/:organizationId', aiAgentController.findAllAiAgentsByOrg);
 
+router.post('/speakingliveaudio', aiAgentController.liveAudioAiAgentSpeaking);
 
 module.exports = router;

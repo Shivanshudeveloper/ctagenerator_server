@@ -1,7 +1,8 @@
+const sdk = require("microsoft-cognitiveservices-speech-sdk");
+const { v4: uuidv4 } = require("uuid");
+
 const AIAgents_Model = require('../../models/AIAgents');
 const AICampagins_Model = require('../../models/AICampagins');
-
-const { v4: uuidv4 } = require("uuid");
 
 // Create new AI Agent
 const createNewAiAgent = async (req, res) => {
@@ -125,10 +126,75 @@ const findAllAiAgentsByOrg = async (req, res) => {
     }
 };
 
+// Create new AI Agent
+const liveAudioAiAgentSpeaking = async (req, res) => {
+    try {
+        const { ssml } = req.body;
+
+        if (!ssml) {
+            return res.status(400).json({ 
+                error: 'SSML is required' 
+            });
+        }
+
+        // Create speech config
+        const speechConfig = sdk.SpeechConfig.fromSubscription(
+            process.env.AZURE_SPEECH_KEY,
+            process.env.AZURE_SPEECH_REGION
+        );
+
+        // Create a synthesizer
+        const synthesizer = new sdk.SpeechSynthesizer(speechConfig, null);
+
+        // Synthesize the SSML
+        const result = await new Promise((resolve, reject) => {
+            synthesizer.speakSsmlAsync(
+                ssml,
+                (result) => {
+                    if (result.errorDetails) {
+                        reject(new Error(result.errorDetails));
+                    }
+
+                    synthesizer.close();
+                    resolve(result);
+                },
+                (error) => {
+                    synthesizer.close();
+                    reject(error);
+                });
+        });
+
+        // Check if synthesis was successful
+        if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
+            // Get the audio data
+            const audioData = result.audioData;
+
+            // Set response headers
+            res.set({
+                'Content-Type': 'audio/wav',
+                'Content-Length': audioData.length
+            });
+
+            // Send the audio data
+            return res.send(Buffer.from(audioData));
+        } else {
+            throw new Error('Speech synthesis failed');
+        }
+    } catch (error) {
+        console.error('TTS Error:', error);
+        return res.status(500).json({ 
+            error: 'Speech synthesis failed',
+            details: error.message 
+        });
+    }
+}
+
+
 module.exports = {
     createNewAiAgent,
     deleteAiAgent,
     updateAiAgent,
     findOneAiAgent,
-    findAllAiAgentsByOrg
+    findAllAiAgentsByOrg,
+    liveAudioAiAgentSpeaking
 };
