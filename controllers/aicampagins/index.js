@@ -230,7 +230,7 @@ const makeTestCallCampaign = async (req, res) => {
                 goodbyePrompt: "Thank you for your time. Have a great day!",
                 systemPrompt: systemPromptGpt,
                 ssmlConfig: {
-                    voiceName: "en-US-JennyNeural",
+                    voiceName: existingAigent?.trainingData.voiceName || "en-US-JennyNeural",
                     styleDegree: existingAigent?.trainingData.styleDegree || "2",
                     style: existingAigent?.trainingData.style || "cheerful",
                     rate: existingAigent?.trainingData.rate || "0.9",
