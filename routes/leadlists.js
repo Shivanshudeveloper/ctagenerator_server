@@ -15,5 +15,9 @@ router.post('/saveleadsfilters', leadlistController.saveLeadsFilters);
 
 router.get('/getuserleadlistssingle/:id', leadlistController.getLeadsInListSingle);
 
+router.post('/uploaduserdatatolist', leadlistController.uploadUserDataCsv);
+router.get('/downloadallleadsuserleadlist/:listName/:organizationId', leadlistController.downloadLeads);
+router.delete('/deleteuserlist/:listName/:organizationId', leadlistController.deleteUserListLeadData);
+
 
 module.exports = router;
