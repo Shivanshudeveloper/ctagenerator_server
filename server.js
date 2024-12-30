@@ -33,6 +33,7 @@ const blogsRoutes = require("./routes/blogs-route");
 const chromeRoutes = require("./routes/chrome-route");
 const aiAgentsRoutes = require("./routes/aiagents-route");
 const aiCampaginsRoutes = require("./routes/aicampagins-route");
+const automationRoutes = require("./routes/automation-route");
 
 // CTA Controller
 const ctaController = require('./controllers/cta');
@@ -99,6 +100,10 @@ if (cluster.isMaster) {
   
   // Blogs
   app.use("/api/v1/main/blogsmanage", express.json({ limit: "50mb" }), blogsRoutes);
+
+
+  // AI Automation
+  app.use("/api/v1/main/aiautomation", express.json({ limit: "50mb" }), automationRoutes);
 
 
   app.use("/api/v1/otherservices", express.json({ limit: "50mb" }), otherServicesRoutes);
