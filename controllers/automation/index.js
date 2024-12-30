@@ -1,4 +1,6 @@
 const PhoneNumbers_Model = require('../../models/PhoneNumbers');
+const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+
 const { v4: uuidv4 } = require("uuid");
 
 // Create new phone number
@@ -162,11 +164,81 @@ const findAllPhoneNumbers = async (req, res) => {
     }
 };
 
+
+// Update Campaign Lead Automation
+const updateCampaignLead = async (req, res) => {
+    const { _id, status } = req.body;
+
+    try {
+        const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
+            { _id },
+            { status },
+            { new: true }
+        );
+
+        if (!updatedCampaignLead) {
+            return res.status(404).json({ 
+                success: false, 
+                data: "Phone number not found" 
+            });
+        }
+
+        return res.status(200).json({ 
+            success: true, 
+            data: updatedCampaignLead 
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            success: false, 
+            data: "Something went wrong" 
+        });
+    }
+};
+
+
+
+// Add lead conversations
+const addLeadConversations = async (req, res) => {
+    const { leadObjectId, conversation } = req.body;
+
+    try {
+
+        const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
+            { _id: leadObjectId },
+            { conversationHistory: conversation },
+            { new: true }
+        );
+
+        if (!updatedCampaignLead) {
+            return res.status(404).json({ 
+                success: false, 
+                data: "Campagin Not Updated" 
+            });
+        }
+
+        return res.status(200).json({ 
+            success: true, 
+            data: updatedCampaignLead 
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            success: false, 
+            data: "Something went wrong" 
+        });
+    }
+};
+
+
+
 module.exports = {
     createPhoneNumber,
     updatePhoneNumberStatus,
     deletePhoneNumber,
     findByOrganizationId,
     findByPhoneNumber,
-    findAllPhoneNumbers
+    findAllPhoneNumbers,
+    updateCampaignLead,
+    addLeadConversations
 };
