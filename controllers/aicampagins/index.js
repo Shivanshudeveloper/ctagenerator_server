@@ -38,7 +38,7 @@ const createNewAiCampagin = async (req, res) => {
             aiAgentUid,
             name,
             listName,
-            status: 'active'
+            status: 'pause'
         });
 
         const resdata = await newCampaign.save();
