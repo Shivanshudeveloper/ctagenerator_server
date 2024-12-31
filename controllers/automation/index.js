@@ -31,11 +31,12 @@ const createPhoneNumber = async (req, res) => {
 
 // Update phone number status
 const updatePhoneNumberStatus = async (req, res) => {
-    const { organizationId, phoneNumber, status } = req.body;
-
+    const { phoneNumber, status } = req.body;
+    console.log(phoneNumber, status);
+    
     try {
         const updatedPhoneNumber = await PhoneNumbers_Model.findOneAndUpdate(
-            { organizationId, phoneNumber },
+            { phoneNumber },
             { status },
             { new: true }
         );
