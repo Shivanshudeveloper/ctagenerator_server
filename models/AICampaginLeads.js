@@ -22,6 +22,10 @@ const aiCampaignLeadsSchema = new mongoose.Schema({
         default: 'pending',
         required: false,
     },
+    callDuration: {
+        type: String,
+        required: false,
+    },
     lastContactAttempt: {
         type: Date,
         required: false,

@@ -202,7 +202,7 @@ const updateCampaignLead = async (req, res) => {
 
 // Add lead conversations
 const addLeadConversations = async (req, res) => {
-    var { leadObjectId, conversation } = req.body;
+    var { leadObjectId, conversation, callDuration } = req.body;
 
     try {
         console.log(leadObjectId, conversation);
@@ -211,16 +211,10 @@ const addLeadConversations = async (req, res) => {
 
         if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
             status = "not_pick_up";
+        } else if (conversation.length === 3) {
+            status = "not_interested";
         } else {
-            var tempConv = {
-                role: 'assistant',
-                content: 'Hey, is this a good time to connect with you?'
-            }
-        
-            // Make sure conversation is an array before spreading
-            conversation = Array.isArray(conversation) ? [tempConv, ...conversation] : [tempConv];
-        
-            status = await getStatusfromAI(conversation);  // Added await if getStatusfromAI is async
+            status = await getStatusfromAI(conversation);  
             status = status.toLowerCase();
         }
 
@@ -228,7 +222,7 @@ const addLeadConversations = async (req, res) => {
         
         const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
             { _id: leadObjectId },
-            { conversationHistory: conversation, status },
+            { conversationHistory: conversation, status, callDuration },
             { new: true }
         );
 
