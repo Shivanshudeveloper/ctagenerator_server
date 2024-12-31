@@ -2,6 +2,7 @@ const PhoneNumbers_Model = require('../../models/PhoneNumbers');
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 
 const { v4: uuidv4 } = require("uuid");
+const { getStatusfromAI } = require('../ai');
 
 // Create new phone number
 const createPhoneNumber = async (req, res) => {
@@ -200,13 +201,33 @@ const updateCampaignLead = async (req, res) => {
 
 // Add lead conversations
 const addLeadConversations = async (req, res) => {
-    const { leadObjectId, conversation } = req.body;
+    var { leadObjectId, conversation } = req.body;
 
     try {
+        console.log(leadObjectId, conversation);
 
+        var status = "completed";
+
+        if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
+            status = "not_pick_up";
+        } else {
+            var tempConv = {
+                role: 'assistant',
+                content: 'Hey, is this a good time to connect with you?'
+            }
+        
+            // Make sure conversation is an array before spreading
+            conversation = Array.isArray(conversation) ? [tempConv, ...conversation] : [tempConv];
+        
+            status = await getStatusfromAI(conversation);  // Added await if getStatusfromAI is async
+            status = status.toLowerCase();
+        }
+
+        console.log(status);
+        
         const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
             { _id: leadObjectId },
-            { conversationHistory: conversation },
+            { conversationHistory: conversation, status },
             { new: true }
         );
 

@@ -1,4 +1,4 @@
-const { azureBotResponsePredictScore, azureBotResponseSummarizeLink, azureBotResponseSummarizeCountries } = require('../../lib/azure_openai')
+const { azureBotResponsePredictScore, azureBotResponseSummarizeLink, azureBotResponseSummarizeCountries, azureDetectCallStatus } = require('../../lib/azure_openai')
 
 
 function summarizeDeviceUsage(data) {
@@ -57,7 +57,26 @@ const getSummarizeSalesPage = async (req, res) => {
   }
 }
 
+
+
+const getStatusfromAI = async (conversation) => {
+  try {
+    const status = await azureDetectCallStatus(conversation);
+
+    console.log(`Status of call is ${status}`);
+    
+    return status;
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, data: "Something went wrong" });
+  }
+}
+
+
+
 module.exports = {
     getScoreSalesPage,
-    getSummarizeSalesPage
+    getSummarizeSalesPage,
+    getStatusfromAI
 }
