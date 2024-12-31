@@ -131,7 +131,7 @@ if (cluster.isMaster) {
   app.use("/api/v1/main/freetrial", express.json({ limit: "50mb" }), freetrialRoutes);
   app.use("/api/v1/main/projecttimeline", express.json({ limit: "50mb" }), projectTimelineRoutes);
 
-  const PORT = process.env.PORT || 8081;
+  const PORT = process.env.PORT || 8080;
 
   app.listen(PORT, () => console.log(`Worker ${process.pid} started and running on port ${PORT}`.yellow.bold));
 }
