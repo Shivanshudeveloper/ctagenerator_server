@@ -281,26 +281,30 @@ const updateCampaignLead = async (req, res) => {
 
 // Add lead conversations 
 const addLeadConversations = async (req, res) => {
-    var { leadObjectId, conversation, callDuration } = req.body;
+    var { leadObjectId, conversation, callDuration, type } = req.body;
 
     try {
-        console.log(leadObjectId, conversation);
+        console.log(leadObjectId, conversation, callDuration, type);
 
         var status = "completed";
 
-        if (callDuration === 1010101012) {
-            console.log("Appointment Call");
-            const result = getMessageStatus(conversation);
-            status = result?.status;
-        } else if (callDuration === 1010101014) {
-            status = "completed";
-        } else if (callDuration === 1010101015) {
+        if (type === "yesorno") {
+            console.log("yesorno Call");
+
+            if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
+                status = "not_pick_up";
+            } else {
+                const result = getMessageStatus(conversation);
+                status = result?.status;
+            }
+        } else if (type === "directmessage") {
             if (conversation.length === 1) {
                 status = "completed";
             } else {
                 status = "call_disconnected";
             }
         } else {
+            console.log("conversational Call");
             if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
                 status = "not_pick_up";
             } else if (conversation.length === 3) {
