@@ -279,7 +279,7 @@ const updateCampaignLead = async (req, res) => {
 
 
 
-// Add lead conversations
+// Add lead conversations 
 const addLeadConversations = async (req, res) => {
     var { leadObjectId, conversation, callDuration } = req.body;
 
@@ -292,6 +292,14 @@ const addLeadConversations = async (req, res) => {
             console.log("Appointment Call");
             const result = getMessageStatus(conversation);
             status = result?.status;
+        } else if (callDuration === 1010101014) {
+            status = "completed";
+        } else if (callDuration === 1010101015) {
+            if (conversation.length === 1) {
+                status = "completed";
+            } else {
+                status = "call_disconnected";
+            }
         } else {
             if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
                 status = "not_pick_up";
