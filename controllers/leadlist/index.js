@@ -2,7 +2,8 @@ const LeadLists_Model = require('../../models/LeadLists');
 const LeadFilters_Model = require('../../models/LeadFilters');
 const LeadListsData_Model = require('../../models/LeadListsData');
 
-
+const AICampagins_Model = require('../../models/AICampagins');
+const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 
 const addNewUserList = async (req, res) => {
     let { organizationId, listName } = req.body;
@@ -221,9 +222,15 @@ const downloadLeads = async (req, res) => {
 
 // Add User data from CSV
 const uploadUserDataCsv = async (req, res) => {
-    const { leads } = req.body;
+    const { leads, listName, organizationId } = req.body;
 
     try {
+        // Find all AI campaigns using this listName
+        const relatedCampaigns = await AICampagins_Model.find({ 
+            listName, 
+            organizationId 
+        });
+
         if (!Array.isArray(leads)) {
             return res.status(400).json({ 
                 success: false, 
@@ -232,35 +239,73 @@ const uploadUserDataCsv = async (req, res) => {
         }
 
         // Use bulkWrite for better performance with many records
-        const operations = leads.map(lead => ({
+        const leadOperations = leads.map(lead => ({
             insertOne: {
                 document: lead
             }
         }));
 
-        // Process in batches of 1000 to prevent memory issues
+        // Process leads in batches of 1000
         const batchSize = 1000;
-        const results = [];
+        const leadResults = [];
 
-        for (let i = 0; i < operations.length; i += batchSize) {
-            const batch = operations.slice(i, i + batchSize);
+        for (let i = 0; i < leadOperations.length; i += batchSize) {
+            const batch = leadOperations.slice(i, i + batchSize);
             const result = await LeadListsData_Model.bulkWrite(batch, {
-                ordered: false // Continues processing even if some documents fail
+                ordered: false
             });
-            results.push(result);
+            leadResults.push(result);
         }
 
-        // Calculate total inserted documents
-        const totalInserted = results.reduce((acc, result) => 
+        // Get IDs of newly inserted leads
+        const newLeadIds = leadResults.flatMap(result => 
+            Object.values(result.insertedIds)
+        );
+
+        // Prepare campaign lead entries for each campaign
+        const campaignLeadOperations = [];
+        for (const campaign of relatedCampaigns) {
+            const campaignLeads = newLeadIds.map(leadId => ({
+                insertOne: {
+                    document: {
+                        organizationId,
+                        campaignUid: campaign.campaignUid,
+                        leadId,
+                        status: 'pending',
+                        attempts: 0,
+                        conversationHistory: [],
+                        metadata: {}
+                    }
+                }
+            }));
+            campaignLeadOperations.push(...campaignLeads);
+        }
+
+        // Process campaign leads in batches
+        const campaignLeadResults = [];
+        for (let i = 0; i < campaignLeadOperations.length; i += batchSize) {
+            const batch = campaignLeadOperations.slice(i, i + batchSize);
+            const result = await AICampaginLeads_Model.bulkWrite(batch, {
+                ordered: false
+            });
+            campaignLeadResults.push(result);
+        }
+
+        // Calculate total insertions
+        const totalLeadsInserted = leadResults.reduce((acc, result) => 
+            acc + result.insertedCount, 0
+        );
+        const totalCampaignLeadsInserted = campaignLeadResults.reduce((acc, result) => 
             acc + result.insertedCount, 0
         );
 
         res.json({
             success: true,
-            message: `Successfully inserted ${totalInserted} leads`,
-            totalInserted
+            message: `Successfully inserted ${totalLeadsInserted} leads and synced with ${relatedCampaigns.length} campaigns`,
+            totalLeadsInserted,
+            totalCampaignLeadsInserted,
+            campaignsAffected: relatedCampaigns.length
         });
-
 
     } catch (error) {
         console.error('Upload error:', error);
@@ -270,7 +315,7 @@ const uploadUserDataCsv = async (req, res) => {
             error: error.message
         });
     }
-}
+};
 
 // Delete User List and Data
 const deleteUserListLeadData = async (req, res) => {
