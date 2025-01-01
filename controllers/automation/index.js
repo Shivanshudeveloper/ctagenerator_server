@@ -4,6 +4,85 @@ const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 const { v4: uuidv4 } = require("uuid");
 const { getStatusfromAI } = require('../ai');
 
+const DtmfTone = {
+    One: '1',
+    Two: '2'
+};
+
+const responseTypes = {
+    confirm: {
+        label: "Confirm",
+        phrases: ["Confirm", "Yes", "Sure", "Okay", "Confirmed", "That's correct", "Correct", "Fine", "That works"],
+        tone: DtmfTone.One
+    },
+    cancel: {
+        label: "Cancel",
+        phrases: ["Cancel", "No", "Don't", "Cancelled", "Not available", "Can't make it", "Cannot", "Not possible", "Reschedule", "Another time", "Different time", "Move the meeting", "Change time", "Change the time", "Different date"],
+        tone: DtmfTone.Two
+    }
+};
+
+function getMessageStatus(conversationArray) {
+    // Check if array is empty
+    if (!conversationArray || conversationArray.length === 0) {
+        return {
+            status: 'not_pick_up',
+            message: 'No conversation found'
+        };
+    }
+
+    // Check if array length is 1
+    if (!conversationArray || conversationArray.length === 1) {
+        return {
+            status: 'call_disconnected',
+            message: 'No conversation found'
+        };
+    }
+
+    // Find the last user message
+    const lastUserMessage = [...conversationArray]
+        .reverse()
+        .find(msg => msg.role === 'user');
+    
+    if (!lastUserMessage) {
+        return {
+            status: 'unknown',
+            message: 'No user message found'
+        };
+    }
+
+    const userContent = lastUserMessage.content.trim().toLowerCase();
+
+    // Check for confirmation phrases
+    const isConfirmed = responseTypes.confirm.phrases
+        .some(phrase => userContent.includes(phrase.toLowerCase()));
+
+    // Check for cancellation phrases
+    const isCancelled = responseTypes.cancel.phrases
+        .some(phrase => userContent.includes(phrase.toLowerCase()));
+
+    if (isConfirmed && !isCancelled) {
+        return {
+            status: 'confirmed',
+            tone: responseTypes.confirm.tone,
+            message: 'User confirmed the meeting'
+        };
+    }
+
+    if (isCancelled && !isConfirmed) {
+        return {
+            status: 'cancelled',
+            tone: responseTypes.cancel.tone,
+            message: 'User cancelled the meeting'
+        };
+    }
+
+    return {
+        status: 'ambiguous',
+        message: 'Unable to determine user intent'
+    };
+}
+
 // Create new phone number
 const createPhoneNumber = async (req, res) => {
     const { phoneNumber, status, organizationId } = req.body;
@@ -209,13 +288,19 @@ const addLeadConversations = async (req, res) => {
 
         var status = "completed";
 
-        if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
-            status = "not_pick_up";
-        } else if (conversation.length === 3) {
-            status = "not_interested";
+        if (callDuration === 1010101012) {
+            console.log("Appointment Call");
+            const result = getMessageStatus(conversation);
+            status = result?.status;
         } else {
-            status = await getStatusfromAI(conversation);  
-            status = status.toLowerCase();
+            if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
+                status = "not_pick_up";
+            } else if (conversation.length === 3) {
+                status = "not_interested";
+            } else {
+                status = await getStatusfromAI(conversation);  
+                status = status.toLowerCase();
+            }
         }
 
         console.log(status);
