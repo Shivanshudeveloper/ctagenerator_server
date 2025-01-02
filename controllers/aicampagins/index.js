@@ -118,6 +118,35 @@ const getCampaignLeads = async (req, res) => {
     }
 };
 
+// Get all campaign leads with pagination
+const getAllCampaignLeads = async (req, res) => {
+    try {
+        const { campaignUid } = req.params;
+
+        const query = { campaignUid };
+
+        const leads = await AICampaginLeads_Model.find(query)
+            .populate('leadId')
+            .sort({ createdAt: -1 });
+
+        const total = await AICampaginLeads_Model.countDocuments(query);
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                leads,
+                total
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
+    }
+};
 
 // Update campaign lead status
 const updateCampaignLeadStatus = async (req, res) => {
@@ -370,5 +399,6 @@ module.exports = {
     getAllUserCampaignDetails,
     makeTestCallCampaign,
     updateAiCampagin,
-    deleteAiCampagin
+    deleteAiCampagin,
+    getAllCampaignLeads
 };
