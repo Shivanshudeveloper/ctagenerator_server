@@ -243,8 +243,9 @@ const makeTestCallCampaign = async (req, res) => {
         var initialGreeting = `Hi, ${prospectFirstName} I am ${existingAigent?.name} from ${existingAigent?.trainingData.company} is this a good time to chat with you?`;
         var productDescription = existingAigent?.trainingData.productDescription;
         var gptPrompt = existingAigent?.trainingData.gptPrompt || "";
+        var aiCompanyName = existingAigent?.trainingData.company || "";
 
-        var systemPromptGpt = `${gptPrompt}. Your prospect name to whom you are talking is ${prospectFirstName}. IMPORTANT: Keep your responses concise and under 60 words and don't introduce yourself. Be friendly and conversational, focusing on key points only. Make sure not to introduce yourself or say things like Hope you are doing well. Just tell about the product and try to convert the lead.`
+        var systemPromptGpt = `${gptPrompt}. Your prospect name to whom you are talking is ${prospectFirstName}. IMPORTANT: Don't simply tell the product description be more human like if user is interested about the product then start your conversation like, I would like to tell you about our product that can help your business, [SERVICE DESCRIPTION]. Keep your responses concise and under 60 words and don't introduce yourself.Be friendly and conversational, focusing on key points only. Make sure not to introduce yourself or say things like Hope you are doing well. Just tell about the product and try to convert the lead.' You also need to end the conversation fast, if the prospect is interested or like the service just tell him someone from our team will reach him out and say 'Good Bye'. If he is not interested, busy or don't want to talk simply end the conversation by 'Good Bye'`
 
         console.log(systemPromptGpt);
         
