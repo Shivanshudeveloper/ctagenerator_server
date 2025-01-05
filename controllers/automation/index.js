@@ -296,52 +296,53 @@ const addLeadConversations = async (req, res) => {
     var { leadObjectId, conversation, callDuration, type, campaignUid } = req.body;
 
     try {
-        if (callDuration !== 0) {
-            console.log(leadObjectId, conversation, callDuration, type, campaignUid);
+        console.log(leadObjectId, conversation, callDuration, type, campaignUid);
 
-            var status = "completed";
+        var status = "completed";
 
-            if (type === "yesorno") {
-                console.log("yesorno Call");
+        if (type === "yesorno") {
+            console.log("yesorno Call");
 
-                if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
-                    status = "not_pick_up";
-                } else {
-                    const result = getMessageStatus(conversation);
-                    status = result?.status;
-                }
-            } else if (type === "directmessage") {
-                if (conversation.length === 1) {
-                    status = "completed";
-                } else {
-                    status = "call_disconnected";
-                }
+            if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
+                status = "not_pick_up";
             } else {
-                console.log("conversational Call");
-                if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
-                    status = "not_pick_up";
-                } else if (conversation.length === 3) {
-                    status = "not_interested";
-                } else {
-                    status = await getStatusfromAI(conversation);  
-                    status = status.toLowerCase();
-                }
+                const result = getMessageStatus(conversation);
+                status = result?.status;
             }
-
-            console.log(status);
-            
-            const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
-                { _id: leadObjectId },
-                { conversationHistory: conversation, status, callDuration },
-                { new: true }
-            );
-
-            if (!updatedCampaignLead) {
-                return res.status(404).json({ 
-                    success: false, 
-                    data: "Campagin Not Updated" 
-                });
+        } else if (type === "directmessage") {
+            if (conversation.length === 1) {
+                status = "completed";
+            } else {
+                status = "call_disconnected";
             }
+        } else {
+            console.log("conversational Call");
+            if (!conversation || conversation.length === 0) {  // Check if conversation is undefined OR empty
+                status = "not_pick_up";
+            } else if (conversation.length === 3) {
+                status = "not_interested";
+            } else {
+                status = await getStatusfromAI(conversation);  
+                status = status.toLowerCase();
+            }
+        }
+
+        console.log(status);
+        
+        const updatedCampaignLead = await AICampaginLeads_Model.findOneAndUpdate(
+            { _id: leadObjectId },
+            { conversationHistory: conversation, status, callDuration },
+            { new: true }
+        );
+
+        if (!updatedCampaignLead) {
+            return res.status(404).json({ 
+                success: false, 
+                data: "Campagin Not Updated" 
+            });
+        }
+
+        if (callDuration !== 0) {
 
             const campaignEvents = await Events_Model.find({ 
                 campaignUid 
@@ -392,18 +393,14 @@ const addLeadConversations = async (req, res) => {
                 console.log("No Campaign Notifications Found");
             }
 
-            return res.status(200).json({ 
-                success: true, 
-                data: updatedCampaignLead 
-                // data: true
-            });
-        } else {
-            console.log("Call Duration is 0");
-            return res.status(200).json({ 
-                success: true, 
-                data: true
-            });
         }
+
+        return res.status(200).json({ 
+            success: true, 
+            data: updatedCampaignLead 
+            // data: true
+        });
+        
 
 
         
