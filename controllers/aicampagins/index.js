@@ -6,6 +6,7 @@ const AIAgents_Model = require('../../models/AIAgents');
 
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 const LeadListsData_Model = require('../../models/LeadListsData');
+const Events_Model = require('../../models/Events');
 
 const { v4: uuidv4 } = require("uuid");
 const { CALLING_SERVICE_URL } = require('../../config/config');
@@ -351,20 +352,45 @@ const updateAiCampagin = async (req, res) => {
     const updateData = req.body;
 
     try {
+        // If replace is true, delete all events for this campaign
+        if (updateData.replace && updateData.campaignUid) {
+            try {
+                await Events_Model.deleteMany({ campaignUid: updateData.campaignUid });
+            } catch (deleteError) {
+                console.error('Error deleting events:', deleteError);
+                return res.status(500).json({ 
+                    success: false, 
+                    data: "Error deleting campaign events" 
+                });
+            }
+        }
+
+        // Remove extra fields that shouldn't be in the update
+        const { replace, campaignUid, ...cleanUpdateData } = updateData;
+
         const updatedAgent = await AICampagins_Model.findByIdAndUpdate(
             _id,
-            { $set: updateData },
+            { $set: cleanUpdateData },
             { new: true, runValidators: true }
         );
 
         if (!updatedAgent) {
-            return res.status(404).json({ success: false, data: "AI Campagin Successfully Updated!" });
+            return res.status(404).json({ 
+                success: false, 
+                data: "AI Campaign not found" 
+            });
         }
 
-        return res.status(200).json({ success: true, data: updatedAgent });
+        return res.status(200).json({ 
+            success: true, 
+            data: updatedAgent 
+        });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
+        console.error('Update error:', error);
+        return res.status(500).json({ 
+            success: false, 
+            data: "Something went wrong" 
+        });
     }
 };
 
