@@ -296,7 +296,7 @@ const addLeadConversations = async (req, res) => {
     var { leadObjectId, conversation, callDuration, type, campaignUid } = req.body;
 
     try {
-        console.log(leadObjectId, conversation, callDuration, type);
+        console.log(leadObjectId, conversation, callDuration, type, campaignUid);
 
         var status = "completed";
 
@@ -345,6 +345,8 @@ const addLeadConversations = async (req, res) => {
         const campaignEvents = await Events_Model.find({ 
             campaignUid 
         });
+
+        console.log("Events,", campaignEvents);
 
         if (Array.isArray(campaignEvents) && campaignEvents.length > 0) {
             const leadInfo = await AICampaginLeads_Model.findOne({ _id: leadObjectId }).populate('leadId');
