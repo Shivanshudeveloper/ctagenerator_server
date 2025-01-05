@@ -1,8 +1,10 @@
 const PhoneNumbers_Model = require('../../models/PhoneNumbers');
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+const Events_Model = require('../../models/Events');
 
 const { v4: uuidv4 } = require("uuid");
-const { getStatusfromAI } = require('../ai');
+const { getStatusfromAI, getStatusfromAIMeeting } = require('../ai');
+const { sendEmailNotification } = require('../../lib/azure_email');
 
 const DtmfTone = {
     One: '1',
@@ -82,6 +84,16 @@ function getMessageStatus(conversationArray) {
         message: 'Unable to determine user intent'
     };
 }
+
+const filterEventsByType = (events, eventType) => {
+    if (!Array.isArray(events) || !eventType) {
+        return [];
+    }
+
+    return events.filter(event => 
+        event && event.eventType === eventType
+    );
+};
 
 // Create new phone number
 const createPhoneNumber = async (req, res) => {
@@ -281,7 +293,7 @@ const updateCampaignLead = async (req, res) => {
 
 // Add lead conversations 
 const addLeadConversations = async (req, res) => {
-    var { leadObjectId, conversation, callDuration, type } = req.body;
+    var { leadObjectId, conversation, callDuration, type, campaignUid } = req.body;
 
     try {
         console.log(leadObjectId, conversation, callDuration, type);
@@ -330,9 +342,57 @@ const addLeadConversations = async (req, res) => {
             });
         }
 
+        const campaignEvents = await Events_Model.find({ 
+            campaignUid 
+        });
+
+        if (Array.isArray(campaignEvents) && campaignEvents.length > 0) {
+            const leadInfo = await AICampaginLeads_Model.findOne({ _id: leadObjectId }).populate('leadId');
+            var allEvents;
+
+
+            if (type === "yesorno") {
+                console.log("yesorno");
+                if (status === "confirmed") {
+                    console.log("It COnfirmed");
+                    
+                    allEvents = filterEventsByType(campaignEvents, "If Confirm");
+                } else if (status === "cancelled") {
+                    allEvents = filterEventsByType(campaignEvents, "If Cancel");
+                }
+
+                if (Array.isArray(allEvents) && allEvents.length > 0) {
+                    sendEmailNotification(allEvents, leadInfo?.leadId.Email, "Do Not Reply");
+                }
+            } else if (type === "conversational") {
+                console.log("conversational");
+                if (conversation.length > 3) {
+                    var meetingStatus = await getStatusfromAIMeeting(conversation);  
+                    console.log("Meeting Status",meetingStatus);
+
+                    if (meetingStatus === "MEETING_INTERESTED") {
+                        allEvents = filterEventsByType(campaignEvents, "Prospect ask for meeting");
+                    } else {
+                        if (status === "HOT_LEAD" ) {
+                            allEvents = filterEventsByType(campaignEvents, "Prospect ask for meeting");
+                        } else if (status === "COMPLETED" ) {
+                            allEvents = filterEventsByType(campaignEvents, "Call Completed");
+                        }
+                    }
+
+                    if (Array.isArray(allEvents) && allEvents.length > 0) {
+                        sendEmailNotification(allEvents, leadInfo?.leadId.Email, "Do Not Reply");
+                    }
+                }
+            }
+        } else {
+            console.log("No Campaign Notifications Found");
+        }
+
         return res.status(200).json({ 
             success: true, 
             data: updatedCampaignLead 
+            // data: true
         });
     } catch (error) {
         console.log(error);

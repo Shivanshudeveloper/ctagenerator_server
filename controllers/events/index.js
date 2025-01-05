@@ -1,10 +1,11 @@
-const Events_Model = require('../../models/Events');
 const { v4: uuidv4 } = require('uuid'); // For generating unique eventUid
+
+const Events_Model = require('../../models/Events');
 
 // Create Event
 const createEvent = async (req, res) => {
     try {
-        const { eventType, campaignUid, content, organizationId } = req.body;
+        const { eventType, campaignUid, content, organizationId, subject } = req.body;
         
         // Check if required fields are present
         if (!eventType || !campaignUid) {
@@ -32,6 +33,7 @@ const createEvent = async (req, res) => {
         const newEvent = new Events_Model({
             eventUid,
             eventType,
+            subject,
             campaignUid,
             content,
             organizationId

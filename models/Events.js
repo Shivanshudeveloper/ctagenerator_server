@@ -17,6 +17,10 @@ const eventSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    subject:{
+        type: String,
+        required: false
+    },
     content:{
         type: String,
         required: false
