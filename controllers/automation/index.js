@@ -359,7 +359,6 @@ const addLeadConversations = async (req, res) => {
                     console.log("yesorno");
                     if (status === "confirmed") {
                         console.log("It COnfirmed");
-                        
                         allEvents = filterEventsByType(campaignEvents, "If Confirm");
                     } else if (status === "cancelled") {
                         allEvents = filterEventsByType(campaignEvents, "If Cancel");
@@ -377,9 +376,9 @@ const addLeadConversations = async (req, res) => {
                         if (meetingStatus === "MEETING_INTERESTED") {
                             allEvents = filterEventsByType(campaignEvents, "Prospect ask for meeting");
                         } else {
-                            if (status === "HOT_LEAD" ) {
-                                allEvents = filterEventsByType(campaignEvents, "Prospect ask for meeting");
-                            } else if (status === "COMPLETED" ) {
+                            if (status === "hot_lead" ) {
+                                allEvents = filterEventsByType(campaignEvents, "Prospect Interested");
+                            } else if (status === "completed" ) {
                                 allEvents = filterEventsByType(campaignEvents, "Call Completed");
                             }
                         }
@@ -387,6 +386,16 @@ const addLeadConversations = async (req, res) => {
                         if (Array.isArray(allEvents) && allEvents.length > 0) {
                             sendEmailNotification(allEvents, leadInfo?.leadId.Email, "Do Not Reply");
                         }
+                    }
+                } else if (type === "directmessage") {
+                    if (status === "completed") {
+                        allEvents = filterEventsByType(campaignEvents, "Call Completed Direct Message");
+                    } else if (status === "call_disconnected") {
+                        allEvents = filterEventsByType(campaignEvents, "Call Disconnected Direct Message");
+                    }
+
+                    if (Array.isArray(allEvents) && allEvents.length > 0) {
+                        sendEmailNotification(allEvents, leadInfo?.leadId.Email, "Do Not Reply");
                     }
                 }
             } else {
