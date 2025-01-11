@@ -353,17 +353,17 @@ const updateAiCampagin = async (req, res) => {
 
     try {
         // If replace is true, delete all events for this campaign
-        if (updateData.replace && updateData.campaignUid) {
-            try {
-                await Events_Model.deleteMany({ campaignUid: updateData.campaignUid });
-            } catch (deleteError) {
-                console.error('Error deleting events:', deleteError);
-                return res.status(500).json({ 
-                    success: false, 
-                    data: "Error deleting campaign events" 
-                });
-            }
-        }
+        // if (updateData.replace && updateData.campaignUid) {
+        //     try {
+        //         await Events_Model.deleteMany({ campaignUid: updateData.campaignUid });
+        //     } catch (deleteError) {
+        //         console.error('Error deleting events:', deleteError);
+        //         return res.status(500).json({ 
+        //             success: false, 
+        //             data: "Error deleting campaign events" 
+        //         });
+        //     }
+        // }
 
         // Remove extra fields that shouldn't be in the update
         const { replace, campaignUid, ...cleanUpdateData } = updateData;
