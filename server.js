@@ -35,6 +35,8 @@ const aiAgentsRoutes = require("./routes/aiagents-route");
 const aiCampaginsRoutes = require("./routes/aicampagins-route");
 const automationRoutes = require("./routes/automation-route");
 const eventRoutes = require("./routes/event-routes");
+const aiAgentsInsRoutes = require("./routes/aiagent-instruction");
+
 
 // CTA Controller
 const ctaController = require('./controllers/cta');
@@ -94,6 +96,9 @@ if (cluster.isMaster) {
 
   // AI Agents
   app.use("/api/v1/aiagents", express.json({ limit: "50mb" }), aiAgentsRoutes);
+
+  // AI Agents Instructions
+  app.use("/api/v1/aiagentsinstructions", express.json({ limit: "50mb" }), aiAgentsInsRoutes);
 
   // AI Campagins
   app.use("/api/v1/aicampagins", express.json({ limit: "50mb" }), aiCampaginsRoutes);
