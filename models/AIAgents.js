@@ -13,6 +13,10 @@ const aiAgentsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    listName: {
+        type: String,
+        required: false,
+    },
     name: {
         type: String,
         required: true,
