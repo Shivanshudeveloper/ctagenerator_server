@@ -14,4 +14,8 @@ router.get('/findorganizationaiagentdetail/:organizationId', aiAgentController.f
 
 router.post('/speakingliveaudio', aiAgentController.liveAudioAiAgentSpeaking);
 
+// New AI Agent Flow
+router.post('/createnewaiagentworkflow', aiAgentController.createNewAiAgentWorkFlow);
+
+
 module.exports = router;

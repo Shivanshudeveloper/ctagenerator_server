@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 
 const AIAgents_Model = require('../../models/AIAgents');
 const AICampagins_Model = require('../../models/AICampagins');
+const LeadListsData_Model = require('../../models/LeadListsData');
+const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 
 // Create new AI Agent
 const createNewAiAgent = async (req, res) => {
@@ -40,6 +42,110 @@ const createNewAiAgent = async (req, res) => {
       return res.status(500).json({ success: false, data: "Something went wrong" });
     }
 }
+
+// New AI Agent Create
+const createNewAiAgentWorkFlow = async (req, res) => {
+    const { organizationId, userEmail, name, trainingData, listName } = req.body;
+
+    try {
+        // Find an existing token by title
+        let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+
+        if (existingAIAgent) {
+            return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+        } 
+
+        const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+        const campaignName = `Campaign_${Date.now()}_${name}`;
+        const campaignUid = `CAMPAIGN_${Date.now()}_${uuidv4()}`;
+
+        // Create new AI Agent
+        const newAiAgent = new AIAgents_Model({
+            organizationId,
+            userEmail,
+            aiAgentUid,
+            name,
+            trainingData,
+            status: "Live"
+        });
+        const savedAgent = await newAiAgent.save();
+        console.log("New Agent Created:", savedAgent);
+
+        // Create new Campaign
+        const newCampaign = new AICampagins_Model({
+            organizationId,
+            userEmail,
+            campaignUid,
+            aiAgentUid,
+            name: campaignName,
+            listName,
+            status: 'pause'
+        });
+        const savedCampaign = await newCampaign.save();
+        console.log("New Campaign Created:", savedCampaign);
+
+        // Update AI Agent with campaign ObjectId - Added explicit error handling
+        try {
+            const updatedAgent = await AIAgents_Model.findOneAndUpdate(
+                { aiAgentUid },
+                { 
+                    $set: { 
+                        campaignObjid: savedCampaign._id 
+                    } 
+                },
+                { 
+                    new: true, 
+                    runValidators: true 
+                }
+            );
+
+            if (!updatedAgent) {
+                console.error("Failed to update AI Agent with campaign ID");
+                throw new Error("Failed to update AI Agent with campaign ID");
+            }
+
+            console.log("Agent Updated with Campaign ObjectId:", updatedAgent);
+        } catch (updateError) {
+            console.error("Error updating AI Agent:", updateError);
+            throw updateError;
+        }
+
+        // Find all leads for the list
+        const leads = await LeadListsData_Model.find({ 
+            organizationId, 
+            listName 
+        }).select('_id').lean();
+
+        // Prepare bulk campaign leads mapping
+        const campaignLeadsMappings = leads.map(lead => ({
+            organizationId,
+            campaignUid,
+            leadId: lead._id,
+            status: 'pending'
+        }));
+
+        // Use bulk insert for better performance
+        if (campaignLeadsMappings?.length > 0) {
+            await AICampaginLeads_Model.insertMany(campaignLeadsMappings);
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                campaign: savedCampaign,
+                aiAgent: savedAgent,
+                leadsCount: campaignLeadsMappings.length
+            }
+        });
+    } catch (error) {
+        console.error("Error in createNewAiAgentWorkFlow:", error);
+        return res.status(500).json({ 
+            success: false, 
+            data: "Something went wrong",
+            error: error.message 
+        });
+    }
+};
 
 // Delete AI Agent by ID
 const deleteAiAgent = async (req, res) => {
@@ -196,5 +302,6 @@ module.exports = {
     updateAiAgent,
     findOneAiAgent,
     findAllAiAgentsByOrg,
-    liveAudioAiAgentSpeaking
+    liveAudioAiAgentSpeaking,
+    createNewAiAgentWorkFlow
 };
