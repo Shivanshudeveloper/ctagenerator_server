@@ -5,6 +5,8 @@ const AIAgents_Model = require('../../models/AIAgents');
 const AICampagins_Model = require('../../models/AICampagins');
 const LeadListsData_Model = require('../../models/LeadListsData');
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+const LeadFilters_Model = require('../../models/LeadFilters');
+const LeadLists_Model = require('../../models/LeadLists');
 
 // Create new AI Agent
 const createNewAiAgent = async (req, res) => {
@@ -45,97 +47,150 @@ const createNewAiAgent = async (req, res) => {
 
 // New AI Agent Create
 const createNewAiAgentWorkFlow = async (req, res) => {
-    const { organizationId, userEmail, name, trainingData, listName } = req.body;
+    const { organizationId, userEmail, name, trainingData, listName, filterData } = req.body;
 
     try {
-        // Find an existing token by title
-        let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+        if (trainingData?.agentType === "Lead_Finder") {
 
-        if (existingAIAgent) {
-            return res.status(201).json({ status: true, data: "AI Agent name already exists" });
-        } 
-
-        const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
-        const campaignName = `Campaign_${Date.now()}_${name}`;
-        const campaignUid = `CAMPAIGN_${Date.now()}_${uuidv4()}`;
-
-        // Create new AI Agent
-        const newAiAgent = new AIAgents_Model({
-            organizationId,
-            userEmail,
-            aiAgentUid,
-            name,
-            trainingData,
-            status: "Live"
-        });
-        const savedAgent = await newAiAgent.save();
-        console.log("New Agent Created:", savedAgent);
-
-        // Create new Campaign
-        const newCampaign = new AICampagins_Model({
-            organizationId,
-            userEmail,
-            campaignUid,
-            aiAgentUid,
-            name: campaignName,
-            listName,
-            status: 'pause'
-        });
-        const savedCampaign = await newCampaign.save();
-        console.log("New Campaign Created:", savedCampaign);
-
-        // Update AI Agent with campaign ObjectId - Added explicit error handling
-        try {
-            const updatedAgent = await AIAgents_Model.findOneAndUpdate(
-                { aiAgentUid },
-                { 
-                    $set: { 
-                        campaignObjid: savedCampaign._id 
-                    } 
-                },
-                { 
-                    new: true, 
-                    runValidators: true 
-                }
-            );
-
-            if (!updatedAgent) {
-                console.error("Failed to update AI Agent with campaign ID");
-                throw new Error("Failed to update AI Agent with campaign ID");
+            const existingList = await LeadLists_Model.findOne({
+                organizationId,
+                listName // No need for case-insensitive regex since we normalized it
+            });
+    
+            if (existingList) {
+                return res.status(400).json({
+                    error: 'List Name already exists for this organization',
+                    data: 'List Name already exists for this organization'
+                });
             }
 
-            console.log("Agent Updated with Campaign ObjectId:", updatedAgent);
-        } catch (updateError) {
-            console.error("Error updating AI Agent:", updateError);
-            throw updateError;
-        }
+            // Create new list
+            const newList = new LeadLists_Model({
+                organizationId,
+                listName
+            });
 
-        // Find all leads for the list
-        const leads = await LeadListsData_Model.find({ 
-            organizationId, 
-            listName 
-        }).select('_id').lean();
+            await newList.save();
+            console.log("New List Created by AI Agent");
 
-        // Prepare bulk campaign leads mapping
-        const campaignLeadsMappings = leads.map(lead => ({
-            organizationId,
-            campaignUid,
-            leadId: lead._id,
-            status: 'pending'
-        }));
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+            const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+            // Create new AI Agent
+            const newAiAgent = new AIAgents_Model({
+                organizationId,
+                userEmail,
+                aiAgentUid,
+                name,
+                listName,
+                trainingData,
+                filterData: filterData || {},
+                status: "Live"
+            });
+            const savedAgent = await newAiAgent.save();
+            console.log("New Agent Created:", savedAgent);
 
-        // Use bulk insert for better performance
-        if (campaignLeadsMappings?.length > 0) {
-            await AICampaginLeads_Model.insertMany(campaignLeadsMappings);
+            // Save Lead Filter for Lead Finder
+            const newListFilters = new LeadFilters_Model({
+                organizationId,
+                listName,
+                query: filterData,
+                skip: 0,
+                leadsQty: 100,
+            });
+
+            await newListFilters.save();
+            console.log("List Filter save by AI Agent", aiAgentUid);
+        } else if (trainingData?.agentType === "Conversational" || trainingData?.agentType === "Message Only" || trainingData?.agentType === "Yes or No" ) {
+            const campaignName = `Campaign_${Date.now()}_${name}`;
+            const campaignUid = `CAMPAIGN_${Date.now()}_${uuidv4()}`;
+            const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+
+            // Create new AI Agent
+            const newAiAgent = new AIAgents_Model({
+                organizationId,
+                userEmail,
+                aiAgentUid,
+                listName,
+                name,
+                trainingData,
+                filterData: filterData || {},
+                status: "Live"
+            });
+            const savedAgent = await newAiAgent.save();
+            console.log("New Agent Created:", savedAgent);
+
+            // Create new Campaign
+            const newCampaign = new AICampagins_Model({
+                organizationId,
+                userEmail,
+                campaignUid,
+                aiAgentUid,
+                name: campaignName,
+                listName,
+                status: 'pause'
+            });
+            const savedCampaign = await newCampaign.save();
+            console.log("New Campaign Created:", savedCampaign);
+
+            // Update AI Agent with campaign ObjectId - Added explicit error handling
+            try {
+                const updatedAgent = await AIAgents_Model.findOneAndUpdate(
+                    { aiAgentUid },
+                    { 
+                        $set: { 
+                            campaignObjid: savedCampaign._id 
+                        } 
+                    },
+                    { 
+                        new: true, 
+                        runValidators: true 
+                    }
+                );
+
+                if (!updatedAgent) {
+                    console.error("Failed to update AI Agent with campaign ID");
+                    throw new Error("Failed to update AI Agent with campaign ID");
+                }
+
+                console.log("Agent Updated with Campaign ObjectId:", updatedAgent);
+            } catch (updateError) {
+                console.error("Error updating AI Agent:", updateError);
+                throw updateError;
+            }
+
+            // Find all leads for the list
+            const leads = await LeadListsData_Model.find({ 
+                organizationId, 
+                listName 
+            }).select('_id').lean();
+
+            // Prepare bulk campaign leads mapping
+            const campaignLeadsMappings = leads.map(lead => ({
+                organizationId,
+                campaignUid,
+                leadId: lead._id,
+                status: 'pending'
+            }));
+
+            // Use bulk insert for better performance
+            if (campaignLeadsMappings?.length > 0) {
+                await AICampaginLeads_Model.insertMany(campaignLeadsMappings);
+            }
         }
 
         return res.status(200).json({
             success: true,
-            data: {
-                campaign: savedCampaign,
-                aiAgent: savedAgent,
-                leadsCount: campaignLeadsMappings.length
-            }
+            data: "Agent Created"
         });
     } catch (error) {
         console.error("Error in createNewAiAgentWorkFlow:", error);
