@@ -9,6 +9,10 @@ const leadFiltersSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    agentType: {
+        type: String,
+        required: false,
+    },
     query: {
         type: Object,
         required: true,

@@ -17,6 +17,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
     try {
         if (trainingData?.agentType === "Lead_Finder") {
 
+            // Existing List
             const existingList = await LeadLists_Model.findOne({
                 organizationId,
                 listName // No need for case-insensitive regex since we normalized it
@@ -29,6 +30,12 @@ const createNewAiAgentWorkFlow = async (req, res) => {
                 });
             }
 
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+
             // Create new list
             const newList = new LeadLists_Model({
                 organizationId,
@@ -37,12 +44,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
 
             await newList.save();
             console.log("New List Created by AI Agent");
-
-            // Find an existing ai agent
-            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
-            if (existingAIAgent) {
-                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
-            }
+            
             const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
             // Create new AI Agent
             const newAiAgent = new AIAgents_Model({
@@ -63,6 +65,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
                 organizationId,
                 listName,
                 query: filterData,
+                agentType: trainingData?.agentType,
                 skip: 0,
                 leadsQty: 100,
             });
@@ -151,6 +154,68 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             if (campaignLeadsMappings?.length > 0) {
                 await AICampaginLeads_Model.insertMany(campaignLeadsMappings);
             }
+        } else if (trainingData?.agentType === "Email_Scraper" || trainingData?.agentType === "Phone_Scraper" ) {
+            
+            // Existing List
+            const existingList = await LeadLists_Model.findOne({
+                organizationId,
+                listName // No need for case-insensitive regex since we normalized it
+            });
+            if (existingList) {
+                return res.status(400).json({
+                    error: 'List Name already exists for this organization',
+                    data: 'List Name already exists for this organization'
+                });
+            }
+
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+
+            // Create new list
+            const newList = new LeadLists_Model({
+                organizationId,
+                listName
+            });
+            await newList.save();
+            console.log("New List Created by AI Agent");
+
+            
+            const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+
+            // Create new AI Agent
+            const newAiAgent = new AIAgents_Model({
+                organizationId,
+                userEmail,
+                aiAgentUid,
+                name,
+                listName,
+                trainingData,
+                filterData: filterData || {},
+                status: "Live"
+            });
+            const savedAgent = await newAiAgent.save();
+            console.log("New Agent Created:", savedAgent);
+
+            // Save Lead Filter for Lead Finder
+            const newListFilters = new LeadFilters_Model({
+                organizationId,
+                listName,
+                query: {
+                    niche: trainingData?.niche,
+                    location: trainingData?.location,
+                    phoneExtention: trainingData?.phoneExtention,
+                    sources: trainingData?.sources
+                },
+                agentType: trainingData?.agentType,
+                skip: 0,
+                leadsQty: 100,
+            });
+
+            await newListFilters.save();
+            console.log("List Filter save by AI Agent", aiAgentUid);
         }
 
         return res.status(200).json({
