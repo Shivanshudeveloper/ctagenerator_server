@@ -9,7 +9,7 @@ const LeadListsData_Model = require('../../models/LeadListsData');
 const Events_Model = require('../../models/Events');
 
 const { v4: uuidv4 } = require("uuid");
-const { CALLING_SERVICE_URL } = require('../../config/config');
+const { CALLING_SERVICE_URL, OUTBOUND_CALLING_SERVICE_URL } = require('../../config/config');
 
 // Create new AI Agent
 const createNewAiCampagin = async (req, res) => {
@@ -273,7 +273,7 @@ const makeTestCallCampaign = async (req, res) => {
             console.log(callingData);
 
             // Make the POST request using axios
-            const response = await axios.post(`${CALLING_SERVICE_URL}/outboundCall`, callingData, {
+            const response = await axios.post(`${OUTBOUND_CALLING_SERVICE_URL}/outboundCall`, callingData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
