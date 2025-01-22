@@ -259,6 +259,20 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             });
             const savedAgent = await newAiAgent.save();
             console.log("New Agent Created:", savedAgent);
+
+            // Save Lead Filter for Lead Finder
+            const newListFilters = new LeadFilters_Model({
+                organizationId,
+                listName,
+                query: filterData || {},
+                agentType: trainingData?.agentType,
+                skip: 0,
+                leadsQty: 100,
+                status: 2
+            });
+
+            await newListFilters.save();
+            console.log("List Filter save by AI Agent", aiAgentUid);
         }
 
         return res.status(200).json({
