@@ -61,6 +61,11 @@ const leadlistsDataSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    isRead:{
+        type: Boolean,
+        default: false,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now
