@@ -273,6 +273,27 @@ const createNewAiAgentWorkFlow = async (req, res) => {
 
             await newListFilters.save();
             console.log("List Filter save by AI Agent", aiAgentUid);
+        } else if (trainingData?.agentType === "Manager") {
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+            
+            const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+            // Create new AI Agent
+            const newAiAgent = new AIAgents_Model({
+                organizationId,
+                userEmail,
+                aiAgentUid,
+                name,
+                listName,
+                trainingData,
+                filterData: filterData || {},
+                status: "Live"
+            });
+            const savedAgent = await newAiAgent.save();
+            console.log("New Agent Created:", savedAgent);
         }
 
         return res.status(200).json({
