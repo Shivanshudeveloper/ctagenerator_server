@@ -66,6 +66,100 @@ const generateEmail = async (req, res) => {
 }
 
 
+// Public use API to create emails for AI Agent
+const generateEmailAiAgent = async (req, res) => {
+  const { organizationId, agentId, linkedInUrl = "", prospectName = "", prospectTitle = "", prospectCompany = "", prospectLocation = "" } = req.body;
+
+  try {
+
+      // Validate required fields
+      if (!organizationId || !agentId) {
+          return res.status(400).json({ message: 'organizationId and agentId are required' });
+      }
+
+      // Validate at least one input method is provided
+      if (!linkedInUrl && (!prospectName || !prospectTitle || !prospectCompany || !prospectLocation)) {
+        return res.status(400).json({ 
+            message: 'Either linkedInUrl OR all prospect details (name, title, company, location) must be provided'
+        });
+      }
+
+      const settings = await DraftAiAgentSettings_Model.findOne({ agentObjectId: agentId });
+
+      if (!settings) {
+          return res.status(201).json({ message: 'No Agent was Found!', data: {} });
+      }
+
+
+      var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcoldemail`, {
+          linkedinUrl: linkedInUrl,
+          prospectName,
+          prospectTitle,
+          companyName: prospectCompany,
+          prospectLocation,
+          productDescription: settings.productDescription,
+          gptPrompt: settings.gptPrompt,
+          modelName: settings.aiModel,
+          wordLength: settings.wordLength,
+          emailTone: settings.emailTone
+      });
+
+      console.log(response?.data);
+
+      await updateEngageCredit(organizationId, 1);
+
+      res.status(200).json({ message: "Email generated successfully", data: response?.data, creditUsed: 1 });
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// Public use API to create DMs for AI Agent
+const generateColdDmAiAgent = async (req, res) => {
+  const { organizationId, agentId, linkedInUrl = "", prospectName = "", prospectTitle = "", prospectCompany = "", prospectLocation = "" } = req.body;
+ 
+  try {
+      // Validate required fields
+      if (!organizationId || !agentId) {
+          return res.status(400).json({ message: 'organizationId and agentId are required' });
+      }
+
+      // Validate at least one input method is provided
+      if (!linkedInUrl && (!prospectName || !prospectTitle || !prospectCompany || !prospectLocation)) {
+        return res.status(400).json({ 
+            message: 'Either linkedInUrl OR all prospect details (name, title, company, location) must be provided'
+        });
+      }
+
+      const settings = await DraftAiAgentSettings_Model.findOne({ agentObjectId: agentId });
+ 
+      if (!settings) {
+          return res.status(201).json({ message: 'No Agent was Found!', data: {} });
+      }
+ 
+      var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcolddms`, {
+          linkedinUrl: linkedInUrl,
+          prospectName,
+          prospectTitle,
+          companyName: prospectCompany,
+          prospectLocation,
+          productDescription: settings.productDescription,
+          gptPrompt: settings.gptPrompt,
+          modelName: settings.aiModel,
+          wordLength: settings.wordLength,  
+          emailTone: settings.emailTone
+      });
+ 
+      await updateEngageCredit(organizationId, 1);
+      res.status(200).json({ message: "DM generated successfully", data: response?.data, creditUsed: 1 });
+ 
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 // Generate Cold DM
 const generateColdDm = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone } = req.body;
@@ -83,8 +177,6 @@ const generateColdDm = async (req, res) => {
           wordLength,
           emailTone
       })
-
-      console.log(response?.data);
 
       await updateEngageCredit(organizationId, 1);
 
@@ -163,6 +255,8 @@ module.exports = {
     generateEmail,
     generateColdDm,
     saveSettings,
-    getAiAgentSettings
+    getAiAgentSettings,
+    generateEmailAiAgent,
+    generateColdDmAiAgent
 }
 

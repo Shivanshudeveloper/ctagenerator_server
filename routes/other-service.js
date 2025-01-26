@@ -8,8 +8,11 @@ const validateUserEngagementLimit = require('../auth').authenticateUserEngagemen
 
 
 router.post('/generateemail', validateUserEngagementLimit, otherServicesController.generateEmail);
-
 router.post('/generatecolddms', validateUserEngagementLimit, otherServicesController.generateColdDm);
+
+// APIs for Public Use
+router.post('/generateemailaiagent', validateUserEngagementLimit, otherServicesController.generateEmailAiAgent);
+router.post('/generatedmaiagent', validateUserEngagementLimit, otherServicesController.generateColdDmAiAgent);
 
 
 // AI Agent Workflow
