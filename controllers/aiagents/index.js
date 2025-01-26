@@ -273,7 +273,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
 
             await newListFilters.save();
             console.log("List Filter save by AI Agent", aiAgentUid);
-        } else if (trainingData?.agentType === "Manager") {
+        } else if (trainingData?.agentType === "Manager" || trainingData?.agentType === "Draft_DMs" || trainingData?.agentType === "Draft_Emails") {
             // Find an existing ai agent
             let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
             if (existingAIAgent) {
