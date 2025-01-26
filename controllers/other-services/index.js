@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { OTHER_SERVICE_URL } = require("../../config/config");
 const User_Model = require('../../models/User');
+const DraftAiAgentSettings_Model = require("../../models/DraftAiAgentSettings");
 
 
 // Substact Credit of User
@@ -94,9 +95,74 @@ const generateColdDm = async (req, res) => {
   }
 }
 
+// Save the settings for Draft AI Agent
+const saveSettings = async (req, res) => {
+  const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
+          prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
+          emailTone, agentType } = req.body;
+
+  try {
+      const updatedDraft = await DraftAiAgentSettings_Model.findOneAndUpdate(
+          { agentObjectId },
+          {
+              organizationId,
+              linkedInUrl,
+              prospectName,
+              aiModel,
+              prospectTitle,
+              prospectCompany,
+              prospectLocation,
+              productDescription,
+              agentObjectId,
+              gptPrompt,
+              agentType,
+              wordLength,
+              emailTone
+          },
+          { 
+              new: true,
+              upsert: true 
+          }
+      );
+
+      res.status(200).json({ 
+          message: "Draft settings saved successfully", 
+          data: updatedDraft 
+      });
+
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
+// Get the draft ai agent settings
+const getAiAgentSettings = async (req, res) => {
+  const { agentObjectId } = req.params;
+
+  try {
+      const settings = await DraftAiAgentSettings_Model.findOne({ agentObjectId });
+      
+      if (!settings) {
+          return res.status(201).json({ message: 'Settings not found', data: {} });
+      }
+
+      res.status(200).json({
+          message: 'Settings retrieved successfully',
+          data: settings
+      });
+
+  } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 
 module.exports = {
     generateEmail,
-    generateColdDm
+    generateColdDm,
+    saveSettings,
+    getAiAgentSettings
 }
 

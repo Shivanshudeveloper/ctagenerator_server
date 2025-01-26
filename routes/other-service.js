@@ -11,4 +11,10 @@ router.post('/generateemail', validateUserEngagementLimit, otherServicesControll
 
 router.post('/generatecolddms', validateUserEngagementLimit, otherServicesController.generateColdDm);
 
+
+// AI Agent Workflow
+router.post('/savedraftagentsettings', validateUserEngagementLimit, otherServicesController.saveSettings);
+router.get('/getthedraftagentsettings/:agentObjectId', otherServicesController.getAiAgentSettings);
+
+
 module.exports = router;
