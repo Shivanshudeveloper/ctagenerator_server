@@ -45,6 +45,10 @@ const draftAiAgentSettingsSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    aiAgentUid: {
+        type: String,
+        required: false
+    },
     wordLength: {
         type: Number,
         required: false

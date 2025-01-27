@@ -2,6 +2,7 @@ const axios = require("axios");
 const { OTHER_SERVICE_URL } = require("../../config/config");
 const User_Model = require('../../models/User');
 const DraftAiAgentSettings_Model = require("../../models/DraftAiAgentSettings");
+const AIAgents_Model = require('../../models/AIAgents');
 
 
 // Substact Credit of User
@@ -194,6 +195,10 @@ const saveSettings = async (req, res) => {
           emailTone, agentType } = req.body;
 
   try {
+
+      const settings = await AIAgents_Model.findById({ _id: agentObjectId });
+
+
       const updatedDraft = await DraftAiAgentSettings_Model.findOneAndUpdate(
           { agentObjectId },
           {
@@ -206,6 +211,7 @@ const saveSettings = async (req, res) => {
               prospectLocation,
               productDescription,
               agentObjectId,
+              aiAgentUid: settings?.aiAgentUid || "NA",
               gptPrompt,
               agentType,
               wordLength,
