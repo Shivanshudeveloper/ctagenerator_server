@@ -20,4 +20,9 @@ router.post('/savedraftagentsettings', validateUserEngagementLimit, otherService
 router.get('/getthedraftagentsettings/:agentObjectId', otherServicesController.getAiAgentSettings);
 
 
+// Get Draft Leads
+router.get('/getdraftleads/:agentUid', otherServicesController.getDraftLeads);
+router.get('/getalldraftleads/:agentUid', otherServicesController.getAllDraftLeads);
+
+
 module.exports = router;
