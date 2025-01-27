@@ -192,36 +192,55 @@ const generateColdDm = async (req, res) => {
 const saveSettings = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
           prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
-          emailTone, agentType } = req.body;
+          emailTone, agentType, webhook } = req.body;
 
   try {
 
       const settings = await AIAgents_Model.findById({ _id: agentObjectId });
 
+      var updatedDraft;
 
-      const updatedDraft = await DraftAiAgentSettings_Model.findOneAndUpdate(
-          { agentObjectId },
-          {
-              organizationId,
-              linkedInUrl,
-              prospectName,
-              aiModel,
-              prospectTitle,
-              prospectCompany,
-              prospectLocation,
-              productDescription,
-              agentObjectId,
-              aiAgentUid: settings?.aiAgentUid || "NA",
-              gptPrompt,
-              agentType,
-              wordLength,
-              emailTone
-          },
-          { 
-              new: true,
-              upsert: true 
-          }
-      );
+      if (!webhook) {
+          updatedDraft = await DraftAiAgentSettings_Model.findOneAndUpdate(
+            { agentObjectId },
+            {
+                organizationId,
+                linkedInUrl,
+                prospectName,
+                aiModel,
+                prospectTitle,
+                prospectCompany,
+                prospectLocation,
+                productDescription,
+                agentObjectId,
+                aiAgentUid: settings?.aiAgentUid || "NA",
+                gptPrompt,
+                agentType,
+                wordLength,
+                emailTone
+            },
+            { 
+                new: true,
+                upsert: true 
+            }
+        );
+      } else {
+          updatedDraft = await DraftAiAgentSettings_Model.findOneAndUpdate(
+            { agentObjectId },
+            {
+                organizationId,
+                agentObjectId,
+                webhook
+            },
+            { 
+                new: true,
+                upsert: true 
+            }
+        );
+      }
+
+
+      
 
       res.status(200).json({ 
           message: "Draft settings saved successfully", 
