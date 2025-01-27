@@ -9,6 +9,10 @@ const leadFiltersSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    aiAgentUid: {
+        type: String,
+        required: false,
+    },
     agentType: {
         type: String,
         required: false,

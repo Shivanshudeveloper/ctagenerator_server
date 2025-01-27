@@ -5,6 +5,7 @@ const AIAgents_Model = require('../../models/AIAgents');
 const AICampagins_Model = require('../../models/AICampagins');
 const LeadListsData_Model = require('../../models/LeadListsData');
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+const DraftAgentLeads_Model = require('../../models/DraftAgentLeads');
 const LeadFilters_Model = require('../../models/LeadFilters');
 const LeadLists_Model = require('../../models/LeadLists');
 
@@ -273,7 +274,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
 
             await newListFilters.save();
             console.log("List Filter save by AI Agent", aiAgentUid);
-        } else if (trainingData?.agentType === "Manager" || trainingData?.agentType === "Draft_DMs" || trainingData?.agentType === "Draft_Emails") {
+        } else if (trainingData?.agentType === "Manager" ) {
             // Find an existing ai agent
             let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
             if (existingAIAgent) {
@@ -294,6 +295,62 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             });
             const savedAgent = await newAiAgent.save();
             console.log("New Agent Created:", savedAgent);
+        } else if (trainingData?.agentType === "Draft_DMs" || trainingData?.agentType === "Draft_Emails") {
+            // Find an existing ai agent
+            let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
+            if (existingAIAgent) {
+                return res.status(201).json({ status: true, data: "AI Agent name already exists" });
+            }
+            
+            const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
+            // Create new AI Agent
+            const newAiAgent = new AIAgents_Model({
+                organizationId,
+                userEmail,
+                aiAgentUid,
+                name,
+                listName,
+                trainingData,
+                filterData: filterData || {},
+                status: "Live"
+            });
+            const savedAgent = await newAiAgent.save();
+            console.log("New Agent Created:", savedAgent);
+
+
+            // Find all leads for the list
+            const leads = await LeadListsData_Model.find({ 
+                organizationId, 
+                listName 
+            }).select('_id').lean();
+
+            // Prepare bulk campaign leads mapping
+            const draftLeadsMappings = leads.map(lead => ({
+                organizationId,
+                aiAgentUid,
+                leadId: lead._id,
+                listName,
+                status: 'pending'
+            }));
+
+            // Use bulk insert for better performance
+            if (draftLeadsMappings?.length > 0) {
+                await DraftAgentLeads_Model.insertMany(draftLeadsMappings);
+            }
+
+            // Save Lead Filter for Lead Finder
+            const newListFilters = new LeadFilters_Model({
+                organizationId,
+                listName,
+                query: filterData || {},
+                aiAgentUid,
+                agentType: trainingData?.agentType,
+                skip: 0,
+                leadsQty: 100,
+                status: 2
+            });
+
+            await newListFilters.save();
         }
 
         return res.status(200).json({
