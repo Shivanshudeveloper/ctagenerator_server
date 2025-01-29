@@ -64,6 +64,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             // Save Lead Filter for Lead Finder
             const newListFilters = new LeadFilters_Model({
                 organizationId,
+                aiAgentUid,
                 listName,
                 query: filterData,
                 agentType: trainingData?.agentType,
@@ -203,6 +204,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             // Save Lead Filter for Lead Finder
             const newListFilters = new LeadFilters_Model({
                 organizationId,
+                aiAgentUid,
                 listName,
                 query: {
                     niche: trainingData?.niche,
@@ -265,6 +267,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             const newListFilters = new LeadFilters_Model({
                 organizationId,
                 listName,
+                aiAgentUid,
                 query: filterData || {},
                 agentType: trainingData?.agentType,
                 skip: 0,
