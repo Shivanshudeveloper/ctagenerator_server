@@ -17,6 +17,10 @@ const aiAgentsSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    campaignUid: {
+        type: String,
+        required: false,
+    },
     filterData: {
         type: Object,
         required: false,

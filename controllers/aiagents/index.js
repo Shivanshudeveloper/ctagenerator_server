@@ -90,6 +90,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
                 organizationId,
                 userEmail,
                 aiAgentUid,
+                campaignUid,
                 listName,
                 name,
                 trainingData,
