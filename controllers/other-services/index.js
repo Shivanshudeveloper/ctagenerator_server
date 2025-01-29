@@ -277,7 +277,6 @@ const getAiAgentSettings = async (req, res) => {
 }
 
 
-
 // Get draft leads with pagination
 const getDraftLeads = async (req, res) => {
   try {
@@ -344,7 +343,33 @@ const getAllDraftLeads = async (req, res) => {
   }
 };
 
+// Update Draft Setting Enable and Disable
+const updateDraftSettingEnable = async (req, res) => {
+    try {
+        const { webhookEnable, agentObjectId } = req.body;
 
+        const updatedSettings = await DraftAiAgentSettings_Model.findOneAndUpdate(
+            { agentObjectId },
+            { 
+                $set: { 
+                    webhookEnable
+                } 
+            }
+        );
+    
+        if (!updatedSettings) {
+            throw new Error('Settings not found');
+        }
+  
+        return res.status(200).json({
+            success: true,
+            data: "Settings Updated"
+        });
+    } catch (error) {
+      console.error('Error updating leads credit:', error);
+      throw error;
+    }
+}
 
 
 module.exports = {
@@ -355,6 +380,7 @@ module.exports = {
     generateEmailAiAgent,
     generateColdDmAiAgent,
     getDraftLeads,
-    getAllDraftLeads
+    getAllDraftLeads,
+    updateDraftSettingEnable
 }
 

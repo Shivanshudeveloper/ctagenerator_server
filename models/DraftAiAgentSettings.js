@@ -61,6 +61,11 @@ const draftAiAgentSettingsSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    webhookEnable: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

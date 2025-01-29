@@ -16,8 +16,9 @@ router.post('/generatedmaiagent', validateUserEngagementLimit, otherServicesCont
 
 
 // AI Agent Workflow
-router.post('/savedraftagentsettings', validateUserEngagementLimit, otherServicesController.saveSettings);
+router.post('/savedraftagentsettings', otherServicesController.saveSettings);
 router.get('/getthedraftagentsettings/:agentObjectId', otherServicesController.getAiAgentSettings);
+router.post('/updatedraftsettings', otherServicesController.updateDraftSettingEnable);
 
 
 // Get Draft Leads
