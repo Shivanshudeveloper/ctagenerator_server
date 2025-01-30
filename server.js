@@ -97,7 +97,7 @@ if (cluster.isMaster) {
   // AI Agents
   app.use("/api/v1/aiagents", express.json({ limit: "50mb" }), aiAgentsRoutes);
 
-  // AI Agents Instructions
+  // AI Agents Instruction
   app.use("/api/v1/aiagentsinstructions", express.json({ limit: "50mb" }), aiAgentsInsRoutes);
 
   // AI Campagins
