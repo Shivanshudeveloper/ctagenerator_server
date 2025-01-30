@@ -40,7 +40,7 @@ async function updateEngageCredit(organizationId, creditToSubtract) {
 
 // Generate Cold Email
 const generateEmail = async (req, res) => {
-    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone } = req.body;
+    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone, language } = req.body;
 
     try {
         var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcoldemail`, {
@@ -53,7 +53,8 @@ const generateEmail = async (req, res) => {
             gptPrompt,
             modelName: aiModel,
             wordLength,
-            emailTone
+            emailTone,
+            language
         })
 
         console.log(response?.data);
@@ -164,7 +165,7 @@ const generateColdDmAiAgent = async (req, res) => {
 
 // Generate Cold DM
 const generateColdDm = async (req, res) => {
-  const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone } = req.body;
+  const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone, language } = req.body;
 
   try {
       var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcolddms`, {
@@ -177,7 +178,8 @@ const generateColdDm = async (req, res) => {
           gptPrompt,
           modelName: aiModel,
           wordLength,
-          emailTone
+          emailTone,
+          language
       })
 
       await updateEngageCredit(organizationId, 1);
