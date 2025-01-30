@@ -193,7 +193,7 @@ const generateColdDm = async (req, res) => {
 const saveSettings = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
           prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
-          emailTone, agentType, webhook } = req.body;
+          emailTone, language, agentType, webhook } = req.body;
 
   try {
 
@@ -218,7 +218,8 @@ const saveSettings = async (req, res) => {
                 gptPrompt,
                 agentType,
                 wordLength,
-                emailTone
+                emailTone,
+                language
             },
             { 
                 new: true,
