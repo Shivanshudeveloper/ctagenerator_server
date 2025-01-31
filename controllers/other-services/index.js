@@ -4,6 +4,7 @@ const User_Model = require('../../models/User');
 const DraftAiAgentSettings_Model = require("../../models/DraftAiAgentSettings");
 const AIAgents_Model = require('../../models/AIAgents');
 const DraftAgentLeads_Model = require('../../models/DraftAgentLeads');
+const LeadFilters_Model = require('../../models/LeadFilters');
 
 
 // Substact Credit of User
@@ -195,7 +196,7 @@ const generateColdDm = async (req, res) => {
 const saveSettings = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
           prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
-          emailTone, language, agentType, webhook } = req.body;
+          emailTone, language, agentType, webhook, listName } = req.body;
 
   try {
 
@@ -243,13 +244,20 @@ const saveSettings = async (req, res) => {
         );
       }
 
+    // Resume List incase if it was stoped
+    if (listName) {
+        // ✅ Check if any leads were actually inserted
+        await LeadFilters_Model.updateMany(
+            { listName, organizationId, agentType },
+            { $set: { status: 2 } }
+        );
+        console.log("Status changed for the Draft Filter");
+    }
 
-      
-
-      res.status(200).json({ 
-          message: "Draft settings saved successfully", 
-          data: updatedDraft 
-      });
+    res.status(200).json({ 
+        message: "Draft settings saved successfully", 
+        data: updatedDraft 
+    });
 
   } catch (error) {
       console.log(error);
