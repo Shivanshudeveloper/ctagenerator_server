@@ -4,6 +4,7 @@ const LeadListsData_Model = require('../../models/LeadListsData');
 
 const AICampagins_Model = require('../../models/AICampagins');
 const AICampaginLeads_Model = require('../../models/AICampaginLeads');
+const { addLeadsToListAgent } = require('../../lib/other_services');
 
 const addNewUserList = async (req, res) => {
     let { organizationId, listName } = req.body;
@@ -222,10 +223,9 @@ const downloadLeads = async (req, res) => {
 
 // Add User data from CSV
 const uploadUserDataCsv = async (req, res) => {
-    const { leads, listName, organizationId } = req.body;
+    const { leads, listName, organizationId, agentType } = req.body;
 
     try {
-        // Find all AI campaigns using this listName
         const relatedCampaigns = await AICampagins_Model.find({ 
             listName, 
             organizationId 
@@ -238,14 +238,12 @@ const uploadUserDataCsv = async (req, res) => {
             });
         }
 
-        // Use bulkWrite for better performance with many records
         const leadOperations = leads.map(lead => ({
             insertOne: {
                 document: lead
             }
         }));
 
-        // Process leads in batches of 1000
         const batchSize = 1000;
         const leadResults = [];
 
@@ -257,12 +255,16 @@ const uploadUserDataCsv = async (req, res) => {
             leadResults.push(result);
         }
 
-        // Get IDs of newly inserted leads
         const newLeadIds = leadResults.flatMap(result => 
             Object.values(result.insertedIds)
         );
 
-        // Prepare campaign lead entries for each campaign
+        // Map original leads with their new _ids
+        const leadsWithIds = leads.map((lead, index) => ({
+            ...lead,
+            _id: newLeadIds[index]
+        }));
+
         const campaignLeadOperations = [];
         for (const campaign of relatedCampaigns) {
             const campaignLeads = newLeadIds.map(leadId => ({
@@ -281,7 +283,6 @@ const uploadUserDataCsv = async (req, res) => {
             campaignLeadOperations.push(...campaignLeads);
         }
 
-        // Process campaign leads in batches
         const campaignLeadResults = [];
         for (let i = 0; i < campaignLeadOperations.length; i += batchSize) {
             const batch = campaignLeadOperations.slice(i, i + batchSize);
@@ -291,13 +292,33 @@ const uploadUserDataCsv = async (req, res) => {
             campaignLeadResults.push(result);
         }
 
-        // Calculate total insertions
         const totalLeadsInserted = leadResults.reduce((acc, result) => 
             acc + result.insertedCount, 0
         );
         const totalCampaignLeadsInserted = campaignLeadResults.reduce((acc, result) => 
             acc + result.insertedCount, 0
         );
+
+        if (agentType === "LinkedIn_Research" || agentType === "LinkedIn Research") {
+            // Use leadsWithIds which includes the MongoDB _id
+            const dataSend2 = {
+              organizationId,
+              leadsData: leadsWithIds,
+              listName,
+            };
+          
+            const resDataInsertList = await addLeadsToListAgent(dataSend2);
+            console.log(resDataInsertList);
+          
+            // ✅ Check if any leads were actually inserted
+            if (totalLeadsInserted > 0) {
+              await LeadFilters_Model.updateMany(
+                { listName, organizationId },
+                { $set: { status: 2 } }
+              );
+              console.log("Status changed for the Lead Finder");
+            }
+        }
 
         res.json({
             success: true,
