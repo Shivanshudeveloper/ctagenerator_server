@@ -245,7 +245,15 @@ const saveSettings = async (req, res) => {
       }
 
     // Resume List incase if it was stoped
-    if (listName) {
+
+    const findSettingStatus = await LeadFilters_Model.findOne({ 
+        listName, 
+        organizationId, 
+        agentType, 
+        status: 3 
+    });
+
+    if (findSettingStatus && findSettingStatus.status === 3) {
         // ✅ Check if any leads were actually inserted
         await LeadFilters_Model.updateMany(
             { listName, organizationId, agentType },
@@ -253,6 +261,9 @@ const saveSettings = async (req, res) => {
         );
         console.log("Status changed for the Draft Filter");
     }
+
+
+    
 
     res.status(200).json({ 
         message: "Draft settings saved successfully", 
