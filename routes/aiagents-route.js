@@ -9,6 +9,7 @@ const aiAgentController = require('../controllers/aiagents');
 router.post('/createnewaiagent', aiAgentController.createNewAiAgent);
 router.delete('/removeaiagent/:aiAgentUid', aiAgentController.deleteAiAgent);
 router.put('/updateaiagent/:_id', aiAgentController.updateAiAgent);
+router.put('/updatedselectedagentsmanager/:_id', aiAgentController.updateAiAgentSelectedAgentsManger);
 router.get('/findoneaiagentdetail/:aiAgentUid', aiAgentController.findOneAiAgent);
 router.get('/findorganizationaiagentdetail/:organizationId', aiAgentController.findAllAiAgentsByOrg);
 
