@@ -535,25 +535,25 @@ const updateAiAgent = async (req, res) => {
 
 // Only the training one
 const updateAiAgentSelectedAgentsManger = async (req, res) => {
-    const { id } = req.params;
+    const { _id } = req.params;
     const { trainingData } = req.body; // We expect something like { selectedAgents: [...] }
   
     try {
-      // Only update trainingData.selectedAgents
-      const updatedAgent = await AIAgents_Model.findByIdAndUpdate(
-        id,
-        {
-          $set: {
-            "trainingData.selectedAgents": trainingData.selectedAgents || []
-          }
-        },
-        { new: true } // so we return the updated document
-      );
+        // Only update trainingData.selectedAgents
+        const updatedAgent = await AIAgents_Model.findByIdAndUpdate(
+            _id,
+            {
+            $set: {
+                "trainingData.selectedAgents": trainingData.selectedAgents || []
+            }
+            },
+            { new: true } // so we return the updated document
+        );
   
-      if (!updatedAgent) {
-        return res.status(404).json({ error: "Agent not found" });
-      }
-      return res.json({ message: "Agent updated successfully", data: updatedAgent });
+          if (!updatedAgent) {
+            return res.status(404).json({ error: "Agent not found" });
+          }
+          return res.json({ message: "Agent updated successfully", data: updatedAgent });
     } catch (error) {
       console.error("Error updating selectedAgents:", error);
       return res.status(500).json({ error: "Internal server error" });
