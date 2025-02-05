@@ -355,6 +355,79 @@ const deleteUserListLeadData = async (req, res) => {
     }
 };
 
+// Update the status of Lead Filter
+const updateLeadFilterStatus = async (req, res) => {
+    let { organizationId, agentUid, isPaused } = req.body;
+  
+    // Log the incoming request for debugging
+    console.log('Request body:', req.body);
+  
+    // Convert isPaused to a boolean if it comes as a string
+    if (typeof isPaused === 'string') {
+        isPaused = isPaused.toLowerCase() === 'true';
+    }
+  
+    try {
+        // Set default status for "pause"
+        let status = 10;
+    
+        // If the filter is to resume, change status accordingly
+        if (!isPaused) {
+            status = 2;
+        }
+    
+        // Log the filter criteria for debugging
+        console.log('Filter criteria:', { organizationId, aiAgentUid: agentUid });
+    
+        // Update the document
+        const resUpdate = await LeadFilters_Model.updateOne(
+            { organizationId, aiAgentUid: agentUid },
+            { $set: { status } }
+        );
+    
+        console.log('Update result:', resUpdate);
+    
+        // Check if a document was actually updated
+        if (resUpdate.matchedCount === 0 || resUpdate.modifiedCount === 0) {
+                return res.status(404).json({
+                error: 'No matching lead filter found or status was already set.'
+            });
+        }
+    
+        return res.status(200).json({
+            data: 'List Filters updated successfully',
+        });
+    } catch (error) {
+        console.error('Error updating List Filters:', error);
+        return res.status(500).json({ 
+            error: 'Failed to update List Filters',
+            details: error.message 
+        });
+    }
+};
+
+
+// AI Agetns Running Status Get
+const getAiAgentRunningStatus = async (req, res) => {
+    let { aiAgentUid } = req.params;
+    
+    try {
+        // Find the document and select only the tags field
+        const result = await LeadFilters_Model.findOne(
+          { aiAgentUid },
+        ).sort({ createdAt: -1 });
+    
+        if (!result) {
+          return res.status(200).json({ status: true, data: {} });
+        }
+    
+        return res.status(200).json({ status: true, data: result || {} });
+    } catch (error) {
+        return res.status(500).json({ status: false, data: "Something went wrong" });
+    }
+}
+
+
 module.exports = {
     addNewUserList,
     getAllUserListsLeads,
@@ -364,5 +437,7 @@ module.exports = {
     getLeadsInListSingle,
     uploadUserDataCsv,
     downloadLeads,
-    deleteUserListLeadData
+    deleteUserListLeadData,
+    updateLeadFilterStatus,
+    getAiAgentRunningStatus
 }

@@ -19,5 +19,9 @@ router.post('/uploaduserdatatolist', leadlistController.uploadUserDataCsv);
 router.get('/downloadallleadsuserleadlist/:listName/:organizationId', leadlistController.downloadLeads);
 router.delete('/deleteuserlist/:listName/:organizationId', leadlistController.deleteUserListLeadData);
 
+// Change the status of a filter
+router.post('/updateaiagentstaus', leadlistController.updateLeadFilterStatus);
+router.get('/getaiagentrunningstatus/:aiAgentUid', leadlistController.getAiAgentRunningStatus);
+
 
 module.exports = router;
