@@ -13,7 +13,7 @@ const LeadLists_Model = require('../../models/LeadLists');
 
 // New AI Agent Create
 const createNewAiAgentWorkFlow = async (req, res) => {
-    const { organizationId, userEmail, name, trainingData, listName, filterData } = req.body;
+    const { organizationId, userEmail, name, trainingData, listName, filterData, manualEntry } = req.body;
 
     try {
         if (trainingData?.agentType === "Lead_Finder") {
@@ -223,18 +223,23 @@ const createNewAiAgentWorkFlow = async (req, res) => {
             await newListFilters.save();
             console.log("List Filter save by AI Agent", aiAgentUid);
         } else if (trainingData?.agentType === "LinkedIn_Research") {
-            // Existing List
-            const existingList = await LeadLists_Model.findOne({
-                organizationId,
-                listName // No need for case-insensitive regex since we normalized it
-            });
-    
-            if (existingList) {
-                return res.status(400).json({
-                    error: 'List Name already exists for this organization',
-                    data: 'List Name already exists for this organization'
+
+            // This is a check if user has added a list or uploaded a csv incase of added list we don't check if leadlist already exist
+            if (manualEntry) {
+                // Existing List
+                const existingList = await LeadLists_Model.findOne({
+                    organizationId,
+                    listName // No need for case-insensitive regex since we normalized it
                 });
+
+                if (existingList) {
+                    return res.status(400).json({
+                        error: 'List Name already exists for this organization',
+                        data: 'List Name already exists for this organization'
+                    });
+                }
             }
+            
 
             // Find an existing ai agent
             let existingAIAgent = await AIAgents_Model.findOne({ name, organizationId });
@@ -242,14 +247,16 @@ const createNewAiAgentWorkFlow = async (req, res) => {
                 return res.status(201).json({ status: true, data: "AI Agent name already exists" });
             }
 
-            // Create new list
-            const newList = new LeadLists_Model({
-                organizationId,
-                listName
-            });
+            if (manualEntry) {
+                // Create new list
+                const newList = new LeadLists_Model({
+                    organizationId,
+                    listName
+                });
 
-            await newList.save();
-            console.log("New List Created by AI Agent");
+                await newList.save();
+                console.log("New List Created by AI Agent");
+            }
             
             const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
             // Create new AI Agent
