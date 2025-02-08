@@ -428,6 +428,26 @@ const getAiAgentRunningStatus = async (req, res) => {
 }
 
 
+// Update the query
+const updatetheLeadsQuery = async (req, res) => {
+    try {
+        // Find the document and select only the tags field
+        const result = await LeadListsData_Model.updateMany(
+            { Niche: "Artificial Intelligence" },
+            { $set: { listName: "ai expertise" } }
+        ).sort({ createdAt: -1 });
+    
+        if (!result) {
+          return res.status(200).json({ status: true, data: {} });
+        }
+    
+        return res.status(200).json({ status: true, data: result || {} });
+    } catch (error) {
+        return res.status(500).json({ status: false, data: "Something went wrong" });
+    }
+}
+
+
 module.exports = {
     addNewUserList,
     getAllUserListsLeads,
@@ -439,5 +459,6 @@ module.exports = {
     downloadLeads,
     deleteUserListLeadData,
     updateLeadFilterStatus,
-    getAiAgentRunningStatus
+    getAiAgentRunningStatus,
+    updatetheLeadsQuery
 }

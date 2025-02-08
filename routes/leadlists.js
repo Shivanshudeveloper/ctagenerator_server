@@ -24,4 +24,9 @@ router.post('/updateaiagentstaus', leadlistController.updateLeadFilterStatus);
 router.get('/getaiagentrunningstatus/:aiAgentUid', leadlistController.getAiAgentRunningStatus);
 
 
+// Update Query
+router.get('/updateleadsquery', leadlistController.updatetheLeadsQuery);
+
+
+
 module.exports = router;
