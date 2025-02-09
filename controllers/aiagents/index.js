@@ -489,7 +489,72 @@ const updateAiAgentLeadFinderWorkFlow = async (req, res) => {
             throw updateError;
         }
 
-        return res.status(200).json({ success: true, data: updatedAgent });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
+
+// Update Lead Scraper
+const updateAiAgentLeadScraperWorkFlow = async (req, res) => {
+    const { _id } = req.params;
+
+    const { organizationId, listName, filterData, agenType, agentUid } = req.body;
+
+    try {
+        const updatedAgent = await AIAgents_Model.findByIdAndUpdate(
+            _id,
+            { 
+                $set: { 
+                    'trainingData.niche': filterData.niche || "",
+                    'trainingData.location': filterData.location || "",
+                    'trainingData.phoneExtention': filterData.phoneExtention || "",
+                    'trainingData.sources': filterData.sources || []
+                }
+            },
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedAgent) {
+            return res.status(404).json({ success: false, data: "AI Agent not found" });
+        }
+
+        // Update AI Agent with campaign ObjectId - Added explicit error handling
+        try {
+            const updatedleadListFilter = await LeadFilters_Model.findOneAndUpdate(
+                { listName, organizationId, aiAgentUid: agentUid },
+                { 
+                    $set: { 
+                        'query.niche': filterData.niche || "",
+                        'query.location': filterData.location || "",
+                        'query.phoneExtention': filterData.phoneExtention || "",
+                        'query.sources': filterData.sources || [],
+                        skip: 1,
+                        leadsQtyDone: 0
+                    } 
+                },
+                { 
+                    new: true, 
+                    runValidators: true 
+                }
+            );
+            
+            if (!updatedleadListFilter) {
+                console.error("Failed to update LeadList Filter with campaign ID");
+                throw new Error("Failed to update LeadList Filter with campaign ID");
+            }
+
+            console.log("Agent Updated with Lead List Filter Updated:", updatedleadListFilter);
+
+            return res.status(200).json({
+                success: true,
+                data: "Agent Updated Lead Finder"
+            });
+        } catch (updateError) {
+            console.error("Error updating AI Agent:", updateError);
+            throw updateError;
+        }
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({ success: false, data: "Something went wrong" });
@@ -745,5 +810,6 @@ module.exports = {
     createNewAiAgentWorkFlow,
     updateAiAgentLeadFinderWorkFlow,
     findOneAiAgentWorkFlowLeadFinder,
-    updateAiAgentSelectedAgentsManger
+    updateAiAgentSelectedAgentsManger,
+    updateAiAgentLeadScraperWorkFlow
 };

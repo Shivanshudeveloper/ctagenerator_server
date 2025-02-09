@@ -18,6 +18,7 @@ router.post('/speakingliveaudio', aiAgentController.liveAudioAiAgentSpeaking);
 // New AI Agent Flow
 router.post('/createnewaiagentworkflow', aiAgentController.createNewAiAgentWorkFlow);
 router.put('/updateaiagentleadfinder/:_id', aiAgentController.updateAiAgentLeadFinderWorkFlow);
+router.put('/updateaiagentleadscraper/:_id', aiAgentController.updateAiAgentLeadScraperWorkFlow);
 router.post('/findoneaiagnetworkflowleadfinder', aiAgentController.findOneAiAgentWorkFlowLeadFinder);
 
 
