@@ -479,7 +479,7 @@ const createNewAiAgentWorkFlow = async (req, res) => {
                 agentType: trainingData?.agentType,
                 skip: 0,
                 leadsQty: 100,
-                status: 2
+                status: 10
             });
 
             await newListFilters.save();
