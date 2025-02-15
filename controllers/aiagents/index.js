@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const { v4: uuidv4 } = require("uuid");
 
@@ -8,6 +10,8 @@ const AICampaginLeads_Model = require('../../models/AICampaginLeads');
 const DraftAgentLeads_Model = require('../../models/DraftAgentLeads');
 const LeadFilters_Model = require('../../models/LeadFilters');
 const LeadLists_Model = require('../../models/LeadLists');
+const { WEBSITE_SCRAPER_SERVICE_URL } = require("../../config/config");
+const { azureStructureDataWebsiteScraper } = require("../../lib/azure_openai");
 
 
 
@@ -859,6 +863,83 @@ const liveAudioAiAgentSpeaking = async (req, res) => {
 }
 
 
+// Get the Website URL Scraped Data
+const getWebsiteUrlData = async (req, res) => {
+    try {
+        const { websiteUrl } = req.body;
+
+        if (!websiteUrl) {
+            return res.status(400).json({ 
+                error: 'Website URL is required' 
+            });
+        }
+
+        var dataSend = {
+            "urls": [websiteUrl]
+        }
+
+        console.log("AI Training Website Scraping Request", websiteUrl);
+        
+        // Make the POST request using axios to get the data
+        const response = await axios.post(`${WEBSITE_SCRAPER_SERVICE_URL}/crawl`, dataSend, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        console.log("Website Scraped", websiteUrl);
+        return res.status(200).json({ 
+            success: true, 
+            data: response?.data
+        });
+    } catch (error) {
+        console.error('Scraper Error:', error);
+        
+        // Handle axios errors
+        if (error.response) {
+            return res.status(error.response.status).json(error.response.data);
+        }
+        
+        return res.status(500).json({ 
+            error: 'Website Scraping failed: ' + error.message 
+        });
+    }
+}
+
+
+// Strucutre the data for Website URL
+const structureDataWebsiteScraper = async (req, res) => {
+    try {
+        const { gptPrompt, scrapedData } = req.body;
+
+        if (!gptPrompt) {
+            return res.status(400).json({ 
+                error: 'Website URL is required' 
+            });
+        }
+
+        console.log("Azure Structuring data in progress...");
+        const aiResponse = await azureStructureDataWebsiteScraper(scrapedData, gptPrompt);
+
+        console.log("Data Structuring Done!");
+        return res.status(200).json({ 
+            success: true, 
+            data: aiResponse
+        });
+    } catch (error) {
+        console.error('Scraper Error:', error);
+        
+        // Handle axios errors
+        if (error.response) {
+            return res.status(error.response.status).json(error.response.data);
+        }
+        
+        return res.status(500).json({ 
+            error: 'Website Scraping failed: ' + error.message 
+        });
+    }
+}
+
 module.exports = {
     createNewAiAgent,
     deleteAiAgent,
@@ -870,5 +951,7 @@ module.exports = {
     updateAiAgentLeadFinderWorkFlow,
     findOneAiAgentWorkFlowLeadFinder,
     updateAiAgentSelectedAgentsManger,
-    updateAiAgentLeadScraperWorkFlow
+    updateAiAgentLeadScraperWorkFlow,
+    getWebsiteUrlData,
+    structureDataWebsiteScraper
 };

@@ -21,5 +21,10 @@ router.put('/updateaiagentleadfinder/:_id', aiAgentController.updateAiAgentLeadF
 router.put('/updateaiagentleadscraper/:_id', aiAgentController.updateAiAgentLeadScraperWorkFlow);
 router.post('/findoneaiagnetworkflowleadfinder', aiAgentController.findOneAiAgentWorkFlowLeadFinder);
 
+// Website Scraper
+router.post('/scrapewebsitetrainingagent', aiAgentController.getWebsiteUrlData);
+router.post('/structurescraperwebsitedata', aiAgentController.structureDataWebsiteScraper);
+
+
 
 module.exports = router;

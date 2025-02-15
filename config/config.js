@@ -11,6 +11,7 @@ const CALLING_SERVICE_URL = "http://localhost:8080";
 
 const OUTBOUND_CALLING_SERVICE_URL = "https://outboundcallingservice-dhg8e2h2g6ahdbb5.eastus-01.azurewebsites.net";
 
+const WEBSITE_SCRAPER_SERVICE_URL = "http://172.206.249.185:8000";
 
 const USER_PLANS = [
     {
@@ -37,5 +38,6 @@ module.exports = {
     APP_MAIN_URL,
     OTHER_SERVICE_URL,
     CALLING_SERVICE_URL,
-    OUTBOUND_CALLING_SERVICE_URL
+    OUTBOUND_CALLING_SERVICE_URL,
+    WEBSITE_SCRAPER_SERVICE_URL
 }
