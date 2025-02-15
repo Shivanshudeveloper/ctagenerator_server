@@ -18,6 +18,9 @@ router.post('/generatedmaiagent', validateUserEngagementLimit, otherServicesCont
 // AI Agent Workflow
 router.post('/savedraftagentsettings', otherServicesController.saveSettings);
 router.get('/getthedraftagentsettings/:agentObjectId', otherServicesController.getAiAgentSettings);
+router.get('/getthewebsiteagentsettings/:agentObjectId', otherServicesController.getAiAgentWebsiteScraperSettings);
+
+
 router.post('/updatedraftsettings', otherServicesController.updateDraftSettingEnable);
 
 

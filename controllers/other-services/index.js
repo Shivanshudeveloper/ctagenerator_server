@@ -298,6 +298,27 @@ const getAiAgentSettings = async (req, res) => {
   }
 }
 
+// Get the Website AI agent settings
+const getAiAgentWebsiteScraperSettings = async (req, res) => {
+    const { agentObjectId } = req.params;
+  
+    try {
+        const settings = await AIAgents_Model.findById({ _id: agentObjectId });
+        
+        if (!settings) {
+            return res.status(201).json({ message: 'Settings not found', data: {} });
+        }
+  
+        res.status(200).json({
+            message: 'Settings retrieved successfully',
+            data: settings
+        });
+  
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
 
 // Get draft leads with pagination
 const getDraftLeads = async (req, res) => {
@@ -403,6 +424,7 @@ module.exports = {
     generateColdDmAiAgent,
     getDraftLeads,
     getAllDraftLeads,
-    updateDraftSettingEnable
+    updateDraftSettingEnable,
+    getAiAgentWebsiteScraperSettings
 }
 

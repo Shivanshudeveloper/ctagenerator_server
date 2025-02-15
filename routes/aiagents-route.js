@@ -19,6 +19,7 @@ router.post('/speakingliveaudio', aiAgentController.liveAudioAiAgentSpeaking);
 router.post('/createnewaiagentworkflow', aiAgentController.createNewAiAgentWorkFlow);
 router.put('/updateaiagentleadfinder/:_id', aiAgentController.updateAiAgentLeadFinderWorkFlow);
 router.put('/updateaiagentleadscraper/:_id', aiAgentController.updateAiAgentLeadScraperWorkFlow);
+router.put('/updateaiagentwebsitescraper/:_id', aiAgentController.updateAiAgentWebsiteScraperWorkFlow);
 router.post('/findoneaiagnetworkflowleadfinder', aiAgentController.findOneAiAgentWorkFlowLeadFinder);
 
 // Website Scraper
