@@ -458,6 +458,8 @@ const createNewAiAgentWorkFlow = async (req, res) => {
 
             await newList.save();
             console.log("New List Created by AI Agent");
+
+            trainingData.gptPrompt = "";
             
             const aiAgentUid = `AIAGENT_${Date.now()}_${uuidv4()}`;
             // Create new AI Agent
