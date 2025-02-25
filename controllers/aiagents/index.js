@@ -529,7 +529,8 @@ const updateAiAgentLeadFinderWorkFlow = async (req, res) => {
                 { listName, organizationId },
                 { 
                     $set: { 
-                        query: filterData
+                        query: filterData,
+                        status: 2
                     } 
                 },
                 { 
@@ -595,7 +596,8 @@ const updateAiAgentLeadScraperWorkFlow = async (req, res) => {
                         'query.phoneExtention': filterData.phoneExtention || "",
                         'query.sources': filterData.sources || [],
                         skip: 1,
-                        leadsQtyDone: 0
+                        leadsQtyDone: 0,
+                        status: 2
                     } 
                 },
                 { 
