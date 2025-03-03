@@ -66,6 +66,15 @@ const leadlistsDataSchema = new mongoose.Schema({
         default: false,
         required: false
     },
+    emailSend:{
+        type: Boolean,
+        default: false,
+        required: false
+    },
+    emailSendDetails:{
+        type: Object,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now
