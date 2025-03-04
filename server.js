@@ -36,6 +36,7 @@ const aiCampaginsRoutes = require("./routes/aicampagins-route");
 const automationRoutes = require("./routes/automation-route");
 const eventRoutes = require("./routes/event-routes");
 const aiAgentsInsRoutes = require("./routes/aiagent-instruction");
+const emailSendingDomain = require("./routes/emailsending-domains-route");
 
 
 // CTA Controller
@@ -112,6 +113,9 @@ if (cluster.isMaster) {
 
   // AI Automation
   app.use("/api/v1/main/aiautomation", express.json({ limit: "50mb" }), automationRoutes);
+
+  // Email Sending Domain
+  app.use("/api/v1/main/emailsendingdomain", express.json({ limit: "50mb" }), emailSendingDomain);
 
 
   app.use("/api/v1/otherservices", express.json({ limit: "50mb" }), otherServicesRoutes);
