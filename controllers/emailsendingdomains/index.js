@@ -1,5 +1,7 @@
 const {Resend} = require('resend');
 const EmailSendingDomain_Model = require("../../models/EmailSendingDomain");
+const EmailSendingMailbox_Model = require("../../models/EmailSendingMailbox");
+
 
 const resendKey = process.env.EMAIL_SENDING_RESEND_KEY;
 
@@ -149,8 +151,89 @@ const verifyDomainEmailSending = async (req, res) => {
     }
 };
 
+
+// Add Mailbox
+const addEmailSendingMailbox = async (req, res) => {
+    let { userEmail, organizationId, mailBox, listName } = req.body;
+    
+    try {
+        const existingDomain = await EmailSendingMailbox_Model.findOne({
+            organizationId,
+            mailBox
+        });
+
+        if (existingDomain) {
+            return res.status(400).json({
+                error: 'Emails already exists for this organization',
+                data: 'Please use a different email name'
+            });
+        }
+
+        // If successful, create database entry with Resend data
+        const newMailbox = new EmailSendingMailbox_Model({
+            organizationId,
+            userEmail,
+            mailBox,
+            listName
+        });
+
+        await newMailbox.save();
+
+        return res.status(200).json({
+            data: newMailbox,
+        });
+
+    } catch (error) {
+        console.error('Error adding custom domain:', error);
+        res.status(500).json({ 
+            error: 'Failed to add custom domain',
+            details: error.message 
+        });
+    }
+}
+
+
+// Get all the mailboxes for the organization id
+const getAllUserMailboxEmailSending = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const { organizationId } = req.params;
+      
+    try {
+      // Find the document and select only the tags field
+      const result = await EmailSendingMailbox_Model.find(
+        { organizationId },
+      ).sort({ createdAt: -1 });
+  
+      if (!result) {
+        return res.status(200).json({ status: true, data: [] });
+      }
+  
+      return res.status(200).json({ status: true, data: result || [] });
+    } catch (error) {
+      return res.status(500).json({ status: false, data: "Something went wrong" });
+    }
+};
+
+// Delete the Mailbox
+const deleteMailBoxEmailSending = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const { organizationId, mailbox } = req.params;
+      
+    try {
+      // Delete the document matching organizationId and mailbox
+      const result = await EmailSendingMailbox_Model.deleteOne({ organizationId, mailBox: mailbox });
+      return res.status(200).json({ status: true, data: result || [] });
+    } catch (error) {
+      return res.status(500).json({ status: false, data: "Something went wrong" });
+    }
+};
+
+
 module.exports = {
     addEmailSendingDomain,
     getAllUserDomainsEmailSending,
-    verifyDomainEmailSending
+    verifyDomainEmailSending,
+    addEmailSendingMailbox,
+    getAllUserMailboxEmailSending,
+    deleteMailBoxEmailSending
 };
