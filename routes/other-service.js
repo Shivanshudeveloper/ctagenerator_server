@@ -26,6 +26,7 @@ router.post('/updatedraftsettings', otherServicesController.updateDraftSettingEn
 
 // Get Draft Leads
 router.get('/getdraftleads/:agentUid', otherServicesController.getDraftLeads);
+router.get('/getdraftleadsemailsending/:listName/:organizationId', otherServicesController.getDraftLeadsEmailSending);
 router.get('/getalldraftleads/:agentUid', otherServicesController.getAllDraftLeads);
 
 

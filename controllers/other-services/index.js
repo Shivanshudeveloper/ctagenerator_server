@@ -358,6 +358,42 @@ const getDraftLeads = async (req, res) => {
   }
 };
 
+// Get Draft Email Sending
+const getDraftLeadsEmailSending = async (req, res) => {
+    try {
+        const { listName, organizationId } = req.params;
+        const { page = 1, limit = 50, status } = req.query;
+  
+        const query = { listName, organizationId };
+        if (status) query.status = status;
+  
+        const leads = await DraftAgentLeads_Model.find(query)
+            .populate('leadId')
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 });
+  
+        const total = await DraftAgentLeads_Model.countDocuments(query);
+  
+        return res.status(200).json({
+            success: true,
+            data: {
+                leads,
+                total,
+                pages: Math.ceil(total / limit),
+                currentPage: page
+            }
+        });
+  
+    } catch (error) {
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
+    }
+};
+
 // Get all draft leads with pagination
 const getAllDraftLeads = async (req, res) => {
   try {
@@ -446,6 +482,7 @@ module.exports = {
     getAllDraftLeads,
     updateDraftSettingEnable,
     getAiAgentWebsiteScraperSettings,
-    sendEmailResendDomain
+    sendEmailResendDomain,
+    getDraftLeadsEmailSending
 }
 
