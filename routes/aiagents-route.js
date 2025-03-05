@@ -18,9 +18,13 @@ router.post('/speakingliveaudio', aiAgentController.liveAudioAiAgentSpeaking);
 // New AI Agent Flow
 router.post('/createnewaiagentworkflow', aiAgentController.createNewAiAgentWorkFlow);
 router.put('/updateaiagentleadfinder/:_id', aiAgentController.updateAiAgentLeadFinderWorkFlow);
+
+router.put('/updateaiagentleadfindersubject/:_id', aiAgentController.updateAiAgentLeadFinderWorkFlowSubject);
+
 router.put('/updateaiagentleadscraper/:_id', aiAgentController.updateAiAgentLeadScraperWorkFlow);
 router.put('/updateaiagentwebsitescraper/:_id', aiAgentController.updateAiAgentWebsiteScraperWorkFlow);
 router.post('/findoneaiagnetworkflowleadfinder', aiAgentController.findOneAiAgentWorkFlowLeadFinder);
+router.post('/findoneaiagnetworkflowemailsending', aiAgentController.findOneAiAgentEmailSending);
 
 // Website Scraper
 router.post('/scrapewebsitetrainingagent', aiAgentController.getWebsiteUrlData);

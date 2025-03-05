@@ -598,6 +598,51 @@ const updateAiAgentLeadFinderWorkFlow = async (req, res) => {
     }
 };
 
+// Update AI Agent WorkFlow Email Subject
+const updateAiAgentLeadFinderWorkFlowSubject = async (req, res) => {
+    const { _id } = req.params;
+
+    const { organizationId, listName, filterData, agentUid } = req.body;
+
+    try {
+        // Update AI Agent with campaign ObjectId - Added explicit error handling
+        try {
+            const updatedleadListFilter = await LeadFilters_Model.findOneAndUpdate(
+                { listName, organizationId, aiAgentUid: agentUid },
+                { 
+                    $set: { 
+                        query: filterData,
+                        status: 2
+                    } 
+                },
+                { 
+                    new: true, 
+                    runValidators: true 
+                }
+            );
+
+            if (!updatedleadListFilter) {
+                console.error("Failed to update LeadList Filter with campaign ID");
+                throw new Error("Failed to update LeadList Filter with campaign ID");
+            }
+
+            console.log("Agent Updated with Lead List Filter Updated:", updatedleadListFilter);
+
+            return res.status(200).json({
+                success: true,
+                data: "Agent Updated Lead Finder"
+            });
+        } catch (updateError) {
+            console.error("Error updating AI Agent:", updateError);
+            throw updateError;
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
+
 // Update Lead Scraper
 const updateAiAgentLeadScraperWorkFlow = async (req, res) => {
     const { _id } = req.params;
@@ -685,6 +730,26 @@ const findOneAiAgentWorkFlowLeadFinder = async (req, res) => {
     }
 };
 
+
+// Find One AI Agent Workflow for Email Sending
+const findOneAiAgentEmailSending = async (req, res) => {
+    const { agentUid } = req.body;
+
+    try {
+        const agent = await LeadFilters_Model.findOne({ aiAgentUid: agentUid });
+
+        if (!agent) {
+            return res.status(404).json({ success: false, data: "AI Agent not found" });
+        }
+
+        console.log(agent);
+        
+        return res.status(200).json({ success: true, data: agent?.query });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
+    }
+};
 
 
 // Create new AI Agent
@@ -1055,5 +1120,7 @@ module.exports = {
     updateAiAgentLeadScraperWorkFlow,
     updateAiAgentWebsiteScraperWorkFlow,
     getWebsiteUrlData,
-    structureDataWebsiteScraper
+    structureDataWebsiteScraper,
+    updateAiAgentLeadFinderWorkFlowSubject,
+    findOneAiAgentEmailSending
 };
