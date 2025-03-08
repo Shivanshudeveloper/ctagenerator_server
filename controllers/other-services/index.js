@@ -395,7 +395,7 @@ const getDraftLeadsEmailSending = async (req, res) => {
 };
 
 // Get Draft Email Sending
-const getEmialSendingStats = async (req, res) => {
+const getEmailSendingStats = async (req, res) => {
     try {
         const { listName, organizationId } = req.params;
         const { status } = req.query;
@@ -416,14 +416,20 @@ const getEmialSendingStats = async (req, res) => {
             ...baseQuery,
             $or: [
                 { emailSend: 'not_send' },
-                // { emailSend: { $exists: false } }
+                {
+                    // Only check for missing emailSend when status is 'done'
+                    $and: [
+                        { status: 'done' },
+                        { emailSend: { $exists: false } }
+                    ]
+                }
             ]
         });
 
         return res.status(200).json({
             success: true,
             data: {
-                total: totalLeads, // Now reflects actual returned array length
+                total: totalLeads,
                 emailStatusCounts: {
                     done: doneCount,
                     pending: pendingCount
@@ -530,6 +536,6 @@ module.exports = {
     getAiAgentWebsiteScraperSettings,
     sendEmailResendDomain,
     getDraftLeadsEmailSending,
-    getEmialSendingStats
+    getEmailSendingStats
 }
 
