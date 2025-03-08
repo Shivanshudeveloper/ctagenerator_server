@@ -417,9 +417,9 @@ const getEmailSendingStats = async (req, res) => {
             $or: [
                 { emailSend: 'not_send' },
                 {
-                    // Only check for missing emailSend when status is 'done'
                     $and: [
-                        { status: 'done' },
+                        // Check for missing emailSend only when status is 'done' OR 'pending'
+                        { status: { $in: ['done', 'pending'] } },
                         { emailSend: { $exists: false } }
                     ]
                 }
