@@ -31,6 +31,14 @@ const draftAgentSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
+    emailSend: {
+        type: String,
+        required: false,
+    },
+    emailSendData: {
+        type: Object,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

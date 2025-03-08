@@ -394,6 +394,52 @@ const getDraftLeadsEmailSending = async (req, res) => {
     }
 };
 
+// Get Draft Email Sending
+const getEmialSendingStats = async (req, res) => {
+    try {
+        const { listName, organizationId } = req.params;
+        const { status } = req.query;
+
+        const baseQuery = { listName, organizationId };
+        if (status) baseQuery.status = status;
+
+        // Get all leads without pagination
+        const totalLeads = await DraftAgentLeads_Model.countDocuments(baseQuery);
+
+        // Get email status counts
+        const doneCount = await DraftAgentLeads_Model.countDocuments({
+            ...baseQuery,
+            emailSend: 'done'
+        });
+
+        const pendingCount = await DraftAgentLeads_Model.countDocuments({
+            ...baseQuery,
+            $or: [
+                { emailSend: 'not_send' },
+                // { emailSend: { $exists: false } }
+            ]
+        });
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                total: totalLeads, // Now reflects actual returned array length
+                emailStatusCounts: {
+                    done: doneCount,
+                    pending: pendingCount
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
+    }
+};
+
 // Get all draft leads with pagination
 const getAllDraftLeads = async (req, res) => {
   try {
@@ -483,6 +529,7 @@ module.exports = {
     updateDraftSettingEnable,
     getAiAgentWebsiteScraperSettings,
     sendEmailResendDomain,
-    getDraftLeadsEmailSending
+    getDraftLeadsEmailSending,
+    getEmialSendingStats
 }
 
