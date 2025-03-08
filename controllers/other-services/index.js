@@ -403,7 +403,7 @@ const getEmailSendingStats = async (req, res) => {
         const baseQuery = { listName, organizationId };
         if (status) baseQuery.status = status;
 
-        // Get all leads without pagination
+        // Get all leads without paginations
         const totalLeads = await DraftAgentLeads_Model.countDocuments(baseQuery);
 
         // Get email status counts
