@@ -446,6 +446,64 @@ const getEmailSendingStats = async (req, res) => {
     }
 };
 
+// Get Draft Email Sending Graph Data
+const getEmailSendGraphData = async (req, res) => {
+    try {
+        const { listName, organizationId } = req.params;
+
+        // Calculate date range
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const emailStatsGraph = await DraftAgentLeads_Model.aggregate([
+            {
+                $match: {
+                    listName: listName,
+                    organizationId: organizationId,
+                    emailSend: 'done',
+                    processedAt: {
+                        $gte: sevenDaysAgo,
+                        $lte: new Date()
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: { 
+                            format: "%Y-%m-%d", 
+                            date: "$processedAt" 
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    date: "$_id",
+                    count: 1
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: emailStatsGraph
+        });
+
+    } catch (error) {
+        console.error('Error fetching email stats:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch email statistics'
+        });
+    }
+};
+
 // Get all draft leads with pagination
 const getAllDraftLeads = async (req, res) => {
   try {
@@ -536,6 +594,7 @@ module.exports = {
     getAiAgentWebsiteScraperSettings,
     sendEmailResendDomain,
     getDraftLeadsEmailSending,
-    getEmailSendingStats
+    getEmailSendingStats,
+    getEmailSendGraphData
 }
 
