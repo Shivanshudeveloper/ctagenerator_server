@@ -64,6 +64,19 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: true, 
   },
+  credits: {
+    emailScraper: { type: Number, default: 0 },
+    linkedinResearch: { type: Number, default: 0 },
+    linkedinProfiles: { type: Number, default: 0 },
+    phoneScraper: { type: Number, default: 0 },
+    leadFinder: { type: Number, default: 0 },
+    conversational: { type: Number, default: 0 },
+    messageOnly: { type: Number, default: 0 },
+    yesNo: { type: Number, default: 0 },
+    draftEmails: { type: Number, default: 0 },
+    draftDms: { type: Number, default: 0 },
+    emailSending: { type: Number, default: 0 }
+  },
   createdAt: {
     type: Date,
     default: Date.now,

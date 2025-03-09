@@ -27,6 +27,15 @@ const userTransactionSchema = new mongoose.Schema({
     required: true,
     default: 'PayPal', 
   },
+  services: {
+    type: Map,
+    of: Number,
+    default: {}
+  },
+  totalAmount: {
+    type: Number,
+    min: 0
+  },
   paymentInformation: {
     type: Object,
     required: true,

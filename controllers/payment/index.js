@@ -172,6 +172,44 @@ const createRazorpayOrder = async (req, res) => {
     }
 }
 
+
+// Create User Checkout Session
+const createRazorpayOrderCredits = async (req, res) => {
+    const { amount, userEmail } = req.body;
+
+    let receipt = `RECIPT_${Date.now()}_${uuidv4()}`;
+
+    receipt = receipt.slice(0, 40);
+
+    console.log(`Credits Order for User ${userEmail}. RECIPT: ${receipt}`);
+
+    let mainAmount = amount;
+
+    try {
+        const instance = new Razorpay({
+            key_id: `${keyId.toString()}`,
+            key_secret: `${keySecret.toString()}`,
+        });
+
+        const options = {
+            amount: parseInt(mainAmount * 100), // amount in smallest currency unit
+            currency: "USD",
+            receipt: receipt,
+        };
+
+        const order = await instance.orders.create(options);
+
+        if (!order) return res.status(500).send("Some error occured");
+
+        res.json(order);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+
 // Chrome Token Order
 const createChromeTokenOrder = async (req, res) => {
     const { plan, userEmail } = req.body;
@@ -353,6 +391,127 @@ const successRazorPay2 = async (req, res) => {
     }
 }
 
+
+const successRazorPayCredits = async (req, res) => {
+    try {
+        const {
+            services,
+            email,
+            organizationId,
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature,
+            totalAmount
+        } = req.body;
+
+        // 2. Validate and prepare credit updates
+        const validServices = [
+            'emailScraper', 'linkedinResearch', 'linkedinProfiles',
+            'phoneScraper', 'leadFinder', 'conversational',
+            'messageOnly', 'yesNo', 'draftEmails', 'draftDms', 'emailSending'
+        ];
+
+        const updateOps = {};
+        for (const [serviceId, credits] of Object.entries(services)) {
+            if (!validServices.includes(serviceId)) continue;
+            if (typeof credits !== 'number' || credits < 0) continue;
+            
+            updateOps[`credits.${serviceId}`] = credits;
+        }
+
+        if (Object.keys(updateOps).length === 0) {
+            return res.status(400).json({
+                status: false,
+                error: 'No valid credits to update'
+            });
+        }
+
+        // 3. Update user credits
+        const updatedUser = await User_Model.findOneAndUpdate(
+            { organizationId },
+            { 
+                $inc: updateOps,
+                $set: { 
+                    lastPaymentMadeDate: Date.now(),
+                    accountStatus: 1 
+                }
+            },
+            { new: true, runValidators: true }
+        );
+
+        console.log(services);
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                status: false,
+                error: 'User not found'
+            });
+        }
+
+        // 4. Create transaction record
+        const transactionData = {
+            email,
+            organizationId,
+            transactionType: 'credits',
+            paymentType: 'Credits Purchase',
+            channel: 'Razorpay',
+            services,
+            totalAmount,
+            paymentInformation: {
+                orderCreationId,
+                razorpayPaymentId,
+                razorpayOrderId,
+                razorpaySignature
+            }
+        };
+
+        const newTransaction = new UserTransactions_Model(transactionData);
+        await newTransaction.save();
+
+        // // 5. Send confirmation email
+        // await sendCreditPurchaseConfirmation(
+        //     email,
+        //     services,
+        //     totalAmount
+        // );
+
+        res.status(200).json({
+            status: true,
+            msg: 'success',
+            credits: updatedUser.credits,
+            transactionId: newTransaction._id
+        });
+
+    } catch (error) {
+        console.error('Credit Purchase Error:', error);
+        res.status(500).json({
+            status: false,
+            error: 'Internal server error',
+            details: error.message
+        });
+    }
+};
+
+const checkCreditsUsage = async (req, res) => {
+    try {
+        const { organizationId } = req.params;
+
+        User_Model.findOne({ organizationId })
+            .then(async (data) => {
+                const credits = data?.credits;
+                var data = {
+                    credits
+                }
+                res.status(200).json({ status: true, data });
+            })
+            .catch((err) => console.log(err));
+        
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+}
+
 const getUserAccountStatus = async (req, res) => {
     try {
         const { organizationId, reason } = req.params;
@@ -420,5 +579,8 @@ module.exports = {
     getUserAccountStatus,
     successRazorPay2,
     getUserHistoryTransaction,
-    createChromeTokenOrder
+    createChromeTokenOrder,
+    createRazorpayOrderCredits,
+    successRazorPayCredits,
+    checkCreditsUsage
 }

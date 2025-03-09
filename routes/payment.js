@@ -20,4 +20,9 @@ router.post('/chrometokenorder', paymentController.createChromeTokenOrder);
 router.post('/success', paymentController.successRazorPay);
 router.post('/success2', paymentController.successRazorPay2);
 
+// Credits Razor Pay Payment
+router.post('/ordercredits', paymentController.createRazorpayOrderCredits);
+router.post('/creditssuccess', paymentController.successRazorPayCredits);
+router.get('/getusercredits/:organizationId', paymentController.checkCreditsUsage);
+
 module.exports = router;
