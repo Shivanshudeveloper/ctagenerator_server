@@ -13,7 +13,7 @@ router.post('/verifydomainemailsending', emailSendingDomain.verifyDomainEmailSen
 
 // Mailboxes
 router.post('/adddomainemailbox', emailSendingDomain.addEmailSendingMailbox);
-router.get('/getalltheusermailboxes/:organizationId', emailSendingDomain.getAllUserMailboxEmailSending);
+router.get('/getalltheusermailboxes/:organizationId/:listName', emailSendingDomain.getAllUserMailboxEmailSending);
 router.delete('/deletethemailbox/:organizationId/:mailbox', emailSendingDomain.deleteMailBoxEmailSending);
 
 

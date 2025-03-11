@@ -196,12 +196,12 @@ const addEmailSendingMailbox = async (req, res) => {
 // Get all the mailboxes for the organization id
 const getAllUserMailboxEmailSending = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    const { organizationId } = req.params;
+    const { organizationId, listName } = req.params;
       
     try {
       // Find the document and select only the tags field
       const result = await EmailSendingMailbox_Model.find(
-        { organizationId },
+        { organizationId, listName },
       ).sort({ createdAt: -1 });
   
       if (!result) {
