@@ -159,7 +159,8 @@ const addEmailSendingMailbox = async (req, res) => {
     try {
         const existingDomain = await EmailSendingMailbox_Model.findOne({
             organizationId,
-            mailBox
+            mailBox,
+            listName
         });
 
         if (existingDomain) {
