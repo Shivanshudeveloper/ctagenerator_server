@@ -361,20 +361,45 @@ const getDraftLeads = async (req, res) => {
 // Get Draft Email Sending
 const getDraftLeadsEmailSending = async (req, res) => {
     try {
-        const { listName, organizationId } = req.params;
-        const { page = 1, limit = 50, status } = req.query;
-  
+        const { listName, organizationId, selectedFilter } = req.params;
+        const { page = 1, limit = 50 } = req.query;
+
+        // Base query to filter by listName and organizationId
         const query = { listName, organizationId };
-        if (status) query.status = status;
-  
+
+        // Apply additional filters based on selectedFilter
+        if (selectedFilter !== 'all') {
+            switch (selectedFilter) {
+                case 'done':
+                    query.emailSend = 'done';
+                    break;
+                case 'wrong_prospect_email':
+                    query.emailSend = 'wrong_prospect_email';
+                    break;
+                case 'linkedin_details_not_found':
+                    query.status = 'linkedin_details_not_found';
+                    break;
+                case 'pending':
+                    // Pending: emailSend is not 'done' or 'wrong_prospect_email' AND status is not 'linkedin_details_not_found'
+                    query.emailSend = { $nin: ['done', 'wrong_prospect_email'] };
+                    query.status = { $ne: 'linkedin_details_not_found' };
+                    break;
+                default:
+                    // Handle unexpected filters (optional: throw error)
+                    break;
+            }
+        }
+
+        // Fetch paginated leads
         const leads = await DraftAgentLeads_Model.find(query)
             .populate('leadId')
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ createdAt: -1 });
-  
+
+        // Calculate total documents for pagination
         const total = await DraftAgentLeads_Model.countDocuments(query);
-  
+
         return res.status(200).json({
             success: true,
             data: {
@@ -384,7 +409,7 @@ const getDraftLeadsEmailSending = async (req, res) => {
                 currentPage: page
             }
         });
-  
+
     } catch (error) {
         console.error('Error fetching campaign leads:', error);
         return res.status(500).json({
