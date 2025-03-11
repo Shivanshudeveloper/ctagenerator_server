@@ -476,9 +476,16 @@ const getEmailSendGraphData = async (req, res) => {
     try {
         const { listName, organizationId } = req.params;
 
-        // Calculate date range
+        // Debugging: Log received parameters
+        console.log('Received listName:', listName, 'organizationId:', organizationId);
+
+        // Calculate date range (last 7 days including today)
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        sevenDaysAgo.setHours(0, 0, 0, 0); // Start of the day 7 days ago
+
+        const today = new Date();
+        today.setHours(23, 59, 59, 999); // End of today
 
         const emailStatsGraph = await DraftAgentLeads_Model.aggregate([
             {
@@ -486,9 +493,9 @@ const getEmailSendGraphData = async (req, res) => {
                     listName: listName,
                     organizationId: organizationId,
                     emailSend: 'done',
-                    processedAt: {
+                    createdAt: { // Changed from processedAt to createdAt
                         $gte: sevenDaysAgo,
-                        $lte: new Date()
+                        $lte: today
                     }
                 }
             },
@@ -497,7 +504,7 @@ const getEmailSendGraphData = async (req, res) => {
                     _id: {
                         $dateToString: { 
                             format: "%Y-%m-%d", 
-                            date: "$processedAt" 
+                            date: "$createdAt" // Group by createdAt
                         }
                     },
                     count: { $sum: 1 }
@@ -514,6 +521,9 @@ const getEmailSendGraphData = async (req, res) => {
                 }
             }
         ]);
+
+        // Debugging: Log aggregation result
+        console.log('Aggregation result:', JSON.stringify(emailStatsGraph, null, 2));
 
         return res.status(200).json({
             success: true,
