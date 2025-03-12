@@ -196,7 +196,7 @@ const generateColdDm = async (req, res) => {
   }
 }
 
-// Save the settings for Draft AI Agent
+// Save the settings for Draft AI Agents
 const saveSettings = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
           prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
