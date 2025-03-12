@@ -70,6 +70,14 @@ const draftAiAgentSettingsSchema = new mongoose.Schema({
         required: false,
         default: false
     },
+    ctaSettings: {
+        type: Object,
+        required: false
+    },
+    userCompany: {
+        type: String,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -43,8 +43,8 @@ async function updateEngageCredit(organizationId, creditToSubtract) {
 
 // Generate Cold Email
 const generateEmail = async (req, res) => {
-    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone, language } = req.body;
-
+    const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, prospectLocation, productDescription, gptPrompt, aiModel, wordLength, emailTone, language, ctaSettings, userCompany } = req.body;
+    
     try {
         var response = await axios.post(`${OTHER_SERVICE_URL}/api/v1/enrich/createcoldemail`, {
             linkedinUrl: linkedInUrl,
@@ -57,7 +57,9 @@ const generateEmail = async (req, res) => {
             modelName: aiModel,
             wordLength,
             emailTone,
-            language
+            language,
+            ctaSettings,
+            userCompany
         })
 
         console.log(response?.data);
@@ -198,7 +200,7 @@ const generateColdDm = async (req, res) => {
 const saveSettings = async (req, res) => {
   const { organizationId, linkedInUrl, prospectName, prospectTitle, prospectCompany, 
           prospectLocation, agentObjectId, productDescription, gptPrompt, aiModel, wordLength, 
-          emailTone, language, agentType, webhook, listName } = req.body;
+          emailTone, language, agentType, webhook, listName, ctaSettings, userCompany } = req.body;
 
   try {
 
@@ -224,7 +226,9 @@ const saveSettings = async (req, res) => {
                 agentType,
                 wordLength,
                 emailTone,
-                language
+                language,
+                ctaSettings,
+                userCompany
             },
             { 
                 new: true,

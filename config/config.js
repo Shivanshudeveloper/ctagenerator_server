@@ -3,8 +3,8 @@ const APP_URL = "https://app.seefunnel.com/action";
 const APP_MAIN_URL = "https://app.seefunnel.com";
 
 
-// const OTHER_SERVICE_URL = "http://localhost:5050";
-const OTHER_SERVICE_URL = "https://airesourcessortwindwork-bseud6bndzehgjg9.eastus-01.azurewebsites.net";
+const OTHER_SERVICE_URL = "http://localhost:5050";
+// const OTHER_SERVICE_URL = "https://airesourcessortwindwork-bseud6bndzehgjg9.eastus-01.azurewebsites.net";
 
 // const CALLING_SERVICE_URL = "https://ctacallingservice-fqf6g5bdguazefc5.eastus-01.azurewebsites.net";
 const CALLING_SERVICE_URL = "http://localhost:8080";
