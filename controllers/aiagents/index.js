@@ -889,19 +889,45 @@ const findOneAiAgent = async (req, res) => {
 // Find All AI Agents by OrganizationID
 const findAllAiAgentsByOrg = async (req, res) => {
     const { organizationId } = req.params;
-
     try {
-        const agents = await AIAgents_Model.find({ organizationId })
-            .sort({ createdAt: -1 }); // Sort by creation date, newest first
-
-        return res.status(200).json({ 
-            success: true, 
-            data: agents,
-            count: agents.length 
-        });
+      // Use aggregation pipeline to join with LeadFilters_Model
+      const agents = await AIAgents_Model.aggregate([
+        // Match agents by organizationId
+        { $match: { organizationId } },
+        // Sort by creation date, newest first
+        { $sort: { createdAt: -1 } },
+        // Join with LeadFilters_Model
+        {
+          $lookup: {
+            from: "leadfilters", // Collection name for LeadFilters_Model (adjust if different)
+            localField: "aiAgentUid", 
+            foreignField: "aiAgentUid",
+            as: "leadFilters"
+          }
+        },
+        // Add lastUpdated field from the lookup results
+        {
+          $addFields: {
+            lastUpdated: {
+              $ifNull: [
+                { $arrayElemAt: ["$leadFilters.lastUpdated", 0] },
+                null
+              ]
+            }
+          }
+        },
+        // Remove the temporary leadFilters array
+        {
+          $project: {
+            leadFilters: 0
+          }
+        }
+      ]);
+  
+      return res.status(200).json({ success: true, data: agents, count: agents.length });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, data: "Something went wrong" });
+      console.log(error);
+      return res.status(500).json({ success: false, data: "Something went wrong" });
     }
 };
 
