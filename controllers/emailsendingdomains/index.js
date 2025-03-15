@@ -1,4 +1,10 @@
 const {Resend} = require('resend');
+const { v4: uuidv4 } = require("uuid");
+const Imap = require('imap');
+
+const nodemailer = require('nodemailer');
+
+
 const EmailSendingDomain_Model = require("../../models/EmailSendingDomain");
 const EmailSendingMailbox_Model = require("../../models/EmailSendingMailbox");
 
@@ -194,6 +200,100 @@ const addEmailSendingMailbox = async (req, res) => {
 }
 
 
+// Test IMAP Mailbox
+const imapMailboxTestingConnection = async (req, res) => {
+    const { formData, organizationId, agentUid, userEmail, listName } = req.body;
+    const { imap, smtp, name } = formData;
+    const testEmailId = uuidv4();
+
+    try {
+
+        const expistingMailbox = await EmailSendingMailbox_Model.findOne({
+            organizationId,
+            mailBox: name,
+            listName
+        });
+
+        if (expistingMailbox) {
+            return res.status(400).json({
+                success: false,
+                message: 'Mailbox already exist',
+                details: {}
+            });
+        }
+
+        // Validate required fields
+        if (!smtp?.server || !smtp?.port) {
+            throw new Error('Missing SMTP server configuration');
+        }
+
+        // Validate credentials
+        if (!smtp.username || !smtp.password) {
+            throw new Error('SMTP credentials are required');
+        }
+
+        // Create SMTP transporter
+        const transporter = nodemailer.createTransport({
+            host: smtp.server,
+            port: smtp.port,
+            secure: smtp.security === 'SSL/TLS',
+            auth: {
+                user: smtp.username,
+                pass: smtp.password
+            },
+            tls: { rejectUnauthorized: false },
+            requireTLS: smtp.security === 'STARTTLS'
+        });
+
+        // Send test email
+        const info = await transporter.sendMail({
+            from: smtp.username,
+            to: smtp.username, // Sending to self
+            subject: `Test Email - ${testEmailId}`,
+            text: `SMTP Connection Test - ${testEmailId}`,
+            html: `<p>SMTP Connection Test - <strong>${testEmailId}</strong></p>`
+        });
+
+        // If successful, create database entry with Resend data
+        const newMailbox = new EmailSendingMailbox_Model({
+            organizationId,
+            userEmail,
+            mailBox: name,
+            listName,
+            mailBoxConfig: formData,
+            mailBoxType: "IMAP_SMTP"
+        });
+        await newMailbox.save();
+
+        res.json({
+            success: true,
+            message: 'Email sending test succeeded',
+            testId: testEmailId,
+            messageId: info.messageId,
+            mailboxName: name,
+            organizationId,
+            agentUid
+        });
+
+    } catch (error) {
+        console.error('SMTP Test Error:', error);
+        res.status(400).json({
+            success: false,
+            message: error.message || 'Email sending failed',
+            details: {
+                testId: testEmailId,
+                smtpServer: smtp?.server,
+                smtpPort: smtp?.port,
+                errorCode: error.code || 'ESMTP',
+                response: error.response || undefined
+            }
+        });
+    }
+};
+
+
+
+
 // Get all the mailboxes for the organization id
 const getAllUserMailboxEmailSending = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
@@ -236,5 +336,6 @@ module.exports = {
     verifyDomainEmailSending,
     addEmailSendingMailbox,
     getAllUserMailboxEmailSending,
-    deleteMailBoxEmailSending
+    deleteMailBoxEmailSending,
+    imapMailboxTestingConnection
 };

@@ -17,6 +17,14 @@ const emailSendingDomainsSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    mailBoxConfig: {
+        type: Object,
+        required: false
+    },
+    mailBoxType: {
+        type: String,
+        required: false
+    },
     status: {
         type: String,
         required: false,

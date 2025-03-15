@@ -17,4 +17,10 @@ router.get('/getalltheusermailboxes/:organizationId/:listName', emailSendingDoma
 router.delete('/deletethemailbox/:organizationId/:mailbox', emailSendingDomain.deleteMailBoxEmailSending);
 
 
+// IMAP/SMTP
+router.post('/testmailboxusersimap', emailSendingDomain.imapMailboxTestingConnection);
+
+
+
+
 module.exports = router;
