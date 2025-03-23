@@ -927,44 +927,41 @@ const findOneAiAgent = async (req, res) => {
 const findAllAiAgentsByOrg = async (req, res) => {
     const { organizationId } = req.params;
     try {
-      // Use aggregation pipeline to join with LeadFilters_Model
-      const agents = await AIAgents_Model.aggregate([
-        // Match agents by organizationId
-        { $match: { organizationId } },
-        // Sort by creation date, newest first
-        { $sort: { createdAt: -1 } },
-        // Join with LeadFilters_Model
-        {
-          $lookup: {
-            from: "leadfilters", // Collection name for LeadFilters_Model (adjust if different)
-            localField: "aiAgentUid", 
-            foreignField: "aiAgentUid",
-            as: "leadFilters"
-          }
-        },
-        // Add lastUpdated field from the lookup results
-        {
-          $addFields: {
-            lastUpdated: {
-              $ifNull: [
-                { $arrayElemAt: ["$leadFilters.lastUpdated", 0] },
-                null
-              ]
+        const agents = await AIAgents_Model.aggregate([
+            { $match: { organizationId } },
+            { $sort: { createdAt: -1 } },
+            // Join with LeadFilters
+            {
+                $lookup: {
+                    from: "leadfilters",
+                    localField: "aiAgentUid",
+                    foreignField: "aiAgentUid",
+                    as: "leadFilters"
+                }
+            },
+            // Add aggregated/computed fields from LeadFilters
+            {
+                $addFields: {
+                    // Get the MOST RECENT lastUpdated from all LeadFilters
+                    lastUpdated: { $max: "$leadFilters.lastUpdated" },
+                    // Get the TOTAL leadsQtyDone from all LeadFilters
+                    totalLeadsQtyDone: { $sum: "$leadFilters.leadsQtyDone" },
+                    // Get the SUM of leadsQty from all LeadFilters
+                    totalLeadsQty: { $sum: "$leadFilters.leadsQty" }
+                }
             }
-          }
-        },
-        // Remove the temporary leadFilters array
-        {
-          $project: {
-            leadFilters: 0
-          }
-        }
-      ]);
-  
-      return res.status(200).json({ success: true, data: agents, count: agents.length });
+            // (Optional) Remove this if you want to keep the `leadFilters` array
+            // {
+            //     $project: {
+            //         leadFilters: 0
+            //     }
+            // }
+        ]);
+
+        return res.status(200).json({ success: true, data: agents, count: agents.length });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ success: false, data: "Something went wrong" });
+        console.log(error);
+        return res.status(500).json({ success: false, data: "Something went wrong" });
     }
 };
 
