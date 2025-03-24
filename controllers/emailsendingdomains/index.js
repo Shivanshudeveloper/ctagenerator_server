@@ -213,128 +213,251 @@ function getErrorSource(error) {
     return 'Unknown';
 }
   
-const imapMailboxTestingConnection = async (req, res) => {
-      const { formData, organizationId, agentUid, userEmail, listName } = req.body;
-      const { imap, smtp, name } = formData;
-      const testEmailId = uuidv4();
+// const imapMailboxTestingConnection = async (req, res) => {
+//       const { formData, organizationId, agentUid, userEmail, listName } = req.body;
+//       const { imap, smtp, name } = formData;
+//       const testEmailId = uuidv4();
   
-      try {
-          // Existing mailbox check
-          const existingMailbox = await EmailSendingMailbox_Model.findOne({
-              organizationId,
-              mailBox: name,
-              listName
-          });
+//       try {
+//           // Existing mailbox check
+//           const existingMailbox = await EmailSendingMailbox_Model.findOne({
+//               organizationId,
+//               mailBox: name,
+//               listName
+//           });
   
-          if (existingMailbox) {
-              return res.status(400).json({
-                  success: false,
-                  message: 'Mailbox already exists',
-                  details: {}
-              });
-          }
+//           if (existingMailbox) {
+//               return res.status(400).json({
+//                   success: false,
+//                   message: 'Mailbox already exists',
+//                   details: {}
+//               });
+//           }
   
-          // Validation checks
-          if (!smtp?.server || !smtp?.port || !imap?.server || !imap?.port) {
-              throw new Error('Both SMTP and IMAP server configurations are required');
-          }
+//           // Validation checks
+//           if (!smtp?.server || !smtp?.port || !imap?.server || !imap?.port) {
+//               throw new Error('Both SMTP and IMAP server configurations are required');
+//           }
   
-          if (!smtp.username || !smtp.password || !imap.username || !imap.password) {
-              throw new Error('Both SMTP and IMAP credentials are required');
-          }
+//           if (!smtp.username || !smtp.password || !imap.username || !imap.password) {
+//               throw new Error('Both SMTP and IMAP credentials are required');
+//           }
   
-          // SMTP Verification
-          const transporter = nodemailer.createTransport({
-              host: smtp.server,
-              port: smtp.port,
-              secure: smtp.security === 'SSL/TLS',
-              auth: { user: smtp.username, pass: smtp.password },
-              tls: { rejectUnauthorized: false },
-              requireTLS: smtp.security === 'STARTTLS'
-          });
+//           // SMTP Verification
+//           const transporter = nodemailer.createTransport({
+//               host: smtp.server,
+//               port: smtp.port,
+//               secure: smtp.security === 'SSL/TLS',
+//               auth: { user: smtp.username, pass: smtp.password },
+//               tls: { rejectUnauthorized: false },
+//               requireTLS: smtp.security === 'STARTTLS'
+//           });
   
-          const info = await transporter.sendMail({
-              from: smtp.username,
-              to: smtp.username,
-              subject: `Test Email - ${testEmailId}`,
-              text: `Connection Test - ${testEmailId}`,
-              html: `<p>Connection Test - <strong>${testEmailId}</strong></p>`
-          });
+//           const info = await transporter.sendMail({
+//               from: "james.smith@idatavox.com",
+//               to: "consultwithshiv@gmail.com",
+//               subject: `Test Email - ${testEmailId}`,
+//               text: `Connection Test - ${testEmailId}`,
+//               html: `<p>Connection Test - <strong>${testEmailId}</strong></p>`
+//           });
   
-          // IMAP Verification with timeout handling
-          const imapConnection = new Imap({
-              user: imap.username,
-              password: imap.password,
-              host: imap.server,
-              port: imap.port,
-              tls: { rejectUnauthorized: false },
-              secure: imap.security === 'SSL/TLS',
-              autotls: imap.security === 'STARTTLS' ? 'always' : 'never',
-              connTimeout: 15000 // 15 seconds timeout
-          });
+//           // IMAP Verification with timeout handling
+//           const imapConnection = new Imap({
+//               user: imap.username,
+//               password: imap.password,
+//               host: imap.server,
+//               port: imap.port,
+//               tls: { rejectUnauthorized: false },
+//               secure: imap.security === 'SSL/TLS',
+//               autotls: imap.security === 'STARTTLS' ? 'always' : 'never',
+//               connTimeout: 15000 // 15 seconds timeout
+//           });
   
-          await new Promise((resolve, reject) => {
-              const timer = setTimeout(() => {
-                  imapConnection.end();
-                  reject(new Error('IMAP connection timed out'));
-              }, 15000);
+//           await new Promise((resolve, reject) => {
+//               const timer = setTimeout(() => {
+//                   imapConnection.end();
+//                   reject(new Error('IMAP connection timed out'));
+//               }, 15000);
   
-              imapConnection.once('ready', () => {
-                  clearTimeout(timer);
-                  imapConnection.end();
-                  resolve();
-              });
+//               imapConnection.once('ready', () => {
+//                   clearTimeout(timer);
+//                   imapConnection.end();
+//                   resolve();
+//               });
   
-              imapConnection.once('error', (err) => {
-                  clearTimeout(timer);
-                  imapConnection.end();
-                  reject(err);
-              });
+//               imapConnection.once('error', (err) => {
+//                   clearTimeout(timer);
+//                   imapConnection.end();
+//                   reject(err);
+//               });
   
-              imapConnection.connect();
-          });
+//               imapConnection.connect();
+//           });
   
-          // Save configuration
-          const newMailbox = new EmailSendingMailbox_Model({
-              organizationId,
-              userEmail,
-              mailBox: name,
-              listName,
-              mailBoxConfig: formData,
-              mailBoxType: "IMAP_SMTP"
-          });
-          await newMailbox.save();
+//           // Save configuration
+//           const newMailbox = new EmailSendingMailbox_Model({
+//               organizationId,
+//               userEmail,
+//               mailBox: name,
+//               listName,
+//               mailBoxConfig: formData,
+//               mailBoxType: "IMAP_SMTP"
+//           });
+//           await newMailbox.save();
   
-          res.json({
-              success: true,
-              message: 'Both SMTP and IMAP configurations verified successfully',
-              testId: testEmailId,
-              messageId: info.messageId,
-              mailboxName: name,
-              organizationId,
-              agentUid
-          });
+//           res.json({
+//               success: true,
+//               message: 'Both SMTP and IMAP configurations verified successfully',
+//               testId: testEmailId,
+//               messageId: info.messageId,
+//               mailboxName: name,
+//               organizationId,
+//               agentUid
+//           });
   
-      } catch (error) {
-          console.error('Configuration Test Error:', error);
-          res.status(400).json({
-              success: false,
-              message: error.message,
-              details: {
-                  testId: testEmailId,
-                  smtpServer: smtp?.server,
-                  smtpPort: smtp?.port,
-                  imapServer: imap?.server,
-                  imapPort: imap?.port,
-                  errorCode: error.code || 'ECONN',
-                  errorSource: getErrorSource(error),
-                  suggestedFix: getSuggestedFix(error)
-              }
-          });
-      }
-};
+//       } catch (error) {
+//           console.error('Configuration Test Error:', error);
+//           res.status(400).json({
+//               success: false,
+//               message: error.message,
+//               details: {
+//                   testId: testEmailId,
+//                   smtpServer: smtp?.server,
+//                   smtpPort: smtp?.port,
+//                   imapServer: imap?.server,
+//                   imapPort: imap?.port,
+//                   errorCode: error.code || 'ECONN',
+//                   errorSource: getErrorSource(error),
+//                   suggestedFix: getSuggestedFix(error)
+//               }
+//           });
+//       }
+// };
   
   // Additional helper function for suggested fixes
+
+
+  const imapMailboxTestingConnection = async (req, res) => {
+    const { formData, organizationId, agentUid, userEmail, listName } = req.body;
+    const { imap, smtp, name } = formData;
+    const testEmailId = uuidv4();
+  
+    try {
+      // Existing mailbox check
+      const existingMailbox = await EmailSendingMailbox_Model.findOne({
+        organizationId,
+        mailBox: name,
+        listName
+      });
+  
+      if (existingMailbox) {
+        return res.status(400).json({
+          success: false,
+          message: 'Mailbox already exists',
+          details: {}
+        });
+      }
+  
+      // Validation checks
+      if (!smtp?.server || !smtp?.port || !imap?.server || !imap?.port) {
+        throw new Error('Both SMTP and IMAP server configurations are required');
+      }
+  
+      if (!smtp.username || !smtp.password || !imap.username || !imap.password) {
+        throw new Error('Both SMTP and IMAP credentials are required');
+      }
+  
+      // SMTP Verification
+      // For SMTP (Out) details: mail.tophost.it on port 587.
+      const transporter = nodemailer.createTransport({
+        host: smtp.server,
+        port: smtp.port,
+        secure: false, // Use STARTTLS if available
+        auth: { user: smtp.username, pass: smtp.password },
+        tls: { rejectUnauthorized: false } // Disable certificate validation
+      });
+  
+      const info = await transporter.sendMail({
+        from: "james.smith@idatavox.com",
+        to: "consultwithshiv@gmail.com",
+        subject: `Test Email - ${testEmailId}`,
+        text: `Connection Test - ${testEmailId}`,
+        html: `<p>Connection Test - <strong>${testEmailId}</strong></p>`
+      });
+  
+      // IMAP Verification with timeout handling
+      // For plain IMAP, ensure you're using port 143 and disable TLS.
+      const imapConnection = new Imap({
+        user: imap.username,
+        password: imap.password,
+        host: imap.server,
+        port: Number(imap.port), // Should be 143 for non-SSL connections
+        tls: false, // Disable TLS
+        connTimeout: 15000 // 15 seconds timeout
+      });
+  
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+          imapConnection.end();
+          reject(new Error('IMAP connection timed out'));
+        }, 15000);
+  
+        imapConnection.once('ready', () => {
+          clearTimeout(timer);
+          imapConnection.end();
+          resolve();
+        });
+  
+        imapConnection.once('error', (err) => {
+          clearTimeout(timer);
+          imapConnection.end();
+          reject(err);
+        });
+  
+        imapConnection.connect();
+      });
+  
+      // Save configuration
+      const newMailbox = new EmailSendingMailbox_Model({
+        organizationId,
+        userEmail,
+        mailBox: name,
+        listName,
+        mailBoxConfig: formData,
+        mailBoxType: "IMAP_SMTP"
+      });
+      await newMailbox.save();
+  
+      res.json({
+        success: true,
+        message: 'Both SMTP and IMAP configurations verified successfully',
+        testId: testEmailId,
+        messageId: info.messageId,
+        mailboxName: name,
+        organizationId,
+        agentUid
+      });
+  
+    } catch (error) {
+      console.error('Configuration Test Error:', error);
+      res.status(400).json({
+        success: false,
+        message: error.message,
+        details: {
+          testId: testEmailId,
+          smtpServer: smtp?.server,
+          smtpPort: smtp?.port,
+          imapServer: imap?.server,
+          imapPort: imap?.port,
+          errorCode: error.code || 'ECONN',
+          errorSource: getErrorSource(error),
+          suggestedFix: getSuggestedFix(error)
+        }
+      });
+    }
+};
+
+
 function getSuggestedFix(error) {
     if (error.message.includes('IMAP connection timed out')) {
       return [
