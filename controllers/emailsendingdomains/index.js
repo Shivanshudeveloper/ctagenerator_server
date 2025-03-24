@@ -334,10 +334,9 @@ function getErrorSource(error) {
 //       }
 // };
   
-  // Additional helper function for suggested fixes
 
 
-  const imapMailboxTestingConnection = async (req, res) => {
+const imapMailboxTestingConnection = async (req, res) => {
     const { formData, organizationId, agentUid, userEmail, listName } = req.body;
     const { imap, smtp, name } = formData;
     const testEmailId = uuidv4();
@@ -378,7 +377,7 @@ function getErrorSource(error) {
       });
   
       const info = await transporter.sendMail({
-        from: "james.smith@idatavox.com",
+        from: name,
         to: "consultwithshiv@gmail.com",
         subject: `Test Email - ${testEmailId}`,
         text: `Connection Test - ${testEmailId}`,
@@ -387,35 +386,36 @@ function getErrorSource(error) {
   
       // IMAP Verification with timeout handling
       // For plain IMAP, ensure you're using port 143 and disable TLS.
-      const imapConnection = new Imap({
-        user: imap.username,
-        password: imap.password,
-        host: imap.server,
-        port: Number(imap.port), // Should be 143 for non-SSL connections
-        tls: false, // Disable TLS
-        connTimeout: 15000 // 15 seconds timeout
-      });
+      
+      // const imapConnection = new Imap({
+      //   user: imap.username,
+      //   password: imap.password,
+      //   host: imap.server,
+      //   port: Number(imap.port), // Should be 143 for non-SSL connections
+      //   tls: false, // Disable TLS
+      //   connTimeout: 15000 // 15 seconds timeout
+      // });
   
-      await new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-          imapConnection.end();
-          reject(new Error('IMAP connection timed out'));
-        }, 15000);
+      // await new Promise((resolve, reject) => {
+      //   const timer = setTimeout(() => {
+      //     imapConnection.end();
+      //     reject(new Error('IMAP connection timed out'));
+      //   }, 15000);
   
-        imapConnection.once('ready', () => {
-          clearTimeout(timer);
-          imapConnection.end();
-          resolve();
-        });
+      //   imapConnection.once('ready', () => {
+      //     clearTimeout(timer);
+      //     imapConnection.end();
+      //     resolve();
+      //   });
   
-        imapConnection.once('error', (err) => {
-          clearTimeout(timer);
-          imapConnection.end();
-          reject(err);
-        });
+      //   imapConnection.once('error', (err) => {
+      //     clearTimeout(timer);
+      //     imapConnection.end();
+      //     reject(err);
+      //   });
   
-        imapConnection.connect();
-      });
+      //   imapConnection.connect();
+      // });
   
       // Save configuration
       const newMailbox = new EmailSendingMailbox_Model({
