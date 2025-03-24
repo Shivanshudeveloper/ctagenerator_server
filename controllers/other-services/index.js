@@ -7,6 +7,9 @@ const DraftAgentLeads_Model = require('../../models/DraftAgentLeads');
 const LeadFilters_Model = require('../../models/LeadFilters');
 
 const sendEmailSendingAiResend = require("../../lib/resend_email").default.sendEmailSendingAiResend;
+const sendEmailSendingImap = require("../../lib/email_sending").default.sendEmailSendingImap;
+
+
 
 
 // Substact Credit of User
@@ -619,6 +622,23 @@ const sendEmailResendDomain = async (req, res) => {
     }
 }
 
+// Update Draft Setting Enable and Disable
+const sendEmailImap = async (req, res) => {
+    try {
+        const { mailBox, prospectEmail, emailBody, subjectName } = req.body;
+
+        await sendEmailSendingImap(mailBox, prospectEmail, emailBody, subjectName);
+  
+        return res.status(200).json({
+            success: true,
+            data: "Email Send Updated"
+        });
+    } catch (error) {
+      console.error('Error updating leads credit:', error);
+      throw error;
+    }
+}
+
 
 module.exports = {
     generateEmail,
@@ -634,6 +654,7 @@ module.exports = {
     sendEmailResendDomain,
     getDraftLeadsEmailSending,
     getEmailSendingStats,
-    getEmailSendGraphData
+    getEmailSendGraphData,
+    sendEmailImap
 }
 

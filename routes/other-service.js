@@ -36,6 +36,7 @@ router.get('/getalldraftleads/:agentUid', otherServicesController.getAllDraftLea
 
 // Resend Send Emails AI Agent
 router.post('/sendemaildomainaiagent', otherServicesController.sendEmailResendDomain);
+router.post('/sendemailimapaiagent', otherServicesController.sendEmailImap);
 
 
 
