@@ -13,6 +13,11 @@ const OUTBOUND_CALLING_SERVICE_URL = "https://outboundcallingservice-dhg8e2h2g6a
 
 const WEBSITE_SCRAPER_SERVICE_URL = "http://172.206.249.185:8000";
 
+// Unipile Base Url
+const BASE_URL_UNIPILE = "https://api3.unipile.com:13360"
+const ACCESS_TOKEN_UNIPILE = process.env.ACCESS_TOKEN_UNIPILE;
+const CALLBACK_UNIPILE = "https://94f8-103-106-235-251.ngrok-free.app";
+
 const USER_PLANS = [
     {
         id: 1,
@@ -43,5 +48,8 @@ module.exports = {
     OTHER_SERVICE_URL,
     CALLING_SERVICE_URL,
     OUTBOUND_CALLING_SERVICE_URL,
-    WEBSITE_SCRAPER_SERVICE_URL
+    WEBSITE_SCRAPER_SERVICE_URL,
+    BASE_URL_UNIPILE,
+    ACCESS_TOKEN_UNIPILE,
+    CALLBACK_UNIPILE
 }

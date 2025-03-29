@@ -37,6 +37,7 @@ const automationRoutes = require("./routes/automation-route");
 const eventRoutes = require("./routes/event-routes");
 const aiAgentsInsRoutes = require("./routes/aiagent-instruction");
 const emailSendingDomain = require("./routes/emailsending-domains-route");
+const linkedInRoutes = require("./routes/linkedin-route");
 
 
 // CTA Controller
@@ -116,6 +117,9 @@ if (cluster.isMaster) {
 
   // Email Sending Domain
   app.use("/api/v1/main/emailsendingdomain", express.json({ limit: "50mb" }), emailSendingDomain);
+
+  // LinkedIn
+  app.use("/api/v1/main/linkedin", express.json({ limit: "50mb" }), linkedInRoutes);
 
 
   app.use("/api/v1/otherservices", express.json({ limit: "50mb" }), otherServicesRoutes);
