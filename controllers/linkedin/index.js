@@ -278,6 +278,7 @@ const sendLinkedInInvitaion = async (req, res) => {
         accountId, 
         organizationId,
         message: message || "",
+        provider_id: profileProviderId,
         agentUid
     });
     await newInvitation.save();
@@ -342,7 +343,7 @@ const startNewChatLinkedIn = async (req, res) => {
 
     try {
       const formData = new FormData();
-      formData.append('attendees_ids', attendees_ids);
+      formData.append('attendees_ids', attendees_ids); // This is the LinkedIn Provider ID
       formData.append('account_id', accountId);  // Note the API expects 'account_id' field
       formData.append('text', message);
       formData.append('api', 'classic');

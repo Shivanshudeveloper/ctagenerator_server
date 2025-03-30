@@ -9,6 +9,10 @@ const LinkedInInvitationsSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    provider_id: {
+        type: String,
+        required: false,
+    },
     organizationId: {
         type: String,
         required: false,
