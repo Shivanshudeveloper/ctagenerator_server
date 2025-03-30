@@ -75,6 +75,14 @@ const leadlistsDataSchema = new mongoose.Schema({
         type: Object,
         required: false
     },
+    linkedInConnection:{
+        type: Object,
+        required: false
+    },
+    linkedInMessage:{
+        type: Object,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

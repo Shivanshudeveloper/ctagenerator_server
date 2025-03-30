@@ -21,4 +21,11 @@ router.post('/getorganizationaccounts', linkedinController.getAllAccount);
 router.post('/removetheaccount', linkedinController.removeLinkedInAccount);
 
 
+// LinkedIn Send an Invitaion
+router.post('/sendlinkedininvitation', linkedinController.sendLinkedInInvitaion);
+
+// Retrive a profile
+router.post('/retriveprofileconnectioninfomration', linkedinController.retriveProfileInformation);
+
+
 module.exports = router;

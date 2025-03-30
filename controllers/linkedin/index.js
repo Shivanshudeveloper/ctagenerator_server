@@ -3,8 +3,10 @@ const { UnipileClient } = require('unipile-node-sdk');
 
 const Domains_Model = require("../../models/Domains");
 const SocialAccounts_Model = require("../../models/SocialAccounts");
+const LinkedInInvitations_Model = require("../../models/LinkedInInvitations");
 
 const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE, APP_AGENTS_URL } = require('../../config/config');
+const { searchLinkedInProfile } = require('./helper');
 
 const addCustomDomain = async (req, res) => {
     let { userEmail, organizationId, domainName } = req.body;
@@ -235,10 +237,105 @@ const removeLinkedInAccount = async (req, res) => {
 };
 
 
+// Send LinkedIn Invitation
+const sendLinkedInInvitaion = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { accountId, identifier, message, agentUid, organizationId } = req.body;
+
+  console.log("Invitation sending for ", accountId, identifier);
+
+  try {
+    const profileResults = await searchLinkedInProfile(accountId, identifier);
+    const profileProviderId = profileResults?.provider_id;
+
+    if (!profileProviderId) {
+      return res.status(400).json({
+        error: "Invalid request",
+        details: "Could not find LinkedIn profile for the given identifier"
+      });
+    }
+
+    const client = new UnipileClient(BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE);
+    
+    // Create the base invitation object
+    const invitationParams = {
+      account_id: accountId,
+      provider_id: profileProviderId,
+    };
+
+    // Add message only if it exists and is not empty
+    if (message) {
+      invitationParams.message = message;
+    }
+
+    const response = await client.users.sendInvitation(invitationParams);
+
+    // Create New Invitaion Record
+    const newInvitation = new LinkedInInvitations_Model({
+        invitationId: response?.invitation_id,
+        accountId, 
+        organizationId,
+        message: message || "",
+        agentUid
+    });
+    await newInvitation.save();
+
+    return res.status(200).json({ response });
+
+  } catch (error) {
+    console.error("Invitation Error:", error);
+
+    // Handle specific Unipile API errors
+    if (error.body?.status && error.body?.title) {
+      return res.status(error.body.status).json({
+        error: error.body.title,
+        details: error.body.detail,
+        type: error.body.type
+      });
+    }
+
+    // Handle network errors or other exceptions
+    return res.status(500).json({
+      error: "Failed to send invitation",
+      details: error.message
+    });
+  }
+};
+
+
+// Retrive Information about a Profile
+const retriveProfileInformation = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { accountId, identifier } = req.body;
+
+  console.log("Invitation sending for ", accountId, identifier);
+
+  try {
+    const profileResults = await searchLinkedInProfile(accountId, identifier);
+
+    if (!profileResults) {
+      return res.status(400).json({
+        error: "Invalid request",
+        details: "Could not find LinkedIn profile for the given identifier"
+      });
+    }
+
+    return res.status(200).json({ profileResults });
+  } catch (error) {
+    // Handle network errors or other exceptions
+    return res.status(500).json({
+      error: "Failed to retrive profile",
+      details: error.message
+    });
+  }
+};
+
 module.exports = {
     addCustomDomain,
     connectLinkedInAccount,
     callBackLinkedIn,
     getAllAccount,
-    removeLinkedInAccount
+    removeLinkedInAccount,
+    sendLinkedInInvitaion,
+    retriveProfileInformation
 }
