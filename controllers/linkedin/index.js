@@ -2,8 +2,9 @@ const { UnipileClient } = require('unipile-node-sdk');
 
 
 const Domains_Model = require("../../models/Domains");
-const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE } = require('../../config/config');
+const SocialAccounts_Model = require("../../models/SocialAccounts");
 
+const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE, APP_AGENTS_URL } = require('../../config/config');
 
 const addCustomDomain = async (req, res) => {
     let { userEmail, organizationId, domainName } = req.body;
@@ -54,7 +55,7 @@ const addCustomDomain = async (req, res) => {
 // LinkedIn Account Connect
 const connectLinkedInAccount = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    const { organizationId, listName } = req.params;
+    const { organizationId, listName, agentUid } = req.params;
     
     // Calculate expiration time - 1 hour from now
     const date = new Date(Date.now() + 60 * 60 * 1000);
@@ -75,8 +76,8 @@ const connectLinkedInAccount = async (req, res) => {
         expiresOn,
         // You might need to add a name parameter as it's required according to the schema
         name: `linkedin-${organizationId}-${Date.now()}`, // Add a unique identifier
-        notify_url: `${CALLBACK_UNIPILE}/api/v1/main/linkedin/linkedincallback/${organizationId}/${listName}`,
-        success_redirect_url: 'http://localhost:3000/'
+        notify_url: `${CALLBACK_UNIPILE}/api/v1/main/linkedin/linkedincallback/${organizationId}/${listName}/${agentUid}`,
+        success_redirect_url: APP_AGENTS_URL
       });
   
       // Return the auth URL to the client
@@ -95,51 +96,149 @@ const callBackLinkedIn = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
       
     const data = req.body;
-    const { organizationId, listName } = req.params;
+    const { organizationId, listName, agentUid } = req.params;
 
     console.log('Received auth data:', data);
 
     // Extract critical info (e.g., account_id, provider)
     const accountId = data.account_id; // Store this for future API calls
 
-    console.log(accountId, organizationId, listName);
+    console.log(accountId, organizationId, listName, agentUid);
+
+    const existingAccount = await SocialAccounts_Model.findOne({
+        organizationId,
+        agentUid,
+        accountId
+    });
+
+    if (existingAccount) {
+        console.log("Account already exist linkedin ", accountId);
+        return res.status(400).json({
+            data: 'Account Already Exist in the List and Agent'
+        });
+    }
+
+    // Create new account record
+    const newAccount = new SocialAccounts_Model({
+      organizationId,
+      listName,
+      agentUid,
+      accountId,
+      accountName: data.name,
+      status: data.status,
+      type: "LINKEDIN"
+    });
+    await newAccount.save();
     
-    // Respond to Unipile (optional)
     res.status(200).json({ success: true });
 };
 
 // Retrive All Account and Filter only Organization Account
 const getAllAccount = async (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    const { organizationId } = req.body;
-    console.log("Retrieving accounts for:", organizationId);
-  
-    try {
-      const client = new UnipileClient(BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE);
-      const response = await client.account.getAll();
-      const responseArray = response?.items || [];
-  
-      // Array of IDs to filter for
-      const arrayId = ["AmhI2yYaQqSFBjN2bPGqmQ", "9xEqWIR_SZCjMmjtuvaGPA"];
-  
-      // Filter only the accounts whose id exists in the arrayId
-      const filteredAccounts = responseArray.filter(account =>
-        arrayId.includes(account.id)
-      );
-  
-      return res.status(200).json(filteredAccounts);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        error: "Failed to retrieve accounts",
-        details: error.message,
-      });
+  res.setHeader("Content-Type", "application/json");
+  const { organizationId, agentUid } = req.body;
+  console.log("Retrieving accounts for:", organizationId, agentUid);
+
+  try {
+    // First, query MongoDB to get the relevant account IDs
+    const socialAccounts = await SocialAccounts_Model.find({
+      organizationId: organizationId,
+      agentUid: agentUid
+    }).select('accountId');
+    
+    // Extract accountId values from the query results
+    const accountIds = socialAccounts.map(account => account.accountId);
+    
+    console.log("Found account IDs in database:", accountIds);
+    
+    // If no accounts found, return empty array
+    if (accountIds.length === 0) {
+      return res.status(200).json([]);
     }
+    
+    // Fetch all accounts from Unipile with pagination
+    const client = new UnipileClient(BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE);
+    
+    let allAccounts = [];
+    let nextCursor = null;
+    const limit = 100; // You can adjust this value based on your needs (up to 250)
+    
+    do {
+      // Make the API request with pagination parameters
+      const options = { limit };
+      if (nextCursor) {
+        options.cursor = nextCursor;
+      }
+      
+      console.log(`Fetching accounts with options:`, options);
+      
+      const response = await client.account.getAll(options);
+      
+      // Extract returned items
+      const items = response?.items || [];
+      console.log(`Retrieved ${items.length} accounts in this page`);
+      
+      // Add to our collection
+      allAccounts = [...allAccounts, ...items];
+      
+      // Get cursor for next page (if any)
+      nextCursor = response?.cursor || null;
+      
+    } while (nextCursor);
+    
+    console.log(`Total accounts fetched from Unipile: ${allAccounts.length}`);
+    
+    // Filter only the accounts whose id exists in the accountIds array from MongoDB
+    const filteredAccounts = allAccounts.filter(account =>
+      accountIds.includes(account.id)
+    );
+    
+    console.log(`Accounts matching DB criteria: ${filteredAccounts.length}`);
+    
+    return res.status(200).json(filteredAccounts);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Failed to retrieve accounts",
+      details: error.message,
+    });
+  }
 };
+
+
+// Remove the LinkedIn Account
+const removeLinkedInAccount = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { accountId } = req.body;
+  console.log("Deleting account for ", accountId);
+
+  try {
+    const deletedAccount = await SocialAccounts_Model.findOneAndDelete({
+      accountId
+    });
+
+    if (!deletedAccount) {
+      return res.status(404).json({ status: false, data: "Account not found" });
+    }
+
+    const client = new UnipileClient(BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE)
+	  const response = await client.account.delete(accountId)
+    
+    return res.status(200).json({ status: true, data: response });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Failed to retrieve accounts",
+      details: error.message,
+    });
+  }
+};
+
 
 module.exports = {
     addCustomDomain,
     connectLinkedInAccount,
     callBackLinkedIn,
-    getAllAccount
+    getAllAccount,
+    removeLinkedInAccount
 }

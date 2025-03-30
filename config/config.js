@@ -15,8 +15,14 @@ const WEBSITE_SCRAPER_SERVICE_URL = "http://172.206.249.185:8000";
 
 // Unipile Base Url
 const BASE_URL_UNIPILE = "https://api3.unipile.com:13360"
+const CALLBACK_UNIPILE = "https://ctagenerator-api.azurewebsites.net";
+const APP_AGENTS_URL = "https://app.seefunnel.com/dashboard/aiagentspage";
+
+// const APP_AGENTS_URL = "http://localhost:3030/dashboard/aiagentspage";
+// const CALLBACK_UNIPILE = "https://3707-103-106-235-1.ngrok-free.app";
+
 const ACCESS_TOKEN_UNIPILE = process.env.ACCESS_TOKEN_UNIPILE;
-const CALLBACK_UNIPILE = "https://94f8-103-106-235-251.ngrok-free.app";
+
 
 const USER_PLANS = [
     {
@@ -51,5 +57,6 @@ module.exports = {
     WEBSITE_SCRAPER_SERVICE_URL,
     BASE_URL_UNIPILE,
     ACCESS_TOKEN_UNIPILE,
-    CALLBACK_UNIPILE
+    CALLBACK_UNIPILE,
+    APP_AGENTS_URL
 }
