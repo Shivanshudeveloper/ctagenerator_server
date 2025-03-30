@@ -1,9 +1,11 @@
 const { UnipileClient } = require('unipile-node-sdk');
-
+const axios = require('axios');
+const FormData = require('form-data');
 
 const Domains_Model = require("../../models/Domains");
 const SocialAccounts_Model = require("../../models/SocialAccounts");
 const LinkedInInvitations_Model = require("../../models/LinkedInInvitations");
+const LinkedInMessages_Model = require("../../models/LinkedInMessages");
 
 const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE, APP_AGENTS_URL } = require('../../config/config');
 const { searchLinkedInProfile } = require('./helper');
@@ -330,6 +332,55 @@ const retriveProfileInformation = async (req, res) => {
   }
 };
 
+
+// Start a new chat on LinkedIn
+const startNewChatLinkedIn = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const { accountId, attendees_ids, message, organizationId, agentUid } = req.body;
+
+    console.log("Message sending for", accountId, attendees_ids);
+
+    try {
+      const formData = new FormData();
+      formData.append('attendees_ids', attendees_ids);
+      formData.append('account_id', accountId);  // Note the API expects 'account_id' field
+      formData.append('text', message);
+      formData.append('api', 'classic');
+      formData.append('inmail', 'false');
+
+      const response = await axios.post(`${BASE_URL_UNIPILE}/api/v1/chats`, formData, {
+        headers: {
+          accept: 'application/json',
+          'X-API-KEY': ACCESS_TOKEN_UNIPILE,
+          ...formData.getHeaders() // This adds the correct Content-Type with boundary
+        }
+      });
+
+      // Create New Message Record
+      const newInvitation = new LinkedInMessages_Model({
+          object: response.data.object,
+          chat_id: response.data.chat_id,
+          message_id: response.data.message_id,
+          message,
+          accountId,
+          attendees_ids,
+          organizationId,
+          agentUid
+      });
+      await newInvitation.save();
+
+      return res.status(response.status).json(response.data);
+
+    } catch (error) {
+      // Handle both Axios errors and API errors
+      const statusCode = error.response?.status || 500;
+      const errorData = error.response?.data || { error: "Failed to send message", details: error.message };
+      
+      return res.status(statusCode).json(errorData);
+    }
+};
+
+
 module.exports = {
     addCustomDomain,
     connectLinkedInAccount,
@@ -337,5 +388,6 @@ module.exports = {
     getAllAccount,
     removeLinkedInAccount,
     sendLinkedInInvitaion,
-    retriveProfileInformation
+    retriveProfileInformation,
+    startNewChatLinkedIn
 }

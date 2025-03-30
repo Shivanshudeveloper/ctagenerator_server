@@ -27,5 +27,7 @@ router.post('/sendlinkedininvitation', linkedinController.sendLinkedInInvitaion)
 // Retrive a profile
 router.post('/retriveprofileconnectioninfomration', linkedinController.retriveProfileInformation);
 
+// Start a new chat on Linkedin
+router.post('/startchatonlinkedin', linkedinController.startNewChatLinkedIn);
 
 module.exports = router;
