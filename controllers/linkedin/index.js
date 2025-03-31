@@ -6,6 +6,7 @@ const Domains_Model = require("../../models/Domains");
 const SocialAccounts_Model = require("../../models/SocialAccounts");
 const LinkedInInvitations_Model = require("../../models/LinkedInInvitations");
 const LinkedInMessages_Model = require("../../models/LinkedInMessages");
+const LinkedInProfiles_Model = require("../../models/LinkedInProfiles");
 
 const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE, APP_AGENTS_URL } = require('../../config/config');
 const { searchLinkedInProfile, retriveOwnProfile } = require('./helper');
@@ -339,7 +340,7 @@ const retriveOwnProfileInformation = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const { accountId } = req.body;
 
-  console.log("Retriving Own Profile For: ", accountId);
+  console.log("Retrieving Own Profile For: ", accountId);
 
   try {
     const profileResults = await retriveOwnProfile(accountId);
@@ -351,11 +352,38 @@ const retriveOwnProfileInformation = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ profileResults });
+    // Separate MongoDB operation from API response
+    try {
+      await LinkedInProfiles_Model.findOneAndUpdate(
+        { "profileResults.email": profileResults.email },
+        {
+          $set: {
+            accountId,
+            profileResults,
+          }
+        },
+        {
+          upsert: true,
+          runValidators: true
+        }
+      );
+    } catch (dbError) {
+      console.error("Database operation failed:", dbError);
+      // Continue to return profile results even if DB operation failed
+    }
+
+    // Always return the profile results regardless of DB operation success
+    return res.status(200).json({ 
+      success: true,
+      message: "Profile data retrieved successfully",
+      profileResults
+    });
+
   } catch (error) {
-    // Handle network errors or other exceptions
+    console.error("Profile retrieval error:", error);
     return res.status(500).json({
-      error: "Failed to retrive profile",
+      success: false,
+      error: "Failed to retrieve profile",
       details: error.message
     });
   }
