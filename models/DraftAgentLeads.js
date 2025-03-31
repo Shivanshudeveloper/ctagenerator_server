@@ -28,7 +28,7 @@ const draftAgentSchema = new mongoose.Schema({
         required: false,
     },
     content: {
-        type: Object,
+        type: String,
         required: false,
     },
     emailSend: {
@@ -36,6 +36,18 @@ const draftAgentSchema = new mongoose.Schema({
         required: false,
     },
     emailSendData: {
+        type: Object,
+        required: false,
+    },
+    dmContent: {
+        type: String,
+        required: false,
+    },
+    dmSend: {
+        type: String,
+        required: false,
+    },
+    dmSendData: {
         type: Object,
         required: false,
     },
