@@ -38,6 +38,39 @@ const searchLinkedInProfile = async (account_id, identifier) => {
 };
 
 
+// Retrive Own Profile Information
+const retriveOwnProfile = async (account_id) => {
+  try {
+    // Validate inputs
+    if (!account_id) {
+      throw new Error('Both account_id are required parameters');
+    }
+
+    const client = new UnipileClient(BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE);
+    
+    // Add linkedin_sections parameter
+    const response = await client.users.getOwnProfile(account_id);
+
+    // Enhanced error logging
+    if (!response) {
+      throw new Error('No response received from API');
+    }
+    
+    return response;
+  } catch (error) {
+    console.error('[Search Helper Error]', error);
+    
+    return {
+      success: false,
+      errorType: error.response?.status ? 'APIError' : 'ValidationError',
+      error: error.message,
+      details: error.response?.data || null
+    };
+  }
+};
+
+
 module.exports = {
-    searchLinkedInProfile
+    searchLinkedInProfile,
+    retriveOwnProfile
 }

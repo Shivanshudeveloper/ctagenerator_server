@@ -8,7 +8,7 @@ const LinkedInInvitations_Model = require("../../models/LinkedInInvitations");
 const LinkedInMessages_Model = require("../../models/LinkedInMessages");
 
 const { BASE_URL_UNIPILE, ACCESS_TOKEN_UNIPILE, CALLBACK_UNIPILE, APP_AGENTS_URL } = require('../../config/config');
-const { searchLinkedInProfile } = require('./helper');
+const { searchLinkedInProfile, retriveOwnProfile } = require('./helper');
 
 const addCustomDomain = async (req, res) => {
     let { userEmail, organizationId, domainName } = req.body;
@@ -311,7 +311,7 @@ const retriveProfileInformation = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const { accountId, identifier } = req.body;
 
-  console.log("Invitation sending for ", accountId, identifier);
+  console.log("Retriving Other Profile For ", accountId, identifier);
 
   try {
     const profileResults = await searchLinkedInProfile(accountId, identifier);
@@ -320,6 +320,34 @@ const retriveProfileInformation = async (req, res) => {
       return res.status(400).json({
         error: "Invalid request",
         details: "Could not find LinkedIn profile for the given identifier"
+      });
+    }
+
+    return res.status(200).json({ profileResults });
+  } catch (error) {
+    // Handle network errors or other exceptions
+    return res.status(500).json({
+      error: "Failed to retrive profile",
+      details: error.message
+    });
+  }
+};
+
+
+// Retrive Own Profile
+const retriveOwnProfileInformation = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { accountId } = req.body;
+
+  console.log("Retriving Own Profile For: ", accountId);
+
+  try {
+    const profileResults = await retriveOwnProfile(accountId);
+
+    if (!profileResults) {
+      return res.status(400).json({
+        error: "Invalid request",
+        details: "Could not find LinkedIn profile for the given accountId"
       });
     }
 
@@ -390,5 +418,6 @@ module.exports = {
     removeLinkedInAccount,
     sendLinkedInInvitaion,
     retriveProfileInformation,
-    startNewChatLinkedIn
+    startNewChatLinkedIn,
+    retriveOwnProfileInformation
 }

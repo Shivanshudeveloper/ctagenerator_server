@@ -14,12 +14,15 @@ const OUTBOUND_CALLING_SERVICE_URL = "https://outboundcallingservice-dhg8e2h2g6a
 const WEBSITE_SCRAPER_SERVICE_URL = "http://172.206.249.185:8000";
 
 // Unipile Base Url
-const BASE_URL_UNIPILE = "https://api3.unipile.com:13360"
 const CALLBACK_UNIPILE = "https://ctagenerator-api.azurewebsites.net";
 const APP_AGENTS_URL = "https://app.seefunnel.com/dashboard/aiagentspage";
+const BASE_URL_UNIPILE = "https://api3.unipile.com:13360"
+
 
 // const APP_AGENTS_URL = "http://localhost:3030/dashboard/aiagentspage";
 // const CALLBACK_UNIPILE = "https://3707-103-106-235-1.ngrok-free.app";
+
+
 
 const ACCESS_TOKEN_UNIPILE = process.env.ACCESS_TOKEN_UNIPILE;
 
