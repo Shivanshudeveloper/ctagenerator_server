@@ -53,3 +53,4 @@ const socialaccountsSchema = new mongoose.Schema({
 
 const socialaccounts = mongoose.model("socialaccounts", socialaccountsSchema);
 module.exports = socialaccounts;
+// test
