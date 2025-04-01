@@ -393,7 +393,7 @@ const retriveOwnProfileInformation = async (req, res) => {
 // Start a new chat on LinkedIn
 const startNewChatLinkedIn = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    const { accountId, attendees_ids, message, organizationId, agentUid } = req.body;
+    const { accountId, attendees_ids, message, organizationId, agentUid, inmail } = req.body;
 
     console.log("Message sending for", accountId, attendees_ids);
 
@@ -403,7 +403,7 @@ const startNewChatLinkedIn = async (req, res) => {
       formData.append('account_id', accountId);  // Note the API expects 'account_id' field
       formData.append('text', message);
       formData.append('api', 'classic');
-      formData.append('inmail', 'false');
+      formData.append('inmail', inmail);
 
       const response = await axios.post(`${BASE_URL_UNIPILE}/api/v1/chats`, formData, {
         headers: {
