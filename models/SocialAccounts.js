@@ -29,6 +29,22 @@ const socialaccountsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    lastUpdated: {
+        type: Date,
+        required: false
+    },
+    totalRequestSent: {
+        type: Number,
+        required: false
+    },
+    totalMessageSent: {
+        type: Number,
+        required: false
+    },
+    sendingStatus: {
+        type: String,
+        required: false
+    },
     createdAt: {
         type: Date,
         default: Date.now
