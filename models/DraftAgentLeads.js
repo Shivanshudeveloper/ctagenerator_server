@@ -51,6 +51,11 @@ const draftAgentSchema = new mongoose.Schema({
         type: Object,
         required: false,
     },
+    dmStatus: {
+        type: String,
+        default: 'pending',
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
