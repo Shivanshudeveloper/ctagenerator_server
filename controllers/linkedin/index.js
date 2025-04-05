@@ -403,7 +403,7 @@ const startNewChatLinkedIn = async (req, res) => {
       formData.append('account_id', accountId);  // Note the API expects 'account_id' field
       formData.append('text', message);
       formData.append('api', 'classic');
-      formData.append('inmail', inmail);
+      formData.append('inmail', String(inmail));
 
       const response = await axios.post(`${BASE_URL_UNIPILE}/api/v1/chats`, formData, {
         headers: {
@@ -432,6 +432,7 @@ const startNewChatLinkedIn = async (req, res) => {
       // Handle both Axios errors and API errors
       const statusCode = error.response?.status || 500;
       const errorData = error.response?.data || { error: "Failed to send message", details: error.message };
+      console.log(error);
       
       return res.status(statusCode).json(errorData);
     }
