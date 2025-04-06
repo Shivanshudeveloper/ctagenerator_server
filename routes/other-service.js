@@ -27,8 +27,10 @@ router.post('/updatedraftsettings', otherServicesController.updateDraftSettingEn
 // Get Draft Leads
 router.get('/getdraftleads/:agentUid', otherServicesController.getDraftLeads);
 router.get('/getdraftleadsemailsending/:listName/:organizationId/:selectedFilter', otherServicesController.getDraftLeadsEmailSending);
+router.get('/getdraftleadsdmsending/:listName/:organizationId/:selectedFilter', otherServicesController.getDraftLeadsDmSending);
 
 router.get('/getemailstats/:listName/:organizationId', otherServicesController.getEmailSendingStats);
+router.get('/getdmstats/:listName/:organizationId', otherServicesController.getDmSendingStats);
 router.get('/getemailsendgraphdata/:listName/:organizationId', otherServicesController.getEmailSendGraphData);
 
 router.get('/getalldraftleads/:agentUid', otherServicesController.getAllDraftLeads);

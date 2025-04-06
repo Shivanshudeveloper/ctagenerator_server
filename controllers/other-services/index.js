@@ -426,6 +426,70 @@ const getDraftLeadsEmailSending = async (req, res) => {
     }
 };
 
+// Get Draft DM Sending
+const getDraftLeadsDmSending = async (req, res) => {
+    try {
+        const { listName, organizationId, selectedFilter } = req.params;
+        const { page = 1, limit = 50 } = req.query;
+
+        // Base query to filter by listName and organizationId
+        const query = { listName, organizationId };
+
+        // Apply additional filters based on selectedFilter
+        if (selectedFilter !== 'all') {
+            switch (selectedFilter) {
+                case 'done':
+                    query.dmSend = 'done';
+                    break;
+                case 'wrong_prospect_linkedin':
+                    query.dmSend = 'wrong_prospect_linkedin';
+                    break;
+                case 'connection_request_send':
+                    query.dmSend = 'connection_request_send';
+                    break;
+                case 'linkedin_details_not_found':
+                    query.status = 'linkedin_details_not_found';
+                    break;
+                case 'pending':
+                    // Pending: dmSend is not 'done' or 'wrong_prospect_linkedin' AND status is not 'linkedin_details_not_found'
+                    query.dmSend = { $nin: ['done', 'wrong_prospect_linkedin'] };
+                    query.status = { $ne: 'linkedin_details_not_found' };
+                    break;
+                default:
+                    // Handle unexpected filters (optional: throw error)
+                    break;
+            }
+        }
+
+        // Fetch paginated leads
+        const leads = await DraftAgentLeads_Model.find(query)
+            .populate('leadId')
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 });
+
+        // Calculate total documents for pagination
+        const total = await DraftAgentLeads_Model.countDocuments(query);
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                leads,
+                total,
+                pages: Math.ceil(total / limit),
+                currentPage: page
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
+    }
+};
+
 // Get Draft Email Sending
 const getEmailSendingStats = async (req, res) => {
     try {
@@ -465,6 +529,64 @@ const getEmailSendingStats = async (req, res) => {
                 emailStatusCounts: {
                     done: doneCount,
                     pending: pendingCount
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching campaign leads:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch campaign leads'
+        });
+    }
+};
+
+// Get DM Stats for LinkedIn Agent
+const getDmSendingStats = async (req, res) => {
+    try {
+        const { listName, organizationId } = req.params;
+        const { status } = req.query;
+
+        const baseQuery = { listName, organizationId };
+        if (status) baseQuery.status = status;
+
+        // Get all leads without paginations
+        const totalLeads = await DraftAgentLeads_Model.countDocuments(baseQuery);
+
+        // Get email status counts
+        const doneCount = await DraftAgentLeads_Model.countDocuments({
+            ...baseQuery,
+            dmSend: 'done'
+        });
+
+        const invitationCount = await DraftAgentLeads_Model.countDocuments({
+            ...baseQuery,
+            dmSend: 'connection_request_send'
+        });
+
+        const pendingCount = await DraftAgentLeads_Model.countDocuments({
+            ...baseQuery,
+            $or: [
+                { dmSend: 'not_send' },
+                {
+                    $and: [
+                        // Check for missing dmSend only when status is 'done' OR 'pending'
+                        { status: { $in: ['done', 'pending'] } },
+                        { dmSend: { $exists: false } }
+                    ]
+                }
+            ]
+        });
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                total: totalLeads,
+                dmStatusCount: {
+                    done: doneCount,
+                    pending: pendingCount,
+                    invitation: invitationCount
                 }
             }
         });
@@ -655,6 +777,8 @@ module.exports = {
     getDraftLeadsEmailSending,
     getEmailSendingStats,
     getEmailSendGraphData,
-    sendEmailImap
+    sendEmailImap,
+    getDraftLeadsDmSending,
+    getDmSendingStats
 }
 
