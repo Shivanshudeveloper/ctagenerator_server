@@ -6,7 +6,7 @@ const blogsSchema = new mongoose.Schema({
         required: false,
     },
     blogPublicId: {
-        type: Number,
+        type: String,
         required: false,
         unique: true
     },
